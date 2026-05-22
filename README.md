@@ -44,7 +44,7 @@ The platform should orchestrate those tools, normalize their outputs, preserve e
 
 ## Current Status
 
-The repository has completed Phase 5 — First Real Scanner Integration. A Next.js frontend exists under `apps/web`, and a FastAPI backend exists under `apps/api` with SQLAlchemy models, Alembic migrations, workflow services, seed data, tests for the core assurance records, an explainable scoring engine, an evidence-preserving scanner ecosystem, and the first real garak CLI adapter. The platform runs as a Docker Compose stack with frontend, backend, PostgreSQL, and a local scanner artifact volume.
+The repository has completed Phase 6 - Bias and Civil Rights Assessment Support. A Next.js frontend exists under `apps/web`, and a FastAPI backend exists under `apps/api` with SQLAlchemy models, Alembic migrations, workflow services, seed data, tests for the core assurance records, an explainable scoring engine, an evidence-preserving scanner ecosystem, the first real garak CLI adapter, and public-sector civil-rights review workflows. The platform runs as a Docker Compose stack with frontend, backend, PostgreSQL, and a local scanner artifact volume.
 
 Completed now:
 
@@ -76,6 +76,7 @@ Completed now:
 - garak CLI scanner adapter for prompt-injection-oriented Phase 5 runtime validation.
 - Native garak JSONL, hit log, HTML report, scanner configuration, stdout/stderr log, raw platform JSON, and normalized output preservation.
 - garak findings normalized into the existing findings, evidence, audit event, and scoring workflows.
+- Civil-rights assessment templates, language-access scenarios, human appeal-path checks, fairness-oriented findings, fairness evidence types, AIRB civil-rights indicators, and the Civil Rights Review frontend route.
 
 Not built yet:
 
@@ -245,10 +246,10 @@ Intentionally deferred:
 
 ### Phase 6 — Bias and Civil Rights Assessment Support
 
-- [ ] Add bias and civil-rights assessment templates.
-- [ ] Add language access scenarios.
-- [ ] Add human appeal path checks.
-- [ ] Add fairness-oriented findings and evidence views.
+- [x] Add bias and civil-rights assessment templates.
+- [x] Add language access scenarios.
+- [x] Add human appeal path checks.
+- [x] Add fairness-oriented findings and evidence views.
 
 ### Phase 7 — OneTrust and Governance Export Support
 
@@ -279,7 +280,7 @@ Future AI agents should:
 
 ## What To Build Next
 
-The recommended next development task is Phase 6: bias and civil-rights assessment maturity. Keep the garak integration as the proven scanner pattern, then add rights-impacting templates, language access scenarios, human appeal path checks, and fairness-oriented evidence workflows without adding distributed execution.
+The recommended next development task is Phase 7: governance exports and OneTrust workflow support. Keep exports manual and audit-packet-oriented first, then map fields for future OneTrust support without adding a live OneTrust API integration yet.
 
 ## What Not To Build Yet
 

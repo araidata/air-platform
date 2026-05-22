@@ -27,11 +27,11 @@
 
 ## Phase 6
 
-- [ ] Add bias and civil-rights assessment templates.
-- [ ] Add language access scenario workflows.
-- [ ] Add human appeal path checks.
-- [ ] Add fairness-oriented evidence expectations.
-- [ ] Defer additional real scanner integrations until one Phase 6 workflow needs them.
+- [x] Add bias and civil-rights assessment templates.
+- [x] Add language access scenario workflows.
+- [x] Add human appeal path checks.
+- [x] Add fairness-oriented evidence expectations.
+- [x] Defer additional real scanner integrations until one Phase 6 workflow needs them.
 
 ## Planned Scanner Families
 

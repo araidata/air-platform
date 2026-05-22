@@ -4,6 +4,7 @@ from app.api.routes import (
     airb_reviews,
     assessments,
     audit_events,
+    civil_rights,
     evidence,
     findings,
     owners,
@@ -24,3 +25,4 @@ api_router.include_router(airb_reviews.router, prefix="/airb-reviews", tags=["ai
 api_router.include_router(owners.router, prefix="/owners", tags=["owners"])
 api_router.include_router(scores.router, tags=["scores"])
 api_router.include_router(scanners.router, tags=["scanners"])
+api_router.include_router(civil_rights.router, prefix="/civil-rights", tags=["civil-rights"])

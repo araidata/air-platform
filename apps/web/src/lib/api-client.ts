@@ -205,6 +205,43 @@ export type ApiScannerRun = {
   updated_at: string;
 };
 
+export type ApiLanguageAccessScenario = {
+  id: string;
+  system_id: string | null;
+  assessment_id: string | null;
+  name: string;
+  primary_language: string;
+  comparison_language: string;
+  scenario_type: string;
+  prompt_text: string;
+  expected_behavior: string;
+  evidence_requirements: string[];
+  created_at: string;
+  updated_at: string;
+};
+
+export type ApiHumanAppealPathCheck = {
+  id: string;
+  system_id: string;
+  assessment_id: string | null;
+  check_type: string;
+  status: string;
+  required_control: string;
+  validation_notes: string | null;
+  evidence_requirements: string[];
+  evidence_ids: string[];
+  created_at: string;
+  updated_at: string;
+};
+
+export type ApiCivilRightsSummary = {
+  templates: ApiAssessmentProfile[];
+  language_access_scenarios: ApiLanguageAccessScenario[];
+  appeal_path_checks: ApiHumanAppealPathCheck[];
+  fairness_findings: ApiFinding[];
+  fairness_evidence: ApiEvidence[];
+};
+
 export type ApiRecommendedScan = {
   scan_type: ApiScanType;
   required: boolean;
@@ -272,4 +309,5 @@ export const apiClient = {
       method: "POST",
       body: JSON.stringify({ initiated_by: initiatedBy }),
     }),
+  civilRightsSummary: () => request<ApiCivilRightsSummary>("/civil-rights/summary"),
 };

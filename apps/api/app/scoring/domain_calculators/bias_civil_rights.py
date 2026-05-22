@@ -33,7 +33,10 @@ def calculate(context: ScoringContext) -> DomainCalculation:
     open_appeal_findings = [
         finding
         for finding in context.findings
-        if "appeal" in f"{finding.title} {finding.description}".lower()
+        if any(
+            term in f"{finding.title} {finding.description}".lower()
+            for term in ["appeal", "human review", "escalation"]
+        )
         and finding.status not in {FindingStatus.closed.value, FindingStatus.false_positive.value}
     ]
     if open_appeal_findings:
@@ -75,5 +78,45 @@ def calculate(context: ScoringContext) -> DomainCalculation:
                 impact_value=-4,
             )
         )
+    linked_evidence = evidence_text(context)
+    if context.system.public_facing and "language" not in linked_evidence:
+        explanations.append(
+            ExplanationDraft(
+                explanation_type="evidence_gap",
+                title="Language-access evidence missing",
+                description="Public-facing systems need bilingual scenario evidence or translated response evidence.",
+                impact_value=-5,
+            )
+        )
+    if context.system.public_facing and "accessibility" not in linked_evidence:
+        explanations.append(
+            ExplanationDraft(
+                explanation_type="evidence_gap",
+                title="Accessibility evidence missing",
+                description="Public-facing systems need accessibility notices, escalation paths, or accommodation evidence.",
+                impact_value=-4,
+            )
+        )
+
+    latest_review = sorted(context.airb_reviews, key=lambda review: review.updated_at, reverse=True)[0] if context.airb_reviews else None
+    if latest_review and context.system.rights_impacting:
+        if latest_review.civil_rights_review_status in {"not_started", "needs_evidence"}:
+            explanations.append(
+                ExplanationDraft(
+                    explanation_type="workflow_gap",
+                    title="Civil-rights AIRB review incomplete",
+                    description="AIRB civil-rights review status is not complete for a rights-impacting system.",
+                    impact_value=-6,
+                )
+            )
+        if not latest_review.appeal_path_validated:
+            explanations.append(
+                ExplanationDraft(
+                    explanation_type="workflow_gap",
+                    title="AIRB appeal-path validation missing",
+                    description="The AIRB record does not show appeal-path validation for the rights-impacting workflow.",
+                    impact_value=-5,
+                )
+            )
 
     return DomainCalculation(score_domain=domain, score_value=score_from_explanations(domain, explanations), explanations=explanations)

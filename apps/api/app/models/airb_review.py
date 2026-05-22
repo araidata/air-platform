@@ -28,6 +28,20 @@ class AirbReview(IdMixin, TimestampMixin, Base):
     reviewed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     exception_granted: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     expiration_date: Mapped[Optional[date]] = mapped_column(Date)
+    civil_rights_review_status: Mapped[str] = mapped_column(
+        String(60), nullable=False, default="not_started"
+    )
+    accessibility_review_status: Mapped[str] = mapped_column(
+        String(60), nullable=False, default="not_started"
+    )
+    language_access_review_status: Mapped[str] = mapped_column(
+        String(60), nullable=False, default="not_started"
+    )
+    fairness_review_status: Mapped[str] = mapped_column(
+        String(60), nullable=False, default="not_started"
+    )
+    human_review_validated: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    appeal_path_validated: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 
     system: Mapped["AISystem"] = relationship(back_populates="airb_reviews")
     assessment: Mapped[Optional["Assessment"]] = relationship(back_populates="airb_reviews")

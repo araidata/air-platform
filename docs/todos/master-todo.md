@@ -38,7 +38,7 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - Add workflow transition dialog.
 - Add owner assignment dialog.
 - Add risk acceptance dialog.
-- Build Bias and Civil Rights Dashboard.
+- [x] Build Bias and Civil Rights Dashboard.
 - Build Security Findings Dashboard.
 - Build AIRB Review Detail page.
 - Build Deployment Approval page.
@@ -63,14 +63,14 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - [x] Add audit event service.
 - [x] Add finding workflow service.
 - [x] Add evidence service.
-- Add scoring service.
+- [x] Add scoring service.
 - [x] Add seed command.
 - Add pagination helpers.
 - Add filtering helpers.
 - Add structured error responses.
 - [x] Add OpenAPI tags.
 - [x] Add tests for health, systems, findings, evidence, and workflows.
-- Add tests for scoring.
+- [x] Add tests for scoring.
 - [x] Add backend Dockerfile.
 - [x] Add container startup migration and seed flow.
 
@@ -90,6 +90,8 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - [x] Create risk acceptances table.
 - [x] Create framework mappings table.
 - [x] Create audit events table.
+- [x] Create language access scenarios table.
+- [x] Create human appeal path checks table.
 - [x] Add indexes for findings queue filters.
 - [x] Add indexes for inventory filters.
 - [x] Add indexes for evidence search.
@@ -183,19 +185,19 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - [x] Add first security scanner adapter after workflow readiness.
 - [x] Preserve native real scanner output, logs, configuration, and normalized output as evidence.
 - [x] Normalize real scanner output into findings and trigger score recalculation.
-- Add first bias/fairness scanner adapter after workflow readiness.
+- Defer first bias/fairness scanner adapter until a concrete workflow requires real scanner execution.
 - Add first LLM/RAG evaluation adapter after workflow readiness.
 
 ## Testing TODO
 
-- Add backend unit tests.
-- Add backend integration tests with test database.
+- [x] Add backend unit tests.
+- [x] Add backend integration tests with test database.
 - Add frontend component tests where useful.
 - Add Playwright smoke tests after UI exists.
-- Test seed data integrity.
+- [x] Test seed data integrity.
 - Test workflow transitions.
 - [x] Test score calculations.
-- Test evidence linking.
+- [x] Test evidence linking.
 - [x] Test scanner mock normalization.
 - [x] Test first real scanner execution, parsing, evidence preservation, failure handling, and score integration.
 - Test API pagination and filters.

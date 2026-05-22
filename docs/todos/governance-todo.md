@@ -21,9 +21,10 @@
 
 ## Phase 6
 
-- Add structured bias/civil-rights review templates.
-- Add language access review fields.
-- Add human appeal path checks.
+- [x] Add structured bias/civil-rights review templates.
+- [x] Add language access review fields.
+- [x] Add human appeal path checks.
+- [x] Add AIRB civil-rights, accessibility, language-access, fairness, human-review, and appeal-path indicators.
 
 ## Phase 7
 

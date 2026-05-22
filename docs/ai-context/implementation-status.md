@@ -68,15 +68,33 @@ Update this file whenever the repository meaningfully changes.
   - Normalized garak eval records into existing findings with evidence, audit events, score impact, score recalculation, and score history.
   - Updated the Scanner Ecosystem frontend to show real scanner execution, adapter details, evidence references, normalized findings, and score change counts.
   - Added garak parser, service, failure, empty-output, partial-output, artifact preservation, and scoring tests.
+- Completed Phase 6 Bias and Civil Rights Assessment Support:
+  - Added `LanguageAccessScenario` and `HumanAppealPathCheck` models and migration `202605220003_phase_6_civil_rights.py`.
+  - Added civil-rights assessment templates through assessment profiles.
+  - Added future-ready scan types for language access, accessibility, human appeal, fairness, and civil-rights governance evidence.
+  - Added fairness evidence types to the existing evidence architecture.
+  - Extended AIRB reviews with civil-rights, accessibility, language-access, fairness, human-review, and appeal-path indicators.
+  - Extended Bias/Civil Rights and Governance Evidence scoring with explainable Phase 6 workflow and evidence gaps.
+  - Added civil-rights APIs for templates, language-access scenarios, appeal-path checks, and summary data.
+  - Added seeded civil-rights findings, evidence, score impacts, language scenarios, appeal checks, AIRB records, and remediation recommendations.
+  - Added Civil Rights Review frontend route.
+  - Added civil-rights tests for templates, scenarios, invalid language pairs, appeal evidence validation, evidence relationships, score recalculation, and API responses.
 
 ## Verification
 
 - `py -m pytest` from `apps/api`: 24 passed.
+- `py -m pytest` from `apps/api`: 30 passed after Phase 6.
 - `py -m compileall app` from `apps/api`.
 - SQLite Alembic upgrade to `202605220002`.
+- SQLite Alembic upgrade to `202605220003`.
 - `npm.cmd run lint` from `apps/web`.
 - `npm.cmd run build` from `apps/web`.
 - `docker compose config --quiet`.
+- `docker compose up --build -d` with `API_HOST_PORT=8010`, `FRONTEND_HOST_PORT=3010`, and `POSTGRES_PORT=55432` after Phase 6.
+- `docker compose exec -T backend alembic current`: `202605220003 (head)`.
+- `py scripts/runtime-smoke-test.py --backend-url http://localhost:8010 --frontend-url http://localhost:3010`.
+- Runtime check for `/civil-rights/summary`: 7 templates, 3 scenarios, 4 appeal-path checks, 7 fairness findings, and 9 fairness evidence records.
+- Browser verification of `http://localhost:3010/civil-rights`: page loaded, no relevant console errors, summary cards rendered, templates/language-access/appeal checks/fairness findings visible, and scrolling exposed the findings table.
 - `docker compose up --build -d` with `API_HOST_PORT=8010`, `FRONTEND_HOST_PORT=3010`, and `POSTGRES_PORT=55432`.
 - `docker compose exec -T backend alembic current`: `202605220002 (head)`.
 - `py scripts/runtime-smoke-test.py --backend-url http://localhost:8010 --frontend-url http://localhost:3010`.
@@ -93,11 +111,11 @@ Update this file whenever the repository meaningfully changes.
 
 ## Next
 
-- Begin Phase 6 bias and civil-rights assessment maturity:
-  - Add rights-impacting assessment templates.
-  - Add language access scenarios.
-  - Add human appeal path checks.
-  - Keep future scanner additions single-adapter and evidence-first.
+- Begin Phase 7 governance exports and OneTrust workflow support:
+  - Add CSV exports.
+  - Add structured JSON governance exports.
+  - Add audit packet export preparation.
+  - Draft OneTrust field mapping.
 
 ## Blocked
 
@@ -125,6 +143,7 @@ Update this file whenever the repository meaningfully changes.
 - Browser verification used the Node-backed Browser runtime.
 - Host ports `8000`, `3000`, and `5432` may already be allocated on the verification machine. Phase 4 runtime verification used `API_HOST_PORT=8010`, `FRONTEND_HOST_PORT=3010`, and `POSTGRES_PORT=55432`.
 - garak 0.15.0 brings a large dependency set into the backend image. Keep it as the only real scanner dependency until a second integration is explicitly prioritized.
+- Local direct `alembic upgrade head` may hang if PostgreSQL is not running on the configured default URL. Use Docker Compose or set `DATABASE_URL` for a SQLite migration check.
 
 ## Update Template
 

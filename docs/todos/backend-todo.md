@@ -27,7 +27,7 @@
 
 ## Next
 
-- Begin Phase 6 bias and civil-rights workflow support.
+- Begin Phase 7 governance exports and OneTrust workflow support.
 - Add pagination and filtering once UI integration needs are clearer.
 
 ## Completed In Phase 3
@@ -55,6 +55,14 @@
 - [x] Preserved native garak artifacts and normalized output as evidence.
 - [x] Normalized garak output into findings and score recalculation.
 - [x] Added real scanner execution, parser, malformed output, failure, evidence, and scoring tests.
+
+## Completed In Phase 6
+
+- [x] Added civil-rights assessment APIs.
+- [x] Added language-access scenario workflow records.
+- [x] Added human appeal-path check workflow records.
+- [x] Extended AIRB review records with civil-rights workflow indicators.
+- [x] Added Phase 6 seed data and backend tests.
 
 ## Deferred
 

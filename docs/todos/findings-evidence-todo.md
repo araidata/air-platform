@@ -32,6 +32,12 @@
 - [x] Preserve scanner run metadata in evidence metadata.
 - [x] Recalculate scores when scanner-created findings and evidence are created.
 
+## Phase 6
+
+- [x] Add fairness-oriented findings using the existing findings workflow.
+- [x] Add fairness evidence types using the existing evidence architecture.
+- [x] Recalculate scores when civil-rights evidence is linked.
+
 ## Deferred
 
 - Complex chain-of-custody workflow.

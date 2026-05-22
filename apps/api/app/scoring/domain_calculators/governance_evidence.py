@@ -105,6 +105,35 @@ def calculate(context: ScoringContext) -> DomainCalculation:
                 impact_value=2,
             )
         )
+    if review and context.system.rights_impacting:
+        incomplete_reviews = [
+            label
+            for field, label in [
+                ("civil_rights_review_status", "civil-rights"),
+                ("accessibility_review_status", "accessibility"),
+                ("language_access_review_status", "language-access"),
+                ("fairness_review_status", "fairness"),
+            ]
+            if getattr(review, field, "not_started") in {"not_started", "needs_evidence"}
+        ]
+        if incomplete_reviews:
+            explanations.append(
+                ExplanationDraft(
+                    explanation_type="workflow_gap",
+                    title="Civil-rights governance review incomplete",
+                    description=f"Pending AIRB indicators: {', '.join(incomplete_reviews)}.",
+                    impact_value=-4 * len(incomplete_reviews),
+                )
+            )
+        if not review.human_review_validated or not review.appeal_path_validated:
+            explanations.append(
+                ExplanationDraft(
+                    explanation_type="workflow_gap",
+                    title="Human review and appeal validation missing",
+                    description="AIRB review has not validated both human review and appeal-path controls.",
+                    impact_value=-8,
+                )
+            )
 
     if context.assessment and context.assessment.status in {
         AssessmentStatus.draft.value,

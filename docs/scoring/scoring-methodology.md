@@ -92,6 +92,14 @@ Phase 3 stores:
 
 Every recalculation records audit events for score recalculation and meaningful score changes.
 
+## Phase 6 Civil-Rights Support
+
+Phase 6 extends scoring inputs without changing the scoring engine architecture:
+
+- Bias/Civil Rights scores account for language-access evidence gaps, accessibility evidence gaps, appeal-path gaps, and AIRB civil-rights validation status.
+- Governance Evidence scores account for AIRB civil-rights, accessibility, language-access, fairness, human-review, and appeal-path indicators.
+- Fairness findings may carry explicit score impacts, but unsupported statistical conclusions are not created by the platform.
+
 ## Example Explanation
 
 ```text

@@ -45,6 +45,14 @@
 - [x] Verify the Phase 4 scanner ecosystem migration in Docker Compose.
 - [x] Add seeded scanner registry, scan types, assessment profiles, scanner runs, scanner results, generated evidence, and normalized findings.
 
+## Completed In Phase 6
+
+- [x] Create `language_access_scenarios` table.
+- [x] Create `human_appeal_path_checks` table.
+- [x] Add AIRB civil-rights workflow indicator columns.
+- [x] Verify the Phase 6 civil-rights migration in Docker Compose.
+- [x] Add seeded civil-rights templates, scenarios, appeal checks, fairness findings, and evidence.
+
 ## Deferred Candidate Tables
 
 - `departments`

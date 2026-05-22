@@ -74,6 +74,15 @@
 - `POST /airb-reviews`
 - `PATCH /airb-reviews/{review_id}`
 
+## Civil Rights
+
+- `GET /civil-rights/templates`
+- `GET /civil-rights/language-access-scenarios`
+- `POST /civil-rights/language-access-scenarios`
+- `GET /civil-rights/appeal-path-checks`
+- `POST /civil-rights/appeal-path-checks`
+- `GET /civil-rights/summary`
+
 ## Deployment Approvals
 
 - `GET /deployment-approvals`

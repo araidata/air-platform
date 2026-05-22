@@ -6,6 +6,8 @@ from app.models.audit_event import AuditEvent
 from app.models.evidence import Evidence
 from app.models.finding import Finding
 from app.models.framework_mapping import FrameworkMapping
+from app.models.human_appeal_path_check import HumanAppealPathCheck
+from app.models.language_access_scenario import LanguageAccessScenario
 from app.models.owner import Owner
 from app.models.retest import Retest
 from app.models.risk_acceptance import RiskAcceptance
@@ -26,6 +28,8 @@ __all__ = [
     "Evidence",
     "Finding",
     "FrameworkMapping",
+    "HumanAppealPathCheck",
+    "LanguageAccessScenario",
     "Owner",
     "Retest",
     "RiskAcceptance",

@@ -1,6 +1,6 @@
 # Current State
 
-County AI Assurance Operations Center has moved from mock UI and durable backend workflow implementation into a runnable Docker Compose platform with an explainable scoring engine, Phase 4 scanner ecosystem foundation, and Phase 5 first real scanner integration. The project still preserves durable operating context for future AI-assisted development, and now has a working frontend, FastAPI backend, PostgreSQL runtime, migrations, seed data, operational smoke checks, score workflows, scanner registry, scan types, assessment profiles, mock scanner execution, real garak CLI execution, raw output preservation, evidence generation, normalized findings, and score recalculation from scanner-created findings.
+County AI Assurance Operations Center has moved from mock UI and durable backend workflow implementation into a runnable Docker Compose platform with an explainable scoring engine, Phase 4 scanner ecosystem foundation, Phase 5 first real scanner integration, and Phase 6 bias/civil-rights assessment support. The project still preserves durable operating context for future AI-assisted development, and now has a working frontend, FastAPI backend, PostgreSQL runtime, migrations, seed data, operational smoke checks, score workflows, scanner registry, scan types, assessment profiles, mock scanner execution, real garak CLI execution, raw output preservation, evidence generation, normalized findings, score recalculation from scanner-created findings, civil-rights templates, language-access scenarios, appeal-path checks, AIRB civil-rights indicators, and fairness evidence views.
 
 ## Product Definition
 
@@ -28,6 +28,8 @@ Phase 3 - Scoring Engine is implemented and verified.
 Phase 4 - AI Assessment Ecosystem Foundation is implemented and verified.
 
 Phase 5 - First Real Scanner Integration is implemented and verified with garak.
+
+Phase 6 - Bias and Civil Rights Assessment Support is implemented and verified.
 
 ## Exists Now
 
@@ -71,6 +73,12 @@ Phase 5 - First Real Scanner Integration is implemented and verified with garak.
 - Native garak JSONL report, hit log, HTML report, scanner configuration, stdout/stderr log, raw platform JSON, and normalized output artifact preservation.
 - Real garak findings normalized into existing finding, evidence, audit event, and score recalculation workflows.
 - Scanner Ecosystem frontend visibility for real scanner runs, adapters, evidence counts, normalized findings, and score change history.
+- Civil-rights assessment templates for rights-impacting AI, public benefits eligibility, HR/employment, law enforcement/CJIS, citizen-facing chatbots, accessibility/language access, and human review/appeals.
+- Language-access scenario records for English/Spanish evidence-backed review.
+- Human appeal-path check records for escalation, adverse decision review, override, and accessibility paths.
+- Fairness evidence types that reuse the existing evidence architecture.
+- AIRB indicators for civil-rights, accessibility, language-access, fairness, human-review, and appeal-path validation.
+- Civil Rights Review frontend route under `apps/web/src/app/civil-rights/page.tsx`.
 
 ## Does Not Exist Yet
 
@@ -79,7 +87,7 @@ Phase 5 - First Real Scanner Integration is implemented and verified with garak.
 
 ## Highest-Value Next Step
 
-Begin Phase 6 bias and civil-rights assessment maturity. Keep the garak adapter as the proven scanner pattern, and do not broaden into multiple real scanner integrations until bias/privacy workflow needs are clearer.
+Begin Phase 7 governance exports and OneTrust workflow support. Keep exports manual, evidence-backed, and simple before considering any live external integration.
 
 ## Agent Reminder
 

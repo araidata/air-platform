@@ -1,27 +1,25 @@
 # Next Steps
 
-The next development work should begin Phase 6: Bias and Civil Rights Assessment Maturity.
+The next development work should begin Phase 7: Governance Exports and OneTrust Workflow Support.
 
-Phase 5 - First Real Scanner Integration is complete and verified. garak now runs through the existing adapter contract in Docker, preserves native scanner artifacts and platform-normalized output as evidence, creates normalized findings from real scanner output, and triggers score recalculation through the existing service path.
+Phase 6 - Bias and Civil Rights Assessment Support is complete and verified. The platform now has civil-rights assessment templates, language-access scenarios, human appeal-path checks, fairness-oriented evidence, AIRB civil-rights indicators, score integration, seed data, tests, and a Civil Rights Review frontend route.
 
 ## Recommended Next Task
 
-Mature the rights-impacting assessment workflow without broadening infrastructure:
+Add governance export support without broadening infrastructure:
 
-1. Add bias and civil-rights assessment templates.
-2. Add language access scenarios for public-facing systems.
-3. Add human appeal path checks for adverse or rights-impacting decisions.
-4. Add fairness-oriented evidence expectations and finding templates.
-5. Keep any future scanner work single-adapter, evidence-first, and synchronous until there is a concrete need to expand.
+1. Add CSV exports for systems, assessments, findings, evidence, and risk acceptances.
+2. Add structured JSON governance exports.
+3. Add audit packet export preparation.
+4. Draft OneTrust field mapping.
+5. Keep OneTrust upload manual until export quality is proven.
 
-## Keep From Phase 5
+## Keep From Phase 6
 
-- Scanners remain external tools.
-- garak is the first proven real adapter pattern.
-- Native scanner output, logs, config, and normalized artifacts are preserved as evidence.
-- Scanner-specific fields stay in evidence metadata or scanner results.
-- Score recalculation stays synchronous and service-layer.
-- Docker Compose remains the runtime boundary.
+- Civil-rights workflows remain evidence-backed and explainable.
+- Language-access review remains scenario and reviewer driven.
+- Appeal-path validation remains a governance workflow, not an automated legal conclusion.
+- Scores remain deterministic explanations over findings, evidence, and workflow state.
 
 ## Do Not Do Next
 
