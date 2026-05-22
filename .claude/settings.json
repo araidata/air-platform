@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Grep",
+      "Glob",
+      "LS"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(git reset:*)",
+      "Bash(git push:*)",
+      "Bash(kubectl:*)",
+      "Bash(docker system prune:*)"
+    ]
+  },
+  "hooks": {}
+}

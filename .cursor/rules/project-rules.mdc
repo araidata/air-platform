@@ -1,0 +1,28 @@
+---
+description: County AI Assurance Operations Center repository rules
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# County AI Assurance Operations Center Rules
+
+Before making changes, read `CLAUDE.md`, `AGENTS.md`, `CODEX.md`, and `docs/ai-context/current-state.md`.
+
+Preserve the project philosophy:
+
+- Operational simplicity.
+- Governance-first design.
+- Findings and evidence first.
+- One or two operators.
+- Single Linux VM.
+- Docker Compose first.
+- Mock-first development.
+
+Do not add Kubernetes, microservices, distributed workers, enterprise auth, multi-tenant SaaS assumptions, or real scanner integrations unless explicitly requested.
+
+Scanner integrations must use adapters. The platform orchestrates scanners, normalizes results, preserves evidence, creates findings, and scores risk. It does not rewrite scanner tools.
+
+The UI should feel authoritative, calm, security-focused, audit-friendly, and government-grade. Avoid neon AI styling, chatbot-first layouts, toy dashboards, and vague AI magic language.
+
+When implementation status changes, update `docs/ai-context/implementation-status.md` and the relevant todo file.
