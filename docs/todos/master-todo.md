@@ -84,7 +84,7 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - Create scanner_runs table.
 - [x] Create findings table.
 - [x] Create evidence table.
-- Create scores table.
+- [x] Create scores table.
 - [x] Create AIRB reviews table.
 - Create deployment approvals table.
 - [x] Create risk acceptances table.
@@ -101,7 +101,7 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 
 ## Dashboards TODO
 
-- Define score overview API.
+- [x] Define score overview API.
 - Define critical findings metric.
 - Define high-risk systems metric.
 - Define systems scanned metric.
@@ -111,7 +111,7 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - Define risk heatmap query by department and domain.
 - Build dashboard mock state.
 - Replace mock state with API data.
-- Add score explanation drill-downs.
+- [x] Add score explanation drill-downs.
 
 ## Governance Workflow TODO
 
@@ -153,16 +153,17 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 
 ## Scoring Engine TODO
 
-- Implement domain score calculation.
-- Implement overall AI Governance Score.
-- Add severity deductions.
-- Add risk modifiers for public-facing, rights-impacting, safety-impacting, PII, PHI, CJIS, overdue findings, and reopened findings.
-- Add positive modifiers for verified remediation, complete evidence, compensating controls, and accepted risks.
-- Store score explanations.
-- Add score recalculation endpoint.
-- Add score history.
-- Add score trend charts.
-- Add unit tests for scoring examples.
+- [x] Implement domain score calculation.
+- [x] Implement overall AI Governance Score.
+- [x] Add severity deductions.
+- [x] Add risk modifiers for public-facing, rights-impacting, safety-impacting, PII, PHI, CJIS, overdue findings, retests, risk acceptance, and approval blocking.
+- [x] Add positive modifiers for remediation progress and complete evidence.
+- [x] Store score explanations.
+- [x] Add score recalculation endpoint.
+- [x] Add score history.
+- [x] Add score trend charts.
+- [x] Add unit tests for scoring examples.
+- [x] Verify Phase 3 scoring in Docker Compose.
 
 ## Scanner Integration TODO
 
@@ -188,7 +189,7 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - Add Playwright smoke tests after UI exists.
 - Test seed data integrity.
 - Test workflow transitions.
-- Test score calculations.
+- [x] Test score calculations.
 - Test evidence linking.
 - Test scanner mock normalization.
 - Test API pagination and filters.

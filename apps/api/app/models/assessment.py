@@ -32,3 +32,6 @@ class Assessment(IdMixin, TimestampMixin, Base):
     findings: Mapped[List["Finding"]] = relationship(back_populates="assessment")
     evidence: Mapped[List["Evidence"]] = relationship(back_populates="assessment")
     airb_reviews: Mapped[List["AirbReview"]] = relationship(back_populates="assessment")
+    domain_scores: Mapped[List["DomainScore"]] = relationship(back_populates="assessment")
+    score_history: Mapped[List["ScoreHistory"]] = relationship(back_populates="assessment")
+    score_snapshots: Mapped[List["ScoreSnapshot"]] = relationship(back_populates="assessment")

@@ -94,6 +94,13 @@ PostgreSQL is the source of truth for:
 - Framework mappings.
 - Reports.
 
+Phase 3 scoring uses the existing modular monolith and database:
+
+- Deterministic domain calculators live under `apps/api/app/scoring/domain_calculators`.
+- Central scoring weights and severity/status rules live in `apps/api/app/scoring/scoring_rules.py`.
+- `ScoringEngine` writes current scores, history, snapshots, explanations, and audit events in the same transaction as workflow changes.
+- Recalculation is service-layer work, not a distributed event system.
+
 Redis is used initially for:
 
 - Job coordination.

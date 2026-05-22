@@ -3,12 +3,18 @@ import { CalendarDays, ClipboardCheck, LockKeyhole } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { FilterBar } from "@/components/filter-bar";
 import { PageHeader } from "@/components/page-header";
+import { ScoreRing } from "@/components/score-ring";
 import {
   ApprovalBadge,
   ReviewStatusBadge,
   RiskTierBadge,
 } from "@/components/status-badge";
-import { formatDate, getSystemById, reviews } from "@/lib/mock-data";
+import {
+  formatDate,
+  getScoreExplanationsForSystem,
+  getSystemById,
+  reviews,
+} from "@/lib/mock-data";
 
 export default function ReviewBoardPage() {
   const blocked = reviews.filter((review) => review.status === "Blocked").length;
@@ -87,13 +93,16 @@ export default function ReviewBoardPage() {
           if (!system) {
             return null;
           }
+          const topScoreDriver = getScoreExplanationsForSystem(system.id)
+            .filter((explanation) => explanation.impact < 0)
+            .sort((a, b) => a.impact - b.impact)[0];
 
           return (
             <section
               key={review.id}
               className="rounded-lg border border-white/10 bg-white/[0.045] p-4"
             >
-              <div className="grid gap-4 lg:grid-cols-[1fr_240px_260px]">
+              <div className="grid gap-4 lg:grid-cols-[1fr_240px_260px_220px]">
                 <div>
                   <p className="font-mono text-xs text-zinc-500">{review.id}</p>
                   <Link
@@ -114,6 +123,15 @@ export default function ReviewBoardPage() {
                   <ReviewStatusBadge status={review.status} />
                   <ApprovalBadge status={system.approvalStatus} />
                   <RiskTierBadge riskTier={system.riskTier} />
+                </div>
+
+                <div className="rounded-lg border border-white/10 bg-black/20 p-3">
+                  <ScoreRing score={system.riskScore} label="Governance" />
+                  {topScoreDriver ? (
+                    <p className="mt-3 text-sm leading-5 text-zinc-500">
+                      {topScoreDriver.title}
+                    </p>
+                  ) : null}
                 </div>
 
                 <div className="rounded-lg border border-white/10 bg-black/20 p-3">

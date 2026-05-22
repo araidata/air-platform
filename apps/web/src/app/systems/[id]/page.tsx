@@ -20,6 +20,8 @@ import {
   getEvidenceForSystem,
   getFindingsForSystem,
   getReviewForSystem,
+  getScoreExplanationsForSystem,
+  getScoreHistoryForSystem,
   getSystemById,
   systems,
 } from "@/lib/mock-data";
@@ -44,6 +46,9 @@ export default async function SystemDetailPage({
   const systemEvidence = getEvidenceForSystem(system.id);
   const systemAssessments = getAssessmentsForSystem(system.id);
   const review = getReviewForSystem(system.id);
+  const scoreExplanations = getScoreExplanationsForSystem(system.id);
+  const history = getScoreHistoryForSystem(system.id);
+  const latestHistory = history.at(-1);
 
   return (
     <AppShell>
@@ -130,7 +135,8 @@ export default async function SystemDetailPage({
                   ["Security", system.domains.security],
                   ["Bias and Civil Rights", system.domains.biasCivilRights],
                   ["Privacy", system.domains.privacy],
-                  ["Governance", system.domains.governance],
+                  ["Explainability", system.domains.explainability],
+                  ["Governance Evidence", system.domains.governanceEvidence],
                 ].map(([label, value]) => (
                   <div key={label} className="rounded-md border border-white/10 p-3">
                     <div className="flex items-center justify-between gap-3">
@@ -189,6 +195,84 @@ export default async function SystemDetailPage({
             </div>
           ) : null}
         </aside>
+      </div>
+
+      <div className="mt-6 grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
+        <section className="rounded-lg border border-white/10 bg-white/[0.045] p-4">
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <div>
+              <h2 className="text-base font-semibold text-zinc-50">
+                Score History
+              </h2>
+              <p className="mt-1 text-sm text-zinc-500">
+                Overall governance score progression for this system.
+              </p>
+            </div>
+            {latestHistory ? (
+              <span className="font-mono text-sm text-zinc-300">
+                Current {latestHistory.overall}
+              </span>
+            ) : null}
+          </div>
+          <div className="grid h-44 grid-cols-4 items-end gap-3">
+            {history.map((point) => (
+              <div key={point.label} className="flex h-full flex-col justify-end gap-2">
+                <div
+                  className="rounded-t-md border border-cyan-300/15 bg-cyan-300/15"
+                  style={{ height: `${point.overall}%` }}
+                />
+                <div className="flex items-center justify-between text-xs text-zinc-500">
+                  <span>{point.label}</span>
+                  <span className="font-mono">{point.overall}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="rounded-lg border border-white/10 bg-white/[0.045] p-4">
+          <h2 className="text-base font-semibold text-zinc-50">
+            Score Explanations
+          </h2>
+          <div className="mt-4 space-y-3">
+            {scoreExplanations.length ? (
+              scoreExplanations.map((explanation) => (
+                <div
+                  key={explanation.id}
+                  className="rounded-lg border border-white/10 bg-black/20 p-3"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="font-medium text-zinc-100">{explanation.title}</p>
+                      <p className="mt-1 text-xs uppercase tracking-[0.08em] text-zinc-500">
+                        {explanation.domain}
+                      </p>
+                    </div>
+                    <span
+                      className={`font-mono text-sm ${
+                        explanation.impact < 0 ? "text-red-100" : "text-emerald-100"
+                      }`}
+                    >
+                      {explanation.impact > 0 ? `+${explanation.impact}` : explanation.impact}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-sm leading-5 text-zinc-500">
+                    {explanation.description}
+                  </p>
+                  {explanation.relatedFindingId ? (
+                    <p className="mt-2 font-mono text-xs text-zinc-600">
+                      Linked finding {explanation.relatedFindingId}
+                    </p>
+                  ) : null}
+                </div>
+              ))
+            ) : (
+              <p className="text-sm text-zinc-500">
+                No negative score explanations are currently recorded for this system.
+              </p>
+            )}
+          </div>
+        </section>
       </div>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-2">

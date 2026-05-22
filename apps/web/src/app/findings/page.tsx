@@ -7,12 +7,27 @@ import {
   FindingStatusBadge,
   SeverityBadge,
 } from "@/components/status-badge";
-import { findings, formatDate, getSystemName } from "@/lib/mock-data";
+import {
+  findings,
+  formatDate,
+  getSystemName,
+  scoreExplanations,
+} from "@/lib/mock-data";
 
 export default function FindingsPage() {
   const activeFindings = findings
     .filter((finding) => finding.status !== "Closed")
     .sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+  const activeFindingIds = new Set(activeFindings.map((finding) => finding.id));
+  const explainedImpact = scoreExplanations
+    .filter(
+      (explanation) =>
+        explanation.relatedFindingId && activeFindingIds.has(explanation.relatedFindingId),
+    )
+    .reduce((sum, explanation) => sum + Math.min(0, explanation.impact), 0);
+  const blockingFindings = activeFindings.filter((finding) =>
+    ["Critical", "High"].includes(finding.severity),
+  ).length;
 
   return (
     <AppShell>
@@ -32,6 +47,33 @@ export default function FindingsPage() {
           "Overdue soon",
         ]}
       />
+
+      <div className="mb-6 grid gap-4 md:grid-cols-3">
+        <section className="rounded-lg border border-white/10 bg-white/[0.045] p-4">
+          <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">
+            Explained score impact
+          </p>
+          <p className="mt-2 font-mono text-3xl font-semibold text-red-100">
+            {explainedImpact}
+          </p>
+        </section>
+        <section className="rounded-lg border border-white/10 bg-white/[0.045] p-4">
+          <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">
+            Critical or high
+          </p>
+          <p className="mt-2 font-mono text-3xl font-semibold text-amber-100">
+            {blockingFindings}
+          </p>
+        </section>
+        <section className="rounded-lg border border-white/10 bg-white/[0.045] p-4">
+          <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">
+            Evidence-linked
+          </p>
+          <p className="mt-2 font-mono text-3xl font-semibold text-cyan-100">
+            {activeFindings.filter((finding) => finding.evidenceIds.length).length}
+          </p>
+        </section>
+      </div>
 
       <TableShell label="Findings queue">
         <TableHead>

@@ -27,8 +27,15 @@
 
 ## Next
 
-- Implement Phase 3 scoring service and score endpoints.
+- Begin Phase 4 scanner adapter framework after reading scanner docs.
 - Add pagination and filtering once UI integration needs are clearer.
+
+## Completed In Phase 3
+
+- [x] Added deterministic scoring engine and domain calculators.
+- [x] Added score APIs and recalculation endpoints.
+- [x] Added service-layer score recalculation hooks for workflow changes.
+- [x] Added backend scoring tests.
 
 ## Deferred
 

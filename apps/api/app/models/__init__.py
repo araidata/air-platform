@@ -8,6 +8,9 @@ from app.models.framework_mapping import FrameworkMapping
 from app.models.owner import Owner
 from app.models.retest import Retest
 from app.models.risk_acceptance import RiskAcceptance
+from app.models.score import DomainScore, ScoreSnapshot
+from app.models.score_explanation import ScoreExplanation
+from app.models.score_history import ScoreHistory
 
 __all__ = [
     "AISystem",
@@ -20,4 +23,8 @@ __all__ = [
     "Owner",
     "Retest",
     "RiskAcceptance",
+    "DomainScore",
+    "ScoreExplanation",
+    "ScoreHistory",
+    "ScoreSnapshot",
 ]

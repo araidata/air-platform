@@ -7,6 +7,7 @@ from app.models.ai_system import AISystem
 from app.models.assessment import Assessment
 from app.models.enums import AssessmentStatus, AuditEventType
 from app.schemas.assessment import AssessmentCreate, AssessmentUpdate
+from app.scoring.scoring_engine import ScoringEngine
 from app.services.audit_event_service import AuditEventService
 
 
@@ -55,6 +56,12 @@ class AssessmentWorkflowService:
             actor=payload.initiated_by,
             new_value=assessment.status,
         )
+        ScoringEngine(self.db).recalculate_system_scores(
+            assessment.system_id,
+            assessment.id,
+            triggered_by=payload.initiated_by,
+            change_reason="assessment created",
+        )
         return assessment
 
     def update(self, assessment: Assessment, payload: AssessmentUpdate) -> Assessment:
@@ -83,6 +90,13 @@ class AssessmentWorkflowService:
                 new_value=requested_status,
             )
         self.db.flush()
+        if updates or requested_status:
+            ScoringEngine(self.db).recalculate_system_scores(
+                assessment.system_id,
+                assessment.id,
+                triggered_by=payload.actor,
+                change_reason="assessment updated",
+            )
         return assessment
 
     def _enum_values(self, data: dict) -> dict:

@@ -5,6 +5,7 @@ from app.models.enums import AuditEventType
 from app.models.finding import Finding
 from app.models.retest import Retest
 from app.schemas.retest import RetestCreate, RetestUpdate
+from app.scoring.scoring_engine import ScoringEngine
 from app.services.audit_event_service import AuditEventService
 
 
@@ -41,6 +42,12 @@ class RetestService:
             new_value=finding.retest_status,
             notes=payload.notes,
         )
+        ScoringEngine(self.db).recalculate_system_scores(
+            finding.system_id,
+            finding.assessment_id,
+            triggered_by=payload.initiated_by,
+            change_reason="retest created",
+        )
         return retest
 
     def update(self, retest: Retest, payload: RetestUpdate) -> Retest:
@@ -69,6 +76,13 @@ class RetestService:
                 old_value=old_status,
                 new_value=retest.status,
                 notes=payload.notes,
+            )
+            self.db.flush()
+            ScoringEngine(self.db).recalculate_system_scores(
+                retest.finding.system_id,
+                retest.finding.assessment_id,
+                triggered_by=payload.actor,
+                change_reason="retest status changed",
             )
         self.db.flush()
         return retest

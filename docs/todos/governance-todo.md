@@ -13,6 +13,12 @@
 - [ ] Track approval blockers.
 - [ ] Track remediation conditions.
 
+## Phase 3
+
+- [x] Integrate score context into AIRB and governance report views in the mock-first frontend.
+- [x] Recalculate scores when AIRB reviews are created or decision state changes.
+- [x] Verify score views in Docker Compose.
+
 ## Phase 6
 
 - Add structured bias/civil-rights review templates.

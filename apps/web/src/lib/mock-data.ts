@@ -26,6 +26,13 @@ export type FindingDomain =
   | "Privacy"
   | "Governance"
   | "Audit";
+export type ScoreDomain =
+  | "Security"
+  | "Privacy"
+  | "Bias and Civil Rights"
+  | "Explainability"
+  | "Governance Evidence"
+  | "Overall Governance";
 export type EvidenceType =
   | "Assessment"
   | "Scanner output"
@@ -65,7 +72,8 @@ export type AiSystem = {
     security: number;
     biasCivilRights: number;
     privacy: number;
-    governance: number;
+    explainability: number;
+    governanceEvidence: number;
   };
 };
 
@@ -120,6 +128,27 @@ export type Review = {
   evidenceIds: string[];
 };
 
+export type ScoreExplanation = {
+  id: string;
+  systemId: string;
+  domain: ScoreDomain;
+  title: string;
+  description: string;
+  impact: number;
+  relatedFindingId?: string;
+};
+
+export type ScoreHistoryPoint = {
+  systemId: string;
+  label: string;
+  overall: number;
+  security: number;
+  privacy: number;
+  biasCivilRights: number;
+  explainability: number;
+  governanceEvidence: number;
+};
+
 export const systems: AiSystem[] = [
   {
     id: "public-benefits-chatbot",
@@ -145,7 +174,8 @@ export const systems: AiSystem[] = [
       security: 58,
       biasCivilRights: 54,
       privacy: 71,
-      governance: 63,
+      explainability: 62,
+      governanceEvidence: 57,
     },
   },
   {
@@ -172,7 +202,8 @@ export const systems: AiSystem[] = [
       security: 39,
       biasCivilRights: 46,
       privacy: 42,
-      governance: 45,
+      explainability: 48,
+      governanceEvidence: 41,
     },
   },
   {
@@ -199,7 +230,8 @@ export const systems: AiSystem[] = [
       security: 84,
       biasCivilRights: 87,
       privacy: 79,
-      governance: 81,
+      explainability: 86,
+      governanceEvidence: 91,
     },
   },
   {
@@ -226,7 +258,8 @@ export const systems: AiSystem[] = [
       security: 69,
       biasCivilRights: 41,
       privacy: 62,
-      governance: 49,
+      explainability: 52,
+      governanceEvidence: 49,
     },
   },
   {
@@ -253,7 +286,8 @@ export const systems: AiSystem[] = [
       security: 68,
       biasCivilRights: 80,
       privacy: 76,
-      governance: 72,
+      explainability: 74,
+      governanceEvidence: 72,
     },
   },
 ];
@@ -639,6 +673,129 @@ export const reviews: Review[] = [
   },
 ];
 
+export const scoreExplanations: ScoreExplanation[] = [
+  {
+    id: "SCX-001",
+    systemId: "public-benefits-chatbot",
+    domain: "Security",
+    title: "Critical prompt injection exposure",
+    description:
+      "Prompt injection retest remains open and deployment approval is blocked until guardrail evidence is attached.",
+    impact: -18,
+    relatedFindingId: "FND-001",
+  },
+  {
+    id: "SCX-002",
+    systemId: "public-benefits-chatbot",
+    domain: "Bias and Civil Rights",
+    title: "Language access disparity",
+    description:
+      "Spanish-language benefit explanations omitted appeal-path details that are present in English responses.",
+    impact: -14,
+    relatedFindingId: "FND-002",
+  },
+  {
+    id: "SCX-003",
+    systemId: "sheriff-incident-summary",
+    domain: "Governance Evidence",
+    title: "Audit trail incomplete",
+    description:
+      "Reviewer, source note, and approval timestamp evidence are not preserved together for incident summaries.",
+    impact: -15,
+    relatedFindingId: "FND-005",
+  },
+  {
+    id: "SCX-004",
+    systemId: "sheriff-incident-summary",
+    domain: "Privacy",
+    title: "Restricted data leakage",
+    description:
+      "Mock replay output included personal details beyond the intended report excerpt.",
+    impact: -20,
+    relatedFindingId: "FND-006",
+  },
+  {
+    id: "SCX-005",
+    systemId: "permit-review-assistant",
+    domain: "Governance Evidence",
+    title: "Evidence packet complete",
+    description:
+      "Retest closure and board approval notes are linked to the current assessment packet.",
+    impact: 6,
+    relatedFindingId: "FND-009",
+  },
+  {
+    id: "SCX-006",
+    systemId: "hr-resume-screening",
+    domain: "Bias and Civil Rights",
+    title: "Human appeal path missing",
+    description:
+      "Applicant notice and appeal language are not yet documented for the AI-assisted ranking workflow.",
+    impact: -16,
+    relatedFindingId: "FND-003",
+  },
+  {
+    id: "SCX-007",
+    systemId: "hr-resume-screening",
+    domain: "Governance Evidence",
+    title: "Model-change signoff incomplete",
+    description:
+      "Selection-criteria review exists, but model-change signoff is not complete enough for board approval.",
+    impact: -8,
+    relatedFindingId: "FND-007",
+  },
+  {
+    id: "SCX-008",
+    systemId: "citizen-services-rag",
+    domain: "Security",
+    title: "Excessive tool permissions",
+    description:
+      "Write-capable tool permissions remain enabled in a public-service lookup profile.",
+    impact: -12,
+    relatedFindingId: "FND-004",
+  },
+  {
+    id: "SCX-009",
+    systemId: "citizen-services-rag",
+    domain: "Governance Evidence",
+    title: "Risk acceptance metadata missing",
+    description:
+      "The knowledge-base freshness exception needs an owner, expiration date, and compensating control evidence.",
+    impact: -7,
+    relatedFindingId: "FND-008",
+  },
+];
+
+export const scoreHistory: ScoreHistoryPoint[] = systems.flatMap((system) => {
+  const baselines = [
+    Math.max(0, system.riskScore + 7),
+    Math.max(0, system.riskScore + 4),
+    Math.max(0, system.riskScore + 2),
+    system.riskScore,
+  ];
+  const labels = ["Feb", "Mar", "Apr", "May"];
+
+  return labels.map((label, index) => ({
+    systemId: system.id,
+    label,
+    overall: baselines[index],
+    security: Math.max(0, Math.min(100, system.domains.security + (3 - index) * 2)),
+    privacy: Math.max(0, Math.min(100, system.domains.privacy + (3 - index))),
+    biasCivilRights: Math.max(
+      0,
+      Math.min(100, system.domains.biasCivilRights + (3 - index) * 2),
+    ),
+    explainability: Math.max(
+      0,
+      Math.min(100, system.domains.explainability + (3 - index) * 2),
+    ),
+    governanceEvidence: Math.max(
+      0,
+      Math.min(100, system.domains.governanceEvidence + (3 - index) * 2),
+    ),
+  }));
+});
+
 export const formatDate = (value: string) =>
   new Intl.DateTimeFormat("en-US", {
     month: "short",
@@ -664,6 +821,14 @@ export function getAssessmentsForSystem(systemId: string) {
 
 export function getReviewForSystem(systemId: string) {
   return reviews.find((review) => review.systemId === systemId);
+}
+
+export function getScoreExplanationsForSystem(systemId: string) {
+  return scoreExplanations.filter((explanation) => explanation.systemId === systemId);
+}
+
+export function getScoreHistoryForSystem(systemId: string) {
+  return scoreHistory.filter((point) => point.systemId === systemId);
 }
 
 export function getSystemName(systemId: string) {
@@ -702,35 +867,40 @@ export const riskHeatmap = [
     security: 58,
     biasCivilRights: 54,
     privacy: 71,
-    governance: 63,
+    explainability: 62,
+    governanceEvidence: 57,
   },
   {
     department: "Sheriff's Office",
     security: 39,
     biasCivilRights: 46,
     privacy: 42,
-    governance: 45,
+    explainability: 48,
+    governanceEvidence: 41,
   },
   {
     department: "Planning and Development",
     security: 84,
     biasCivilRights: 87,
     privacy: 79,
-    governance: 81,
+    explainability: 86,
+    governanceEvidence: 91,
   },
   {
     department: "Human Resources",
     security: 69,
     biasCivilRights: 41,
     privacy: 62,
-    governance: 49,
+    explainability: 52,
+    governanceEvidence: 49,
   },
   {
     department: "County IT",
     security: 68,
     biasCivilRights: 80,
     privacy: 76,
-    governance: 72,
+    explainability: 74,
+    governanceEvidence: 72,
   },
 ];
 

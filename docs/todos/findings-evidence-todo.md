@@ -20,8 +20,9 @@
 
 ## Phase 3
 
-- Connect findings to scoring.
-- Show score impact explanation.
+- [x] Connect findings to scoring through deterministic impact calculations and recalculation hooks.
+- [x] Persist score impact explanations in the backend.
+- [x] Render score impact explanations in the mock-first frontend.
 
 ## Deferred
 

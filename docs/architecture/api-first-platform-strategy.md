@@ -44,3 +44,17 @@ External scanners should initially be CLI/container-first. The platform API shou
 ## Do Not Overbuild
 
 API-first does not mean enterprise API gateway, distributed services, or complex service mesh. It means clean backend contracts inside a simple deployable system.
+
+## Phase 3 Score APIs
+
+Phase 3 adds deterministic score APIs:
+
+- `GET /scores`
+- `GET /scores/{id}`
+- `GET /scores/{id}/explanations`
+- `GET /systems/{id}/scores`
+- `GET /systems/{id}/score-history`
+- `POST /systems/{id}/recalculate-scores`
+- `POST /assessments/{id}/recalculate-scores`
+
+The recalculation endpoints run synchronously in the FastAPI service layer and reuse the existing database and audit-event architecture.

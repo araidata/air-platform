@@ -69,18 +69,28 @@ Update this file whenever the repository meaningfully changes.
   - `docker run --rm --network air-platform_default ... scripts/runtime-smoke-test.py`.
   - `docker compose down` followed by `docker compose up -d` without removing volumes.
   - Host-facing checks for backend health, systems API, frontend load, and frontend/backend proxy.
+- Completed Phase 3 â€” Scoring Engine:
+  - Added score persistence models for domain scores, score history, score explanations, and score snapshots.
+  - Added Alembic scoring migration.
+  - Added deterministic scoring rules for security, privacy, bias/civil-rights, explainability, governance evidence, and overall governance.
+  - Added score explanations tied to findings, evidence gaps, workflow gaps, remediation credit, and weighted aggregation.
+  - Added score recalculation APIs and service-layer recalculation hooks for finding, evidence, retest, assessment, system, and AIRB workflow changes.
+  - Added seed-time score recalculation for all seeded systems.
+  - Added frontend score cards, domain breakdowns, score history, explanation panels, AIRB score context, findings impact summaries, and a governance reports route.
+  - Verified with local backend tests, backend compile, frontend lint, frontend production build, Alembic migration test, Docker Compose runtime startup, score API checks, recalculation checks, frontend score-view checks, and disposable-container backend tests.
 
 ## In Progress
 
-- Phase 3 scoring design and implementation planning.
+- No current implementation work.
 
 ## Next
 
-- Phase 3 scoring engine:
-  - Explainable domain scoring.
-  - Score impact calculation from findings.
-  - Score history and score explanations.
-  - API surfaces that the frontend can adopt without removing mock data abruptly.
+- Begin Phase 4 scanner adapter framework:
+  - Adapter contract.
+  - Mock scanner adapter.
+  - Scanner run records.
+  - Raw output and log preservation as evidence.
+  - Normalization into findings.
 
 ## Blocked
 
@@ -105,7 +115,7 @@ Update this file whenever the repository meaningfully changes.
 ## Current Known Issues
 
 - Documentation exists in both new and earlier paths; future cleanup may consolidate older docs after implementation stabilizes.
-- The local Windows `py` and `python` launchers are unavailable in this session, so backend compile verification was run inside the backend container.
+- Docker Desktop initially was not running in the current session, but it was started and Phase 3 Docker Compose runtime verification completed successfully.
 - Host ports `8000` and `3000` were already allocated on the verification machine. Runtime verification used `API_HOST_PORT=8010` and `FRONTEND_HOST_PORT=3010`; the default `.env.example` remains `8000` and `3000`.
 - Browser plugin localhost verification was previously blocked by the in-app browser with `ERR_BLOCKED_BY_CLIENT`; route smoke verification was used as a fallback for Phase 1.
 

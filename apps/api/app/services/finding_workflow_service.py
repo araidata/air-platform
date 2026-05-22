@@ -10,6 +10,7 @@ from app.models.owner import Owner
 from app.models.risk_acceptance import RiskAcceptance
 from app.models.ai_system import AISystem
 from app.schemas.finding import FindingCreate, FindingTransition, FindingUpdate
+from app.scoring.scoring_engine import ScoringEngine
 from app.services.audit_event_service import AuditEventService
 
 
@@ -59,6 +60,12 @@ class FindingWorkflowService:
             new_value=finding.status,
             notes=finding.title,
         )
+        ScoringEngine(self.db).recalculate_system_scores(
+            finding.system_id,
+            finding.assessment_id,
+            triggered_by=payload.actor,
+            change_reason="finding created",
+        )
         return finding
 
     def update(self, finding: Finding, payload: FindingUpdate) -> Finding:
@@ -104,6 +111,12 @@ class FindingWorkflowService:
                 actor=payload.actor,
                 notes=payload.notes,
             )
+            ScoringEngine(self.db).recalculate_system_scores(
+                finding.system_id,
+                finding.assessment_id,
+                triggered_by=payload.actor,
+                change_reason="finding updated",
+            )
         return finding
 
     def transition(self, finding: Finding, payload: FindingTransition) -> Finding:
@@ -146,6 +159,12 @@ class FindingWorkflowService:
             old_value=old_status,
             new_value=new_status,
             notes=payload.notes,
+        )
+        ScoringEngine(self.db).recalculate_system_scores(
+            finding.system_id,
+            finding.assessment_id,
+            triggered_by=payload.actor,
+            change_reason="finding status changed",
         )
         return finding
 

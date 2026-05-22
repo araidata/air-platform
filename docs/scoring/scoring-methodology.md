@@ -15,15 +15,17 @@ Each score should be 0 to 100, where higher is better.
 
 ## Initial Weighting
 
-Suggested overall weighting:
+Phase 3 implemented overall weighting:
 
-- Security: 25 percent.
-- Bias/Civil Rights: 25 percent.
+- Security: 30 percent.
 - Privacy: 20 percent.
+- Bias/Civil Rights: 25 percent.
 - Explainability: 10 percent.
-- Governance Evidence: 20 percent.
+- Governance Evidence: 15 percent.
 
 Weights should be configurable later, but hard-coded defaults are acceptable in the first implementation.
+
+The Phase 3 defaults are stored centrally in `apps/api/app/scoring/scoring_rules.py`.
 
 ## Finding Severity Impact
 
@@ -36,6 +38,14 @@ Suggested point deductions per open finding:
 - Informational: 0 points.
 
 Deductions should be capped per domain so a score does not become impossible to interpret.
+
+Phase 3 also applies deterministic status modifiers:
+
+- Closed and false-positive findings do not reduce scores.
+- Mitigated findings retain a small residual impact until fully closed.
+- Findings awaiting retest or in remediation have reduced active impact.
+- Risk-accepted findings retain a small governance impact.
+- Failed retests, overdue due dates, and approval-blocking flags increase impact.
 
 ## Modifiers
 
@@ -70,6 +80,17 @@ Every score should show:
 - Missing evidence contributors.
 - Open critical/high findings.
 - Expiring exceptions.
+
+## Phase 3 Persistence
+
+Phase 3 stores:
+
+- `domain_scores` for current domain and overall scores.
+- `score_history` for score changes over time.
+- `score_explanations` for finding, evidence, workflow, remediation, and aggregation explanations.
+- `score_snapshots` for audit-ready score snapshots.
+
+Every recalculation records audit events for score recalculation and meaningful score changes.
 
 ## Example Explanation
 

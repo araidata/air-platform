@@ -8,6 +8,7 @@ from app.db.session import get_db
 from app.models.ai_system import AISystem
 from app.models.enums import AuditEventType
 from app.schemas.ai_system import AISystemCreate, AISystemRead, AISystemUpdate
+from app.scoring.scoring_engine import ScoringEngine
 from app.services.audit_event_service import AuditEventService
 
 router = APIRouter()
@@ -52,6 +53,12 @@ def update_system(
         raise HTTPException(status_code=404, detail="System not found")
     for key, value in payload.model_dump(exclude_unset=True).items():
         setattr(system, key, value)
+    db.flush()
+    ScoringEngine(db).recalculate_system_scores(
+        system.id,
+        triggered_by="operator",
+        change_reason="system attributes updated",
+    )
     db.commit()
     db.refresh(system)
     return system

@@ -31,3 +31,6 @@ class AISystem(IdMixin, TimestampMixin, Base):
     findings: Mapped[List["Finding"]] = relationship(back_populates="system")
     evidence: Mapped[List["Evidence"]] = relationship(back_populates="system")
     airb_reviews: Mapped[List["AirbReview"]] = relationship(back_populates="system")
+    domain_scores: Mapped[List["DomainScore"]] = relationship(back_populates="system")
+    score_history: Mapped[List["ScoreHistory"]] = relationship(back_populates="system")
+    score_snapshots: Mapped[List["ScoreSnapshot"]] = relationship(back_populates="system")

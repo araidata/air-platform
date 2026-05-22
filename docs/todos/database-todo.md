@@ -27,10 +27,13 @@
 - [x] Verify persistence after `docker compose down` and restart without deleting volumes.
 - [x] Fix seed ordering so evidence audit events receive PostgreSQL evidence IDs.
 
-## Phase 3 Candidate Tables
+## Completed In Phase 3
 
-- `score_snapshots`
-- `score_explanations`
+- [x] Create `domain_scores` table.
+- [x] Create `score_history` table.
+- [x] Create `score_explanations` table.
+- [x] Create `score_snapshots` table.
+- [x] Verify the Phase 3 scoring migration in Docker Compose.
 
 ## Deferred Candidate Tables
 

@@ -1,6 +1,6 @@
 # Current State
 
-County AI Assurance Operations Center has moved from mock UI and durable backend workflow implementation into a runnable Docker Compose platform. The project still preserves durable operating context for future AI-assisted development, and now has a working frontend scaffold, FastAPI backend, PostgreSQL runtime, migrations, seed data, and operational smoke checks.
+County AI Assurance Operations Center has moved from mock UI and durable backend workflow implementation into a runnable Docker Compose platform with an explainable scoring engine. The project still preserves durable operating context for future AI-assisted development, and now has a working frontend scaffold, FastAPI backend, PostgreSQL runtime, migrations, seed data, operational smoke checks, and Phase 3 score workflows.
 
 ## Product Definition
 
@@ -23,7 +23,7 @@ It is intended for one or two operators who need to manage:
 
 Phase 2.5 — Runtime Stabilization is implemented and verified.
 
-The current work is ready to move toward Phase 3 scoring while keeping the frontend mock data in place until the API contract is wired into UI workflows.
+Phase 3 â€” Scoring Engine is implemented and verified.
 
 ## Exists Now
 
@@ -54,6 +54,13 @@ The current work is ready to move toward Phase 3 scoring while keeping the front
 - PostgreSQL named volume for persistent runtime data.
 - Health endpoints and Compose health checks.
 - Runtime smoke test script under `scripts/runtime-smoke-test.py`.
+- Score persistence models for domain scores, score history, score explanations, and score snapshots.
+- Alembic migration for Phase 3 scoring tables.
+- Deterministic scoring engine with domain calculators for security, privacy, bias/civil-rights, explainability, governance evidence, and weighted overall governance.
+- Score APIs for listing scores, retrieving explanations, system score history, and recalculating system or assessment scores.
+- Service-layer score recalculation hooks for findings, evidence, retests, assessments, systems, and AIRB decisions.
+- Seed-time score recalculation for the five mock county AI systems.
+- Frontend score integrations for executive dashboard, system detail, findings queue, AI Review Board queue, and governance reports.
 
 ## Does Not Exist Yet
 
@@ -63,7 +70,7 @@ The current work is ready to move toward Phase 3 scoring while keeping the front
 
 ## Highest-Value Next Step
 
-Begin Phase 3 scoring: explainable domain scoring, overall system score calculation, score history, and score explanations tied to findings, evidence, retests, and risk acceptance state.
+Begin Phase 4 scanner adapter framework: define the adapter contract, create a mock scanner adapter, preserve raw output as evidence, and normalize mock scanner output into findings.
 
 Do not start with scanner integrations.
 

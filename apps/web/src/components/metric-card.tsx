@@ -28,7 +28,7 @@ export function MetricCard({
           {value}
         </p>
         <span className="rounded-md border border-white/10 bg-black/20 px-2 py-1 font-mono text-[11px] text-zinc-400">
-          Phase 1
+          Phase 3
         </span>
       </div>
       <p className="mt-3 text-sm leading-5 text-zinc-400">{detail}</p>

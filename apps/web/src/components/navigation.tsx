@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   ClipboardList,
+  BarChart3,
   Database,
   FileSearch,
   Gauge,
@@ -18,6 +19,7 @@ const navItems = [
   { href: "/systems/public-benefits-chatbot", label: "System Detail", icon: FileSearch },
   { href: "/evidence", label: "Evidence & Audit", icon: Library },
   { href: "/review-board", label: "AI Review Board", icon: Scale },
+  { href: "/reports", label: "Governance Reports", icon: BarChart3 },
 ];
 
 export function Navigation() {

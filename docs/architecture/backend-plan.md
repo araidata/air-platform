@@ -11,7 +11,7 @@
 ## Domain Modules
 
 - Implemented in Phase 2: `systems`, `findings`, `evidence`, `assessments`, `owners`, `retests`, `airb`, `audit`, `framework_mappings`, and `risk_acceptances`.
-- Planned for Phase 3: `scoring`.
+- Implemented in Phase 3 code: `scoring`.
 - Deferred: `scanner_runs`, `deployment_approvals`, `reports`, and `integrations`.
 
 ## First Endpoints
@@ -25,6 +25,9 @@
 - `POST /findings/{id}/retest`, `GET /retests/{id}`, `PATCH /retests/{id}`.
 - `GET /airb-reviews`, `POST /airb-reviews`, `PATCH /airb-reviews/{id}`.
 - `GET /owners`, `POST /owners`.
+- `GET /scores`, `GET /scores/{id}`, `GET /scores/{id}/explanations`.
+- `GET /systems/{id}/scores`, `GET /systems/{id}/score-history`.
+- `POST /systems/{id}/recalculate-scores`, `POST /assessments/{id}/recalculate-scores`.
 
 ## Services
 
@@ -33,7 +36,7 @@
 - Evidence service.
 - Audit event service.
 - Retest service.
-- Scoring service next.
+- Scoring engine and deterministic domain calculators.
 - Seed service.
 - Scanner adapter service later.
 

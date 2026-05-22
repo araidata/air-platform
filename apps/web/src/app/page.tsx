@@ -15,6 +15,7 @@ import {
   findings,
   getSystemName,
   riskHeatmap,
+  scoreExplanations,
   scoreTrend,
   systems,
 } from "@/lib/mock-data";
@@ -43,6 +44,10 @@ export default function ExecutiveDashboard() {
     .filter((system) => system.riskTier === "Critical" || system.riskTier === "High")
     .sort((a, b) => a.riskScore - b.riskScore);
   const activeFindings = findings.filter((finding) => finding.status !== "Closed");
+  const strongestScoreDrivers = scoreExplanations
+    .filter((explanation) => explanation.impact < 0)
+    .sort((a, b) => a.impact - b.impact)
+    .slice(0, 5);
 
   return (
     <AppShell>
@@ -53,9 +58,9 @@ export default function ExecutiveDashboard() {
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
         <MetricCard
-          label="Average risk score"
+          label="Average governance score"
           value={dashboardMetrics.averageRiskScore}
-          detail="Portfolio score across active systems."
+          detail="Weighted Phase 3 score across active systems."
           tone="warn"
         />
         <MetricCard
@@ -105,7 +110,8 @@ export default function ExecutiveDashboard() {
                   <th className="px-2 py-2 font-semibold">Security</th>
                   <th className="px-2 py-2 font-semibold">Civil rights</th>
                   <th className="px-2 py-2 font-semibold">Privacy</th>
-                  <th className="px-2 py-2 font-semibold">Governance</th>
+                  <th className="px-2 py-2 font-semibold">Explainability</th>
+                  <th className="px-2 py-2 font-semibold">Evidence</th>
                 </tr>
               </thead>
               <tbody>
@@ -117,7 +123,8 @@ export default function ExecutiveDashboard() {
                     <HeatCell value={row.security} />
                     <HeatCell value={row.biasCivilRights} />
                     <HeatCell value={row.privacy} />
-                    <HeatCell value={row.governance} />
+                    <HeatCell value={row.explainability} />
+                    <HeatCell value={row.governanceEvidence} />
                   </tr>
                 ))}
               </tbody>
@@ -132,7 +139,7 @@ export default function ExecutiveDashboard() {
                 Portfolio Trend
               </h2>
               <p className="mt-1 text-sm text-zinc-500">
-                Mock score movement for board reporting.
+                Phase 3 portfolio score movement for board reporting.
               </p>
             </div>
             <ScoreRing score={dashboardMetrics.averageRiskScore} label="Current" />
@@ -220,6 +227,44 @@ export default function ExecutiveDashboard() {
           </div>
         </section>
       </div>
+
+      <section className="mt-6 rounded-lg border border-white/10 bg-white/[0.045] p-4">
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <div>
+            <h2 className="text-base font-semibold text-zinc-50">
+              Score Drivers
+            </h2>
+            <p className="mt-1 text-sm text-zinc-500">
+              Highest-impact explanations behind current governance scores.
+            </p>
+          </div>
+          <Link
+            href="/reports"
+            className="inline-flex items-center gap-1 text-sm font-medium text-cyan-100 hover:text-cyan-50"
+          >
+            Reports <ArrowRight className="size-4" aria-hidden="true" />
+          </Link>
+        </div>
+        <div className="grid gap-3 lg:grid-cols-5">
+          {strongestScoreDrivers.map((driver) => (
+            <div
+              key={driver.id}
+              className="rounded-lg border border-white/10 bg-black/20 p-3"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-sm font-medium text-zinc-100">{driver.title}</p>
+                <span className="font-mono text-sm text-red-100">{driver.impact}</span>
+              </div>
+              <p className="mt-2 text-xs uppercase tracking-[0.08em] text-zinc-500">
+                {driver.domain}
+              </p>
+              <p className="mt-2 text-sm leading-5 text-zinc-500">
+                {getSystemName(driver.systemId)}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
     </AppShell>
   );
 }

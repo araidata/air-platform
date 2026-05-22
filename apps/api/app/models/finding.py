@@ -48,3 +48,6 @@ class Finding(IdMixin, TimestampMixin, Base):
     retests: Mapped[List["Retest"]] = relationship(back_populates="finding")
     framework_mappings: Mapped[List["FrameworkMapping"]] = relationship(back_populates="finding")
     risk_acceptances: Mapped[List["RiskAcceptance"]] = relationship(back_populates="finding")
+    score_explanations: Mapped[List["ScoreExplanation"]] = relationship(
+        back_populates="related_finding"
+    )

@@ -107,13 +107,17 @@ What intentionally remains deferred:
 Purpose:
 Implement explainable scoring for security, privacy, bias/civil rights, explainability, and governance evidence.
 
-Build:
+Built:
 
 - Score inputs.
 - Domain scores.
 - Overall system risk score.
 - Score impact from findings.
 - Explanation text and score history.
+- Score snapshots.
+- Score APIs and recalculation endpoints.
+- Service-layer recalculation hooks.
+- Frontend score displays and governance reports.
 
 Do not build:
 

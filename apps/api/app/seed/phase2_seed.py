@@ -11,11 +11,14 @@ from app.models.evidence import Evidence
 from app.models.finding import Finding
 from app.models.framework_mapping import FrameworkMapping
 from app.models.owner import Owner
+from app.scoring.scoring_engine import ScoringEngine
 
 
 def seed_phase2(db: Session) -> None:
     existing = db.scalar(select(AISystem).where(AISystem.system_name == "Public Benefits Chatbot"))
     if existing:
+        _recalculate_seed_scores(db)
+        db.commit()
         return
 
     owners = [
@@ -458,4 +461,17 @@ def seed_phase2(db: Session) -> None:
                 notes=item.title,
             )
         )
+    db.flush()
+    _recalculate_seed_scores(db)
     db.commit()
+
+
+def _recalculate_seed_scores(db: Session) -> None:
+    systems = db.scalars(select(AISystem).order_by(AISystem.system_name)).all()
+    engine = ScoringEngine(db)
+    for system in systems:
+        engine.recalculate_system_scores(
+            system.id,
+            triggered_by="seed",
+            change_reason="Phase 3 seeded score calculation",
+        )

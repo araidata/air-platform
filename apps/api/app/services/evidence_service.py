@@ -7,6 +7,7 @@ from app.models.enums import AuditEventType
 from app.models.evidence import Evidence
 from app.models.finding import Finding
 from app.schemas.evidence import EvidenceCreate
+from app.scoring.scoring_engine import ScoringEngine
 from app.services.audit_event_service import AuditEventService
 
 
@@ -50,5 +51,11 @@ class EvidenceService:
             actor=evidence.created_by,
             new_value=evidence.evidence_type,
             notes=evidence.title,
+        )
+        ScoringEngine(self.db).recalculate_system_scores(
+            evidence.system_id,
+            evidence.assessment_id,
+            triggered_by=evidence.created_by,
+            change_reason="evidence added",
         )
         return evidence

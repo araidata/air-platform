@@ -22,9 +22,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <p className="text-xs font-medium uppercase tracking-[0.08em] text-zinc-500">
               Operating mode
             </p>
-            <p className="mt-2 text-sm text-zinc-200">Mock data only</p>
+            <p className="mt-2 text-sm text-zinc-200">Phase 3 scoring</p>
             <p className="mt-1 text-xs leading-5 text-zinc-500">
-              Phase 1 frontend scaffold. No backend persistence or scanner execution.
+              Mock-first UI with backend persistence, workflow APIs, and score APIs.
             </p>
           </div>
         </aside>
@@ -45,7 +45,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   <span>Search systems, findings, evidence</span>
                 </div>
                 <div className="rounded-md border border-emerald-300/20 bg-emerald-300/10 px-3 py-2 text-xs font-medium text-emerald-100">
-                  Local mock environment
+                  Local operational runtime
                 </div>
               </div>
             </div>

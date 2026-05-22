@@ -14,13 +14,15 @@
 - Added frontend Dockerfile for the Phase 2.5 runtime.
 - Added same-origin `/api/backend/*` proxy for backend connectivity in Docker Compose.
 - Updated the frontend API client to use `NEXT_PUBLIC_API_URL`.
+- Added Phase 3 score integrations for dashboard, system detail, findings queue, AI Review Board queue, and governance reports.
+- Added frontend API client types and helpers for score APIs.
+- Verified score views in Docker Compose.
 
 ## Next
 
 - Assessment Workspace.
 - Bias & Civil Rights Dashboard.
 - Security Findings Dashboard.
-- Reports Page.
 - Settings / Integrations Page.
 - Replace mock data with API-backed data after Phase 3 scoring contracts are stable enough for UI adoption.
 

@@ -80,6 +80,44 @@ export type ApiEvidence = {
   metadata_json: Record<string, unknown>;
 };
 
+export type ApiScoreExplanation = {
+  id: string;
+  score_id: string;
+  explanation_type: string;
+  title: string;
+  description: string;
+  weight: number;
+  impact_value: number;
+  related_finding_id: string | null;
+  created_at: string;
+};
+
+export type ApiScore = {
+  id: string;
+  system_id: string;
+  assessment_id: string | null;
+  score_domain: string;
+  score_value: number;
+  weighted_score: number;
+  calculated_at: string;
+  calculation_version: string;
+  created_at: string;
+  updated_at: string;
+  explanations?: ApiScoreExplanation[];
+};
+
+export type ApiScoreHistory = {
+  id: string;
+  system_id: string;
+  assessment_id: string | null;
+  score_domain: string;
+  previous_score: number | null;
+  new_score: number;
+  change_reason: string;
+  triggered_by: string;
+  created_at: string;
+};
+
 export const apiClient = {
   systems: () => request<ApiSystem[]>("/systems"),
   system: (id: string) => request<ApiSystem>(`/systems/${id}`),
@@ -87,4 +125,22 @@ export const apiClient = {
   finding: (id: string) => request<ApiFinding>(`/findings/${id}`),
   evidence: () => request<ApiEvidence[]>("/evidence"),
   evidenceRecord: (id: string) => request<ApiEvidence>(`/evidence/${id}`),
+  scores: () => request<ApiScore[]>("/scores"),
+  score: (id: string) => request<ApiScore>(`/scores/${id}`),
+  systemScores: (id: string) => request<ApiScore[]>(`/systems/${id}/scores`),
+  scoreExplanations: (id: string) =>
+    request<ApiScoreExplanation[]>(`/scores/${id}/explanations`),
+  systemScoreHistory: (id: string) =>
+    request<ApiScoreHistory[]>(`/systems/${id}/score-history`),
+  recalculateSystemScores: (id: string, triggeredBy = "operator") =>
+    request<{ system_id: string; assessment_id: string | null; scores: ApiScore[] }>(
+      `/systems/${id}/recalculate-scores`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          triggered_by: triggeredBy,
+          change_reason: "frontend requested score recalculation",
+        }),
+      },
+    ),
 };

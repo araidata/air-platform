@@ -44,7 +44,7 @@ The platform should orchestrate those tools, normalize their outputs, preserve e
 
 ## Current Status
 
-The repository has completed Phase 2.5 — Runtime Stabilization. A Next.js frontend scaffold exists under `apps/web`, and a FastAPI backend exists under `apps/api` with SQLAlchemy models, Alembic migrations, workflow services, seed data, and tests for the core assurance records. The platform now runs as a Docker Compose stack with frontend, backend, and PostgreSQL containers.
+The repository has completed Phase 3 — Scoring Engine. A Next.js frontend scaffold exists under `apps/web`, and a FastAPI backend exists under `apps/api` with SQLAlchemy models, Alembic migrations, workflow services, seed data, tests for the core assurance records, and an explainable scoring engine. The platform runs as a Docker Compose stack with frontend, backend, and PostgreSQL containers.
 
 Completed now:
 
@@ -65,6 +65,8 @@ Completed now:
 - Frontend container with same-origin backend proxy support through `/api/backend/*`.
 - PostgreSQL persistent named volume and service health checks.
 - Runtime smoke test covering frontend load, backend health, DB health, seeded API endpoints, and frontend/backend proxy connectivity.
+- Phase 3 scoring models, Alembic migration, deterministic domain scoring engine, score history, score explanations, score snapshots, score APIs, recalculation workflows, seed-time score generation, and scoring tests.
+- Frontend score integrations for the executive dashboard, system detail, findings queue, AI Review Board queue, and governance reports route.
 
 Not built yet:
 
@@ -210,10 +212,10 @@ Intentionally deferred:
 
 ### Phase 3 — Scoring Engine
 
-- [ ] Implement explainable domain scoring.
-- [ ] Calculate score impact from findings.
-- [ ] Show score history and score explanations.
-- [ ] Connect scoring to system, assessment, finding, and governance views.
+- [x] Implement explainable domain scoring.
+- [x] Calculate score impact from findings.
+- [x] Show score history and score explanations.
+- [x] Connect scoring to system, assessment, finding, and governance views.
 
 ### Phase 4 — Scanner Adapter Framework
 
@@ -267,7 +269,7 @@ Future AI agents should:
 
 ## What To Build Next
 
-The recommended next development task is Phase 3: implement the explainable scoring engine that derives domain and overall scores from systems, assessments, findings, evidence completeness, retest outcomes, and risk acceptances.
+The recommended next development task is Phase 4: implement the scanner adapter framework, starting with an adapter contract and mock scanner adapter that preserves raw output as evidence and normalizes mock findings.
 
 ## What Not To Build Yet
 

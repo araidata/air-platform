@@ -10,6 +10,7 @@ from app.models.airb_review import AirbReview
 from app.models.assessment import Assessment
 from app.models.enums import AuditEventType
 from app.schemas.airb_review import AirbReviewCreate, AirbReviewRead, AirbReviewUpdate
+from app.scoring.scoring_engine import ScoringEngine
 from app.services.audit_event_service import AuditEventService
 
 router = APIRouter()
@@ -40,6 +41,12 @@ def create_airb_review(
         actor=payload.actor,
         new_value=review.review_status,
     )
+    ScoringEngine(db).recalculate_system_scores(
+        review.system_id,
+        review.assessment_id,
+        triggered_by=payload.actor,
+        change_reason="AIRB review created",
+    )
     db.commit()
     db.refresh(review)
     return review
@@ -67,6 +74,14 @@ def update_airb_review(
             old_value=old_status,
             new_value=review.review_status,
             notes=review.decision_notes,
+        )
+    if updates:
+        db.flush()
+        ScoringEngine(db).recalculate_system_scores(
+            review.system_id,
+            review.assessment_id,
+            triggered_by=payload.actor,
+            change_reason="AIRB decision updated",
         )
     db.commit()
     db.refresh(review)

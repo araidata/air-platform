@@ -83,6 +83,8 @@ class AuditEventType(str, Enum):
     retest_status_changed = "retest_status_changed"
     airb_review_created = "airb_review_created"
     airb_decision_recorded = "airb_decision_recorded"
+    score_recalculated = "score_recalculated"
+    score_changed = "score_changed"
 
 
 class RetestStatus(str, Enum):
@@ -99,3 +101,21 @@ class AirbReviewStatus(str, Enum):
     approved = "approved"
     approved_with_exception = "approved_with_exception"
     blocked = "blocked"
+
+
+class ScoreDomain(str, Enum):
+    security = "security"
+    privacy = "privacy"
+    bias_civil_rights = "bias_civil_rights"
+    explainability = "explainability"
+    governance_evidence = "governance_evidence"
+    overall_governance = "overall_governance"
+
+
+class ScoreExplanationType(str, Enum):
+    finding_impact = "finding_impact"
+    evidence_gap = "evidence_gap"
+    workflow_gap = "workflow_gap"
+    system_modifier = "system_modifier"
+    remediation_credit = "remediation_credit"
+    aggregation = "aggregation"
