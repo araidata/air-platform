@@ -57,12 +57,21 @@ Update this file whenever the repository meaningfully changes.
   - Added seeded scan types across security, privacy, bias/civil-rights, explainability, governance, RAG integrity, agent safety, supply chain, and model integrity.
   - Added seeded assessment profiles for public-facing chatbots, rights-impacting AI, law enforcement/CJIS AI, HR/employment AI, RAG applications, agentic/tool-using AI, and low-risk internal AI.
   - Added seeded completed and failed mock scanner runs, evidence records, normalized findings, and score recalculations.
-  - Added Scanner Ecosystem frontend route with registry, profile selection, recommended scans, mock assessment runner, scanner run table, run detail, normalized findings, and generated evidence counts.
+  - Added Scanner Ecosystem frontend route with registry, profile selection, recommended scans, scanner runner, scanner run table, run detail, normalized findings, and generated evidence counts.
   - Added scanner tests for adapter execution, normalization, finding creation, evidence generation, raw output persistence, scanner run persistence, score integration, API responses, invalid execution, malformed output, failed normalization, and preserved failure logs.
+- Completed Phase 5 First Real Scanner Integration:
+  - Selected garak as the first real scanner because it has a documented CLI, native JSONL reporting, and a deterministic local test target for Docker verification.
+  - Added `GarakCliAdapter` under `apps/api/app/scanners/adapters/garak_adapter.py`.
+  - Added backend Docker installation of garak through `apps/api/requirements-scanners.txt`.
+  - Enabled the seeded garak scanner definition with `garak_cli_adapter`.
+  - Preserved native garak JSONL report, hit log, HTML report, scanner configuration, stdout/stderr log, raw platform JSON, and normalized output artifacts as evidence.
+  - Normalized garak eval records into existing findings with evidence, audit events, score impact, score recalculation, and score history.
+  - Updated the Scanner Ecosystem frontend to show real scanner execution, adapter details, evidence references, normalized findings, and score change counts.
+  - Added garak parser, service, failure, empty-output, partial-output, artifact preservation, and scoring tests.
 
 ## Verification
 
-- `py -m pytest` from `apps/api`: 18 passed.
+- `py -m pytest` from `apps/api`: 24 passed.
 - `py -m compileall app` from `apps/api`.
 - SQLite Alembic upgrade to `202605220002`.
 - `npm.cmd run lint` from `apps/web`.
@@ -74,6 +83,9 @@ Update this file whenever the repository meaningfully changes.
 - Runtime scanner API checks for `/scanner-definitions`, `/scan-types`, `/assessment-profiles`, `/scanner-runs`, and `/scanner-adapters`.
 - Runtime mock scanner execution through the API: completed with one normalized finding, preserved raw output, and six score records.
 - Browser verification of `http://localhost:3010/scanners`: page loaded, no relevant console errors, mock run interaction completed, completed-run count increased, and run artifacts showed preserved output.
+- Docker Compose backend image build installed garak 0.15.0.
+- Runtime garak scanner execution through the API: completed with one normalized finding, eight linked evidence records, raw output path, log path, scanner result normalization version `phase5_scanner_v1`, six score records, and score history entries.
+- Browser verification of `http://localhost:3010/scanners`: page loaded, no console errors, garak visible, real completed garak run visible with one finding, preserved artifacts, and score changes.
 
 ## In Progress
 
@@ -81,12 +93,11 @@ Update this file whenever the repository meaningfully changes.
 
 ## Next
 
-- Begin Phase 5 first real scanner integration:
-  - Choose garak or AgentSeal as the first real scanner.
-  - Implement one CLI/Docker adapter through the Phase 4 contract.
-  - Preserve raw scanner output and logs before parsing.
-  - Add parser fixtures and normalization tests.
-  - Keep real scanner-specific metadata in evidence or constrained result metadata, not in core finding fields.
+- Begin Phase 6 bias and civil-rights assessment maturity:
+  - Add rights-impacting assessment templates.
+  - Add language access scenarios.
+  - Add human appeal path checks.
+  - Keep future scanner additions single-adapter and evidence-first.
 
 ## Blocked
 
@@ -94,7 +105,7 @@ Update this file whenever the repository meaningfully changes.
 
 ## Intentionally Deferred
 
-- Multiple real scanner integrations.
+- Additional real scanner integrations beyond garak.
 - OneTrust API integration.
 - Background job execution.
 - Authentication and authorization.
@@ -111,8 +122,9 @@ Update this file whenever the repository meaningfully changes.
 ## Current Known Issues
 
 - Documentation exists in both new and earlier paths; future cleanup may consolidate older docs after implementation stabilizes.
-- Browser verification used the Node-backed Browser runtime because the direct Browser MCP tool did not lazy-load through tool discovery.
+- Browser verification used the Node-backed Browser runtime.
 - Host ports `8000`, `3000`, and `5432` may already be allocated on the verification machine. Phase 4 runtime verification used `API_HOST_PORT=8010`, `FRONTEND_HOST_PORT=3010`, and `POSTGRES_PORT=55432`.
+- garak 0.15.0 brings a large dependency set into the backend image. Keep it as the only real scanner dependency until a second integration is explicitly prioritized.
 
 ## Update Template
 

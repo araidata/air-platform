@@ -179,8 +179,10 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - [x] Preserve raw output as evidence.
 - [x] Implement normalization pipeline.
 - [x] Add fixture and API tests.
-- Implement Docker/CLI execution wrapper for the first real scanner.
-- Add first security scanner adapter after workflow readiness.
+- [x] Implement Docker/CLI execution wrapper for the first real scanner.
+- [x] Add first security scanner adapter after workflow readiness.
+- [x] Preserve native real scanner output, logs, configuration, and normalized output as evidence.
+- [x] Normalize real scanner output into findings and trigger score recalculation.
 - Add first bias/fairness scanner adapter after workflow readiness.
 - Add first LLM/RAG evaluation adapter after workflow readiness.
 
@@ -195,6 +197,7 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - [x] Test score calculations.
 - Test evidence linking.
 - [x] Test scanner mock normalization.
+- [x] Test first real scanner execution, parsing, evidence preservation, failure handling, and score integration.
 - Test API pagination and filters.
 - [x] Add runtime smoke test for frontend, backend, database, migrations, seed data, and core API endpoints.
 

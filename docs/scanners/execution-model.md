@@ -28,6 +28,8 @@ scanner-runs/
 
 Phase 4 stores scanner artifacts in the configured `SCANNER_STORAGE_ROOT`. Docker Compose sets this to `/data/scanner-runs` and mounts the `scanner_data` volume at `/data`. Local non-Docker tests can override the storage root in `ScannerExecutionService`.
 
+Phase 5 uses the same directory model for garak. A garak run stores the native garak artifacts under the scanner run directory and the platform also writes `raw-output.json`, `execution.log`, and `normalized-output.json`.
+
 ## Captured Artifacts
 
 Capture:
@@ -41,6 +43,16 @@ Capture:
 - JSON report.
 - HTML or text report if generated.
 - Prompt and output samples when relevant.
+
+For garak, preserve:
+
+- Native `*.report.jsonl`.
+- Native `*.hitlog.jsonl`.
+- Native `*.report.html`.
+- Scanner configuration JSON.
+- Platform raw output JSON.
+- Platform normalized output JSON.
+- Execution log with stdout and stderr.
 
 ## Isolation
 

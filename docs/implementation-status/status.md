@@ -1,48 +1,28 @@
 # Implementation Status
 
+This legacy status path is retained for discoverability. The authoritative current state is maintained in `docs/ai-context/implementation-status.md` and `docs/ai-context/current-state.md`.
+
 ## Current State
 
-This repository currently contains the foundational documentation and architectural plan for County AI Assurance Operations Center.
+The platform has completed Phase 5 - First Real Scanner Integration.
 
-## Implemented
-
-- Documentation structure.
-- Architecture overview.
-- Roadmap.
-- UI/UX plan.
-- Governance philosophy.
-- Findings lifecycle.
-- Evidence methodology.
-- Scoring methodology.
-- Scanner adapter architecture.
-- Integration planning.
-- OneTrust planning.
-- AI coding assistant context.
-- Detailed TODO backlog.
-
-## Not Implemented Yet
+Implemented:
 
 - Next.js frontend.
 - FastAPI backend.
-- PostgreSQL schema.
-- Redis job handling.
-- Docker Compose stack.
-- Seed data scripts.
-- Mock data API.
-- Operational UI.
-- Scoring engine.
-- Evidence artifact storage.
-- Scanner adapter framework.
-- Real scanner integrations.
-- External integrations.
+- PostgreSQL runtime with Docker Compose.
+- Migrations, seed data, and runtime smoke tests.
+- Findings, evidence, assessment, AIRB, audit event, and scoring workflows.
+- Scanner adapter framework, scanner registry, scan types, assessment profiles, scanner runs, scanner results, and Scanner Ecosystem UI.
+- garak CLI adapter as the first real scanner integration.
+- Evidence preservation and score recalculation for real scanner output.
+
+Not implemented yet:
+
+- Additional real scanner integrations beyond garak.
+- OneTrust integration.
+- Production backup and restore automation.
 
 ## Next Priority
 
-Phase 0 should create the running application skeleton:
-
-- `apps/web`.
-- `apps/api`.
-- Docker Compose.
-- Database migration setup.
-- Seed data structure.
-- Health endpoints.
+Phase 6 should mature bias and civil-rights assessment support: language access scenarios, human appeal path checks, rights-impacting templates, and fairness-oriented evidence workflows.

@@ -4,7 +4,7 @@ from typing import Any
 
 from app.models.enums import FindingConfidence, FindingDomain, FindingSeverity
 
-NORMALIZATION_VERSION = "phase4_mock_v1"
+NORMALIZATION_VERSION = "phase5_scanner_v1"
 
 
 def normalize_scanner_findings(

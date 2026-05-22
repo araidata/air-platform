@@ -29,6 +29,7 @@ from app.schemas.scanner import (
     ScannerRunRead,
     SystemScanRecommendations,
 )
+from app.scanners.adapters.garak_adapter import GarakCliAdapter
 from app.scanners.adapters.mock_adapter import MockScannerAdapter
 from app.scanners.services.scanner_execution_service import ScannerExecutionService
 
@@ -211,14 +212,27 @@ def get_system_scanner_runs(system_id: str, db: Session = Depends(get_db)) -> li
 
 @router.get("/scanner-adapters", response_model=List[ScannerAdapterRead])
 def list_scanner_adapters() -> list[dict]:
-    adapter = MockScannerAdapter()
+    mock_adapter = MockScannerAdapter()
+    garak_adapter = GarakCliAdapter()
     return [
         {
             "adapter_name": "mock_adapter",
-            "scanner_name": adapter.get_name(),
-            "scanner_version": adapter.get_version(),
+            "scanner_name": mock_adapter.get_name(),
+            "scanner_version": mock_adapter.get_version(),
             "supported_execution_modes": ["mock"],
             "supported_scan_types": ["*"],
             "mock_supported": True,
-        }
+        },
+        {
+            "adapter_name": "garak_cli_adapter",
+            "scanner_name": garak_adapter.get_name(),
+            "scanner_version": garak_adapter.get_version(),
+            "supported_execution_modes": ["cli"],
+            "supported_scan_types": [
+                "prompt_injection",
+                "jailbreak_resistance",
+                "system_prompt_leakage",
+            ],
+            "mock_supported": False,
+        },
     ]

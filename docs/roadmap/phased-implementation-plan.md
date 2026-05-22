@@ -326,19 +326,18 @@ The platform must orchestrate scanners without becoming dependent on scanner int
 - Kubernetes job controller.
 - Long-running distributed worker fleet.
 
-## Phase 5 - Real Scanner Integrations
+## Phase 5 - First Real Scanner Integration
 
 ### Objectives
 
 - Integrate first security scanner.
-- Integrate first bias/fairness scanner.
-- Integrate first LLM/RAG evaluation scanner.
-- Normalize real outputs.
+- Normalize real scanner output.
 - Validate evidence capture.
+- Validate score recalculation from real scanner findings.
 
 ### Rationale
 
-Once workflows, evidence, and scoring exist, real scanner data can enter a governed operating model.
+Once workflows, evidence, and scoring exist, one real scanner can prove real scanner data enters a governed operating model.
 
 ### Dependencies
 
@@ -349,16 +348,16 @@ Once workflows, evidence, and scoring exist, real scanner data can enter a gover
 
 ### Deliverables
 
-- Initial garak or PyRIT adapter.
-- Initial Fairlearn or Aequitas adapter.
-- Initial Promptfoo, Ragas, or DeepEval adapter.
+- garak CLI adapter.
+- Native garak artifact preservation.
+- garak JSONL parser and normalization.
 - Scanner run UI.
 - Scanner result import tests.
 - Failure handling.
 
 ### Operational Outcomes
 
-- Operators can execute real assessments and manage resulting findings.
+- Operators can execute a real garak assessment and manage resulting findings.
 
 ### Implementation Risks
 
@@ -369,6 +368,8 @@ Once workflows, evidence, and scoring exist, real scanner data can enter a gover
 ### Intentionally Waits Until Later
 
 - Broad scanner catalog.
+- Bias/fairness scanner adapter.
+- LLM/RAG evaluation scanner adapter.
 - Automatic scheduling.
 - Model provider deep integrations.
 
@@ -377,48 +378,48 @@ Once workflows, evidence, and scoring exist, real scanner data can enter a gover
 - Autonomous red teaming.
 - Continuous production monitoring.
 
-## Phase 6 - Operational Maturity And Automation
+## Phase 6 - Bias And Civil Rights Assessment Maturity
 
 ### Objectives
 
-- Add reporting workflows.
-- Add scheduled assessment plans.
-- Add integration readiness for Jira, ServiceNow, OneTrust, Teams, and email.
-- Add operational metrics.
-- Mature access control.
-- Harden deployment.
+- Add rights-impacting assessment templates.
+- Add language access scenarios.
+- Add human appeal path checks.
+- Add fairness-oriented evidence expectations and finding categories.
+- Preserve scanner-style evidence discipline for manual and scenario-based reviews.
 
 ### Rationale
 
-Automation should follow a stable operational model, not define it prematurely.
+The first real scanner path is proven. The next highest-value work is maturing public-sector bias and civil-rights workflows before adding more infrastructure.
 
 ### Dependencies
 
 - Proven manual workflows.
 - Evidence and scoring stability.
-- Initial scanner integrations.
+- garak integration as the first proven scanner pattern.
 
 ### Deliverables
 
-- Governance reports.
-- Scheduled assessment plans.
-- Notification rules.
-- External workflow export or sync.
-- Role-based access model.
-- Backup and restore guide.
-- Production runbooks.
+- Bias and civil-rights assessment templates.
+- Language access scenario evidence.
+- Human appeal path checks.
+- Fairness-oriented finding templates.
+- Reviewer-facing evidence expectations.
 
 ### Operational Outcomes
 
-- The county can operate AI assurance as a repeatable governance function.
+- Operators can run repeatable rights-impacting reviews with evidence-backed findings.
 
 ### Implementation Risks
 
-- Automating poor workflows.
-- Creating fragile external dependencies.
+- Treating scanner output as a legal conclusion.
+- Overbuilding statistical tooling before workflow needs are known.
 
 ### Intentionally Waits Until Later
 
+- Operational automation and scheduling.
+- External workflow export or sync.
+- Role-based access model.
 - Advanced observability.
 - MLflow or Langfuse integration.
 - OpenTelemetry pipeline.

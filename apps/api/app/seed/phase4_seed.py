@@ -87,7 +87,7 @@ def _seed_scanner_definitions(db: Session) -> dict[str, ScannerDefinition]:
         ("mock_ai_security_scanner", "Mock AI Security Scanner", "security", "mock_adapter", "mock", True, ["security", "agent_safety", "rag_integrity"], ["prompt_injection", "jailbreak_resistance", "system_prompt_leakage", "unsafe_tool_use", "mcp_tool_poisoning", "rag_poisoning", "data_exfiltration"]),
         ("mock_bias_civil_rights_scanner", "Mock Bias & Civil Rights Scanner", "bias_civil_rights", "mock_adapter", "mock", True, ["bias_civil_rights", "governance"], ["language_access_disparity", "protected_class_disparity", "accessibility_disparity", "human_appeal_path_missing", "adverse_decision_explanation_gap"]),
         ("mock_governance_evidence_scanner", "Mock Governance Evidence Scanner", "governance", "mock_adapter", "mock", True, ["governance", "explainability"], ["missing_approval", "missing_risk_acceptance", "missing_audit_evidence", "missing_policy_mapping", "missing_owner", "missing_decision_rationale"]),
-        ("garak", "garak", "security", "garak_cli_adapter", "cli", False, ["security"], ["prompt_injection", "jailbreak_resistance", "system_prompt_leakage"]),
+        ("garak", "garak", "security", "garak_cli_adapter", "cli", True, ["security"], ["prompt_injection", "jailbreak_resistance", "system_prompt_leakage"]),
         ("agentseal", "AgentSeal", "agent_safety", "agentseal_cli_adapter", "cli", False, ["agent_safety", "security"], ["unsafe_tool_use", "mcp_tool_poisoning"]),
         ("pyrit", "PyRIT", "security", "pyrit_cli_adapter", "cli", False, ["security"], ["prompt_injection", "jailbreak_resistance", "data_exfiltration"]),
         ("modelscan", "ModelScan", "model_integrity", "modelscan_cli_adapter", "cli", False, ["supply_chain", "model_integrity"], ["unsafe_model_file", "dependency_risk", "unverified_model_origin"]),
@@ -101,6 +101,15 @@ def _seed_scanner_definitions(db: Session) -> dict[str, ScannerDefinition]:
     ]
     for name, display, category, adapter, mode, enabled, domains, scan_types in definitions:
         if name in existing:
+            if name == "garak":
+                scanner = existing[name]
+                scanner.adapter_name = adapter
+                scanner.scanner_version = "0.15.x"
+                scanner.execution_mode = mode
+                scanner.supported_domains = domains
+                scanner.supported_scan_types = scan_types
+                scanner.enabled = True
+                scanner.mock_supported = False
             continue
         scanner = ScannerDefinition(
             scanner_name=name,
@@ -108,7 +117,7 @@ def _seed_scanner_definitions(db: Session) -> dict[str, ScannerDefinition]:
             description=f"{display} registry entry for future {category.replace('_', ' ')} assessment workflows.",
             scanner_category=category,
             adapter_name=adapter,
-            scanner_version="future" if not enabled else "0.4.0",
+            scanner_version="0.15.x" if name == "garak" else ("future" if not enabled else "0.4.0"),
             execution_mode=mode,
             supported_domains=domains,
             supported_scan_types=scan_types,

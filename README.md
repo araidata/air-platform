@@ -44,7 +44,7 @@ The platform should orchestrate those tools, normalize their outputs, preserve e
 
 ## Current Status
 
-The repository has completed Phase 4 — AI Assessment Ecosystem Foundation. A Next.js frontend exists under `apps/web`, and a FastAPI backend exists under `apps/api` with SQLAlchemy models, Alembic migrations, workflow services, seed data, tests for the core assurance records, an explainable scoring engine, and an evidence-preserving mock scanner ecosystem. The platform runs as a Docker Compose stack with frontend, backend, PostgreSQL, and a local scanner artifact volume.
+The repository has completed Phase 5 — First Real Scanner Integration. A Next.js frontend exists under `apps/web`, and a FastAPI backend exists under `apps/api` with SQLAlchemy models, Alembic migrations, workflow services, seed data, tests for the core assurance records, an explainable scoring engine, an evidence-preserving scanner ecosystem, and the first real garak CLI adapter. The platform runs as a Docker Compose stack with frontend, backend, PostgreSQL, and a local scanner artifact volume.
 
 Completed now:
 
@@ -72,11 +72,14 @@ Completed now:
 - Raw scanner JSON and execution log preservation under the scanner artifact volume, with evidence records linked to systems and assessments.
 - Scanner-created normalized findings that reuse the existing findings workflow, evidence architecture, audit events, and score recalculation hooks.
 - Seeded scanner registry, scan types, assessment profiles, completed and failed mock scanner runs, generated evidence, and score recalculations.
-- Scanner Ecosystem frontend route for registry review, profile selection, recommended scans, scanner run details, and mock assessment execution.
+- Scanner Ecosystem frontend route for registry review, profile selection, recommended scans, scanner run details, and scanner execution.
+- garak CLI scanner adapter for prompt-injection-oriented Phase 5 runtime validation.
+- Native garak JSONL, hit log, HTML report, scanner configuration, stdout/stderr log, raw platform JSON, and normalized output preservation.
+- garak findings normalized into the existing findings, evidence, audit event, and scoring workflows.
 
 Not built yet:
 
-- Real scanner integrations.
+- Multiple real scanner integrations.
 - OneTrust integration.
 
 ## Why Mock-First
@@ -234,11 +237,11 @@ Intentionally deferred:
 
 ### Phase 5 — First Real Scanner Integration
 
-- [ ] Select first real scanner, likely garak or AgentSeal.
-- [ ] Run the scanner through Docker or CLI adapter execution.
-- [ ] Parse scanner output.
-- [ ] Preserve raw scanner evidence.
-- [ ] Create normalized findings from scanner results.
+- [x] Select first real scanner, likely garak or AgentSeal.
+- [x] Run the scanner through Docker or CLI adapter execution.
+- [x] Parse scanner output.
+- [x] Preserve raw scanner evidence.
+- [x] Create normalized findings from scanner results.
 
 ### Phase 6 — Bias and Civil Rights Assessment Support
 
@@ -276,13 +279,13 @@ Future AI agents should:
 
 ## What To Build Next
 
-The recommended next development task is Phase 5: integrate the first real scanner, likely garak or AgentSeal, through the Phase 4 adapter contract. The first real scanner should preserve raw output, parse structured results, normalize findings, generate evidence, and trigger score recalculation without changing the core workflow model.
+The recommended next development task is Phase 6: bias and civil-rights assessment maturity. Keep the garak integration as the proven scanner pattern, then add rights-impacting templates, language access scenarios, human appeal path checks, and fairness-oriented evidence workflows without adding distributed execution.
 
 ## What Not To Build Yet
 
 Do not build yet:
 
-- Real scanner integrations.
+- Multiple real scanner integrations.
 - OneTrust API integration.
 - Kubernetes.
 - Microservices.

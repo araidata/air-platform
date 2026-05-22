@@ -15,9 +15,9 @@ Status: implemented and verified in Phase 4.
 
 ### Step 2 - Security Scanner
 
-Candidate: garak or PyRIT.
+Selected first: garak.
 
-Phase 5 should choose one first real scanner, with garak or AgentSeal as the current preferred candidates.
+Status: implemented and verified in Phase 5.
 
 Goals:
 
@@ -25,6 +25,12 @@ Goals:
 - Unsafe behavior tests.
 - Red-team output capture.
 - Normalized security findings.
+
+Implemented Phase 5 scope:
+
+- `garak_cli_adapter` executes garak through the backend Docker runtime.
+- Native garak JSONL report, hit log, HTML report, scanner configuration, stdout/stderr log, raw platform JSON, and normalized output are preserved.
+- garak eval records normalize into existing findings, evidence, audit events, and score recalculation.
 
 ### Step 3 - Bias/Fairness Scanner
 
@@ -73,3 +79,4 @@ Each integration must:
 - Scanner microservices.
 - Continuous production monitoring.
 - Autonomous red-team campaigns.
+- Multiple real scanner integrations in the same phase.

@@ -21,6 +21,7 @@ import {
   type ApiFinding,
   type ApiScanRecommendations,
   type ApiScanType,
+  type ApiScoreHistory,
   type ApiScannerDefinition,
   type ApiScannerRun,
   type ApiSystem,
@@ -49,6 +50,7 @@ export default function ScannerEcosystemPage() {
   const [runs, setRuns] = useState<ApiScannerRun[]>([]);
   const [findings, setFindings] = useState<ApiFinding[]>([]);
   const [evidence, setEvidence] = useState<ApiEvidence[]>([]);
+  const [scoreHistory, setScoreHistory] = useState<ApiScoreHistory[]>([]);
   const [recommendations, setRecommendations] = useState<ApiScanRecommendations | null>(null);
   const [selectedSystemId, setSelectedSystemId] = useState("");
   const [selectedProfileId, setSelectedProfileId] = useState("");
@@ -90,7 +92,11 @@ export default function ScannerEcosystemPage() {
         setEvidence(evidenceRecords);
         setSelectedSystemId(systemRecords[0]?.id ?? "");
         setSelectedProfileId(profileRecords[0]?.id ?? "");
-        setSelectedScanTypeId(scanTypeRecords[0]?.id ?? "");
+        setSelectedScanTypeId(
+          scanTypeRecords.find((scanType) => scanType.name === "prompt_injection")?.id ??
+            scanTypeRecords[0]?.id ??
+            "",
+        );
         setSelectedScannerId(scannerRecords.find((scanner) => scanner.enabled)?.id ?? "");
         setSelectedRun(runRecords[0] ?? null);
       } catch (caught) {
@@ -104,7 +110,12 @@ export default function ScannerEcosystemPage() {
     if (!selectedSystemId) return;
     async function loadRecommendations() {
       try {
-        setRecommendations(await apiClient.recommendedScans(selectedSystemId, selectedProfileId));
+        const [nextRecommendations, nextScoreHistory] = await Promise.all([
+          apiClient.recommendedScans(selectedSystemId, selectedProfileId),
+          apiClient.systemScoreHistory(selectedSystemId),
+        ]);
+        setRecommendations(nextRecommendations);
+        setScoreHistory(nextScoreHistory);
       } catch (caught) {
         setError(caught instanceof Error ? caught.message : "Unable to load recommendations");
       }
@@ -143,11 +154,14 @@ export default function ScannerEcosystemPage() {
   const selectedRunEvidence = selectedRun
     ? evidence.filter((record) => record.metadata_json?.scanner_run_id === selectedRun.id)
     : [];
+  const selectedRunScoreChanges = selectedRun
+    ? scoreHistory.filter((record) => record.assessment_id === selectedRun.assessment_id)
+    : [];
   const activeScannerId = compatibleScanners.some((scanner) => scanner.id === selectedScannerId)
     ? selectedScannerId
     : compatibleScanners[0]?.id;
 
-  async function runMockAssessment() {
+  async function runScannerAssessment() {
     if (!selectedSystemId || !activeScannerId || !selectedScanTypeId) return;
     setIsExecuting(true);
     setError(null);
@@ -161,17 +175,19 @@ export default function ScannerEcosystemPage() {
         initiated_by: "frontend-operator",
       });
       const executed = await apiClient.executeScannerRun(created.id, "frontend-operator");
-      const [runRecords, findingRecords, evidenceRecords] = await Promise.all([
+      const [runRecords, findingRecords, evidenceRecords, nextScoreHistory] = await Promise.all([
         apiClient.scannerRuns(),
         apiClient.findings(),
         apiClient.evidence(),
+        apiClient.systemScoreHistory(selectedSystemId),
       ]);
       setRuns(runRecords);
       setFindings(findingRecords);
       setEvidence(evidenceRecords);
+      setScoreHistory(nextScoreHistory);
       setSelectedRun(executed);
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Mock scanner execution failed");
+      setError(caught instanceof Error ? caught.message : "Scanner execution failed");
     } finally {
       setIsExecuting(false);
     }
@@ -181,7 +197,7 @@ export default function ScannerEcosystemPage() {
     <AppShell>
       <PageHeader
         title="Scanner Ecosystem"
-        description="Operational scan registry, assessment profile controls, evidence-preserving mock execution, and normalized scanner findings."
+        description="Operational scan registry, assessment profile controls, evidence-preserving scanner execution, and normalized scanner findings."
         actions={<Radar className="size-6 text-cyan-100" aria-hidden="true" />}
       />
 
@@ -197,7 +213,7 @@ export default function ScannerEcosystemPage() {
           value={enabledScanners.length}
           detail={`${scanners.length} registered assessment tools`}
           tone="neutral"
-          badgeLabel="Phase 4"
+          badgeLabel="Phase 5"
         />
         <MetricCard
           label="Scan controls"
@@ -275,12 +291,12 @@ export default function ScannerEcosystemPage() {
           </label>
           <button
             type="button"
-            onClick={runMockAssessment}
+          onClick={runScannerAssessment}
             disabled={isExecuting || !compatibleScanners.length}
             className="mt-6 inline-flex h-10 items-center justify-center gap-2 rounded-md border border-cyan-300/25 bg-cyan-300/10 px-4 text-sm font-medium text-cyan-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Play className="size-4" aria-hidden="true" />
-            {isExecuting ? "Running" : "Run Mock"}
+            {isExecuting ? "Running" : "Run"}
           </button>
         </div>
         <div className="mt-3">
@@ -350,8 +366,10 @@ export default function ScannerEcosystemPage() {
                   onClick={() => setSelectedRun(run)}
                 >
                   <Td>
-                    <p className="font-medium text-zinc-100">{labelize(run.scanner_name)}</p>
-                    <p className="mt-1 font-mono text-xs text-zinc-500">{run.id.slice(0, 8)}</p>
+                      <p className="font-medium text-zinc-100">{labelize(run.scanner_name)}</p>
+                    <p className="mt-1 font-mono text-xs text-zinc-500">
+                      {scanTypes.find((scanType) => scanType.id === run.scan_type_id)?.display_name ?? run.id.slice(0, 8)}
+                    </p>
                   </Td>
                   <Td>
                     <span className={`rounded-md border px-2 py-1 text-xs ${toneForStatus(run.execution_status)}`}>
@@ -408,6 +426,10 @@ export default function ScannerEcosystemPage() {
                   <p className="mt-2 text-sm text-zinc-100">{labelize(selectedRun.execution_status)}</p>
                 </div>
                 <div className="rounded-lg border border-white/10 bg-black/20 p-3">
+                  <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Adapter</p>
+                  <p className="mt-2 text-sm text-zinc-100">{selectedRun.adapter_name}</p>
+                </div>
+                <div className="rounded-lg border border-white/10 bg-black/20 p-3">
                   <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">System</p>
                   <p className="mt-2 text-sm text-zinc-100">
                     {systems.find((system) => system.id === selectedRun.system_id)?.system_name ?? selectedSystem?.system_name}
@@ -445,6 +467,10 @@ export default function ScannerEcosystemPage() {
               <div>
                 <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Generated evidence</p>
                 <p className="mt-2 text-sm text-zinc-300">{selectedRunEvidence.length} linked evidence records</p>
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Score changes</p>
+                <p className="mt-2 text-sm text-zinc-300">{selectedRunScoreChanges.length} recalculation history entries</p>
               </div>
             </div>
           ) : (

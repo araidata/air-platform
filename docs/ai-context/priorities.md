@@ -15,7 +15,7 @@
 
 ## Current Priority
 
-Begin Phase 2 findings, evidence, and assessment workflow behind the completed Phase 1 mock-data UI.
+Begin Phase 6 bias and civil-rights assessment maturity now that the first real scanner integration is complete.
 
 ## What Matters Most
 
@@ -24,7 +24,8 @@ Begin Phase 2 findings, evidence, and assessment workflow behind the completed P
 - Can each finding point to evidence?
 - Can reviewers understand risk and status?
 - Can the system produce audit-ready records?
-- Can future scanner output flow into normalized findings?
+- Can real scanner output flow into normalized findings?
+- Can rights-impacting reviews preserve language access, appeal path, and fairness evidence?
 
 ## What Matters Later
 

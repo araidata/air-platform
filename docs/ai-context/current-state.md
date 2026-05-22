@@ -1,6 +1,6 @@
 # Current State
 
-County AI Assurance Operations Center has moved from mock UI and durable backend workflow implementation into a runnable Docker Compose platform with an explainable scoring engine and Phase 4 scanner ecosystem foundation. The project still preserves durable operating context for future AI-assisted development, and now has a working frontend, FastAPI backend, PostgreSQL runtime, migrations, seed data, operational smoke checks, score workflows, scanner registry, scan types, assessment profiles, mock scanner execution, raw output preservation, evidence generation, normalized findings, and score recalculation from scanner-created findings.
+County AI Assurance Operations Center has moved from mock UI and durable backend workflow implementation into a runnable Docker Compose platform with an explainable scoring engine, Phase 4 scanner ecosystem foundation, and Phase 5 first real scanner integration. The project still preserves durable operating context for future AI-assisted development, and now has a working frontend, FastAPI backend, PostgreSQL runtime, migrations, seed data, operational smoke checks, score workflows, scanner registry, scan types, assessment profiles, mock scanner execution, real garak CLI execution, raw output preservation, evidence generation, normalized findings, and score recalculation from scanner-created findings.
 
 ## Product Definition
 
@@ -26,6 +26,8 @@ Phase 2.5 - Runtime Stabilization is implemented and verified.
 Phase 3 - Scoring Engine is implemented and verified.
 
 Phase 4 - AI Assessment Ecosystem Foundation is implemented and verified.
+
+Phase 5 - First Real Scanner Integration is implemented and verified with garak.
 
 ## Exists Now
 
@@ -64,17 +66,20 @@ Phase 4 - AI Assessment Ecosystem Foundation is implemented and verified.
 - Service-layer score recalculation hooks for findings, evidence, retests, assessments, systems, AIRB decisions, and scanner-created findings.
 - Frontend score integrations for executive dashboard, system detail, findings queue, AI Review Board queue, and governance reports.
 - Scanner Ecosystem frontend route under `apps/web/src/app/scanners/page.tsx`.
+- garak CLI adapter under `apps/api/app/scanners/adapters/garak_adapter.py`.
+- Docker backend image installation of garak through `requirements-scanners.txt`.
+- Native garak JSONL report, hit log, HTML report, scanner configuration, stdout/stderr log, raw platform JSON, and normalized output artifact preservation.
+- Real garak findings normalized into existing finding, evidence, audit event, and score recalculation workflows.
+- Scanner Ecosystem frontend visibility for real scanner runs, adapters, evidence counts, normalized findings, and score change history.
 
 ## Does Not Exist Yet
 
-- Real scanner integrations.
+- Multiple real scanner integrations.
 - OneTrust integration.
 
 ## Highest-Value Next Step
 
-Begin Phase 5 real scanner integration through the Phase 4 adapter contract. The first candidate should be garak or AgentSeal, run through a CLI/Docker adapter, with raw output and logs preserved as evidence before parser and normalization logic create findings.
-
-Do not broaden into multiple real scanner integrations until one real adapter proves the execution, parser, evidence, finding, and scoring path.
+Begin Phase 6 bias and civil-rights assessment maturity. Keep the garak adapter as the proven scanner pattern, and do not broaden into multiple real scanner integrations until bias/privacy workflow needs are clearer.
 
 ## Agent Reminder
 

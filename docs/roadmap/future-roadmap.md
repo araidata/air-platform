@@ -2,19 +2,17 @@
 
 The roadmap should remain governance-led. Add technical capability only when it improves assurance outcomes, auditability, or operator throughput.
 
-## Near-Term After Foundation
+## Near-Term
 
 - Maintain the Docker Compose runtime for web, API, and PostgreSQL.
-- Implement the Phase 3 scoring engine.
-- Add score explanations and score history.
 - Wire API-backed data into frontend workflows intentionally.
 - Continue maturing AIRB workflow details.
+- Mature Phase 6 bias and civil-rights assessment workflows.
+- Add language access, human appeal, and rights-impacting review templates.
 
 ## Mid-Term
 
-- Implement scanner adapter framework.
-- Add scanner run records.
-- Build first scanner integrations.
+- Add additional scanner integrations only when a concrete workflow needs them.
 - Add report exports.
 - Add deployment approval records.
 - Add Teams or email notifications.

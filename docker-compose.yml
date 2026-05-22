@@ -32,6 +32,9 @@ services:
       RUN_SEED: ${RUN_SEED:-true}
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
       SCANNER_STORAGE_ROOT: ${SCANNER_STORAGE_ROOT:-/data/scanner-runs}
+      GARAK_TIMEOUT_SECONDS: ${GARAK_TIMEOUT_SECONDS:-120}
+      GARAK_TARGET_TYPE: ${GARAK_TARGET_TYPE:-test.Repeat}
+      GARAK_GENERATIONS: ${GARAK_GENERATIONS:-1}
     ports:
       - "${API_HOST_PORT:-8000}:${API_PORT:-8000}"
     volumes:

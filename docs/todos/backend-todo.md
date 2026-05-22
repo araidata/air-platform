@@ -27,7 +27,7 @@
 
 ## Next
 
-- Begin Phase 5 first real scanner integration after reading scanner docs.
+- Begin Phase 6 bias and civil-rights workflow support.
 - Add pagination and filtering once UI integration needs are clearer.
 
 ## Completed In Phase 3
@@ -48,10 +48,18 @@
 - [x] Added score recalculation through scanner-created findings.
 - [x] Added scanner tests.
 
+## Completed In Phase 5
+
+- [x] Added garak CLI adapter as the first real scanner integration.
+- [x] Added backend Docker scanner dependency installation.
+- [x] Preserved native garak artifacts and normalized output as evidence.
+- [x] Normalized garak output into findings and score recalculation.
+- [x] Added real scanner execution, parser, malformed output, failure, evidence, and scoring tests.
+
 ## Deferred
 
 - Enterprise auth.
 - Complex permissions.
 - Distributed jobs.
-- Real scanner execution.
+- Additional real scanner execution beyond garak.
 - OneTrust API calls.

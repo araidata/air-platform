@@ -34,6 +34,8 @@ Integrations should follow operational maturity. They are not part of the first 
 
 ## Phase E - Model Provider Execution
 
+Phase 5 now proves local scanner execution through garak before model-provider APIs are introduced.
+
 - Azure OpenAI controlled test execution.
 - OpenAI API controlled test execution.
 - Anthropic API controlled test execution.

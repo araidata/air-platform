@@ -108,6 +108,6 @@ Adapters should distinguish:
 
 Whenever possible, preserve evidence before returning failure.
 
-## Phase 5 Extension Rule
+## Phase 5 Implementation
 
-The first real scanner adapter should add only the scanner-specific execution and parser logic needed for one tool. It should reuse the Phase 4 service, result shape, evidence workflow, and finding normalizer rather than creating a scanner-specific workflow.
+The first real scanner adapter is `garak_cli_adapter`. It adds only garak-specific CLI execution and JSONL parser logic. Persistence, evidence creation, finding creation, audit events, and score recalculation remain owned by `ScannerExecutionService` and the existing workflow services.

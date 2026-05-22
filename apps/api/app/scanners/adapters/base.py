@@ -13,6 +13,7 @@ class ScannerExecutionContext:
     scan_type: str
     scan_domain: str
     profile_name: str | None = None
+    artifact_dir: str | None = None
 
 
 @dataclass(frozen=True)

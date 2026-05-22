@@ -24,6 +24,7 @@ from app.schemas.evidence import EvidenceCreate
 from app.schemas.finding import FindingCreate
 from app.schemas.scanner import ScannerRunCreate
 from app.scanners.adapters.base import ScannerExecutionContext
+from app.scanners.adapters.garak_adapter import GarakCliAdapter
 from app.scanners.adapters.mock_adapter import MockScannerAdapter
 from app.scanners.normalization.finding_normalizer import (
     NORMALIZATION_VERSION,
@@ -115,6 +116,7 @@ class ScannerExecutionService:
             scan_type=scan_type.name,
             scan_domain=scan_type.domain,
             profile_name=profile.profile_name if profile else None,
+            artifact_dir=str(self.storage_root / run.id),
         )
 
         try:
@@ -153,6 +155,9 @@ class ScannerExecutionService:
                 content_type="text/plain",
                 created_by=initiated_by,
             )
+            self._preserve_adapter_artifacts(run, execution_result.artifacts, initiated_by)
+            if execution_result.status != ScannerExecutionStatus.completed.value:
+                raise RuntimeError(execution_result.error_message or "Scanner execution failed")
 
             parsed = adapter.parse_output(execution_result.raw_output)
             raw_findings = adapter.normalize_findings(parsed)
@@ -171,6 +176,18 @@ class ScannerExecutionService:
                     normalized={"findings": normalized, "raw_evidence_id": raw_evidence.id},
                     normalization_version=NORMALIZATION_VERSION,
                 )
+            )
+            normalized_payload = {"findings": normalized, "raw_evidence_id": raw_evidence.id}
+            normalized_path = self._write_json(run_dir / "normalized-output.json", normalized_payload)
+            self._create_run_evidence(
+                run,
+                evidence_type=EvidenceType.scanner_output,
+                title=f"Normalized scanner output for {scan_type.display_name}",
+                description="Platform-normalized scanner output preserved after parsing.",
+                file_path=str(normalized_path),
+                raw_text=json.dumps(normalized_payload, indent=2, sort_keys=True),
+                content_type="application/json",
+                created_by=initiated_by,
             )
             created_findings = self._create_findings_and_evidence(
                 run=run,
@@ -411,9 +428,42 @@ class ScannerExecutionService:
             )
         )
 
+    def _preserve_adapter_artifacts(
+        self,
+        run: ScannerRun,
+        artifacts: dict,
+        created_by: str,
+    ) -> None:
+        artifact_specs = {
+            "scanner_config_path": ("Scanner execution configuration", "application/json"),
+            "report_jsonl_path": ("Native scanner report JSONL", "application/jsonl"),
+            "hitlog_jsonl_path": ("Native scanner hit log JSONL", "application/jsonl"),
+            "html_report_path": ("Native scanner HTML report", "text/html"),
+        }
+        for key, (title, content_type) in artifact_specs.items():
+            value = artifacts.get(key)
+            if not value:
+                continue
+            path = Path(value)
+            if not path.exists() or not path.is_file():
+                continue
+            raw_text = path.read_text(encoding="utf-8", errors="replace")
+            self._create_run_evidence(
+                run,
+                evidence_type=EvidenceType.scanner_output,
+                title=title,
+                description=f"{title} preserved from scanner execution.",
+                file_path=str(path),
+                raw_text=raw_text,
+                content_type=content_type,
+                created_by=created_by,
+            )
+
     def _adapter_for(self, adapter_name: str):
         if adapter_name == "mock_adapter":
             return MockScannerAdapter()
+        if adapter_name == "garak_cli_adapter":
+            return GarakCliAdapter()
         raise HTTPException(status_code=400, detail=f"Adapter is not implemented: {adapter_name}")
 
     def _write_json(self, path: Path, payload: dict) -> Path:

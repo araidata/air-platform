@@ -159,15 +159,16 @@ Do not build:
 ## Phase 5 — First Real Scanner Integration
 
 Purpose:
-Integrate one scanner first, likely garak or AgentSeal, through the Phase 4 adapter contract and Docker/CLI execution.
+Integrate one scanner first through the Phase 4 adapter contract and Docker/CLI execution.
 
-Build:
+Built:
 
-- One real adapter.
-- Container/CLI execution path.
-- Parser for structured output.
-- Evidence storage for raw output.
-- Normalized findings from scanner results.
+- garak CLI adapter.
+- Docker backend runtime installation for garak.
+- Parser for garak JSONL eval output.
+- Evidence storage for native garak report JSONL, hit log JSONL, HTML report, scanner configuration, stdout/stderr logs, platform raw output, and normalized output.
+- Normalized findings from garak scanner results.
+- Score recalculation through the existing findings workflow.
 - Fixture coverage for successful, empty, failed, malformed, and partial scanner outputs.
 
 Do not build:
@@ -179,7 +180,7 @@ Do not build:
 ## Phase 6 — Bias and Civil Rights Assessment Support
 
 Purpose:
-Add structured bias scenario testing and fairness-oriented findings.
+Add structured bias scenario testing and fairness-oriented findings now that the first real scanner path is proven.
 
 Build:
 

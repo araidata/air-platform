@@ -17,13 +17,21 @@
 
 ## Phase 5
 
-- [ ] Select first real scanner, likely garak or AgentSeal.
-- [ ] Add Docker/CLI execution wrapper.
-- [ ] Parse structured output.
-- [ ] Preserve raw logs and raw output.
-- [ ] Normalize findings.
-- [ ] Add parser fixtures for success, empty, failed, malformed, and partial outputs.
-- [ ] Add score impact.
+- [x] Select first real scanner, likely garak or AgentSeal.
+- [x] Add Docker/CLI execution wrapper.
+- [x] Parse structured output.
+- [x] Preserve raw logs and raw output.
+- [x] Normalize findings.
+- [x] Add parser fixtures for success, empty, failed, malformed, and partial outputs.
+- [x] Add score impact.
+
+## Phase 6
+
+- [ ] Add bias and civil-rights assessment templates.
+- [ ] Add language access scenario workflows.
+- [ ] Add human appeal path checks.
+- [ ] Add fairness-oriented evidence expectations.
+- [ ] Defer additional real scanner integrations until one Phase 6 workflow needs them.
 
 ## Planned Scanner Families
 

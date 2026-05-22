@@ -11,6 +11,8 @@ RUN apt-get update \
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements-scanners.txt .
+RUN pip install --no-cache-dir -r requirements-scanners.txt
 
 COPY . .
 RUN chmod +x /app/scripts/start.sh

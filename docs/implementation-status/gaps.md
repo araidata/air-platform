@@ -1,45 +1,26 @@
 # Implementation Gaps
 
-## Product Gaps
+This legacy gap list is retained for quick orientation. See `docs/ai-context/implementation-status.md` for the full maintained status.
 
-- No usable UI yet.
-- No AI inventory implementation.
-- No findings queue.
-- No AIRB review queue.
-- No evidence repository.
-- No governance reports.
+## Current Gaps
 
-## Backend Gaps
+- Bias and civil-rights assessment templates need Phase 6 implementation.
+- Language access scenarios need structured workflow support.
+- Human appeal path checks need workflow and evidence support.
+- Additional real scanner integrations beyond garak are intentionally deferred.
+- Governance exports and OneTrust workflow support are not implemented yet.
+- Production backup and restore automation is not implemented yet.
+- Authentication, authorization, and production hardening remain deferred.
 
-- No API service.
-- No database schema.
-- No migrations.
-- No seed command.
-- No audit event service.
-- No scoring service.
-- No scanner run service.
+## No Longer Gaps
 
-## Frontend Gaps
-
-- No Next.js app.
-- No layout.
-- No navigation.
-- No dashboard cards.
-- No tables.
-- No detail pages.
-- No forms.
-
-## Operational Gaps
-
-- No Docker Compose.
-- No deployment workflow implemented.
-- No backup scripts.
-- No health check implementation.
-
-## Integration Gaps
-
-- No scanner adapters.
-- No OneTrust integration.
-- No Jira or ServiceNow integration.
-- No Teams or email notifications.
-- No model provider API execution.
+- Operational UI.
+- AI inventory.
+- Findings queue.
+- Evidence records.
+- FastAPI backend.
+- PostgreSQL schema and migrations.
+- Docker Compose runtime.
+- Scoring engine.
+- Scanner adapter framework.
+- First real scanner integration with garak.

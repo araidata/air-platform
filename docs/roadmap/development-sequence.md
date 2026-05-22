@@ -69,9 +69,16 @@ Start from the UI data needs. Avoid backend-first guessing.
 
 ## 8. Add One Real Scanner
 
-Pick one scanner. Prefer garak or AgentSeal. Integrate through Docker/CLI execution and normalize results.
+Status: complete. garak is integrated through Docker/CLI execution, native artifacts are preserved, findings normalize, and scores recalculate.
 
-## 9. Add Governance Exports
+## 9. Mature Bias And Civil Rights Workflow
+
+- Add rights-impacting assessment templates.
+- Add language access scenarios.
+- Add human appeal path checks.
+- Add fairness-oriented evidence expectations.
+
+## 10. Add Governance Exports
 
 - CSV first.
 - JSON second.
