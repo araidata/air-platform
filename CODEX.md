@@ -12,6 +12,7 @@ Read:
 - `docs/ai-context/current-state.md`
 - `docs/ai-context/implementation-status.md`
 - `docs/ai-context/next-steps.md`
+- `docs/ai-context/codex-workflows.md`
 
 Use repository patterns before inventing new ones.
 
@@ -69,3 +70,7 @@ Do not build backend complexity until Phase 2 unless the current task explicitly
 ## Verification
 
 For code changes, run the smallest meaningful verification available. If no tests or app code exist yet, verify file structure and documentation links.
+
+## Workflow Playbooks
+
+Detailed Codex playbooks for next-task selection, mock UI work, status updates, scanner adapters, architecture review, and commit/push behavior live in `docs/ai-context/codex-workflows.md`.

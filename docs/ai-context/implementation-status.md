@@ -11,6 +11,7 @@ Update this file whenever the repository meaningfully changes.
   - `.cursor/rules/project-rules.mdc`
   - `.github/copilot-instructions.md`
 - Created Claude Code command templates under `.claude/commands/`.
+- Added Codex workflow playbooks in `docs/ai-context/codex-workflows.md`.
 - Documented project philosophy, constraints, roadmap, architecture, scanner strategy, findings, evidence, governance, integrations, UI guidance, todos, and ADRs.
 - Confirmed project direction:
   - Single Linux VM.

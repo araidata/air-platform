@@ -16,6 +16,7 @@ Then read the AI context files below.
 - [Current State](ai-context/current-state.md)
 - [Implementation Status](ai-context/implementation-status.md)
 - [Next Steps](ai-context/next-steps.md)
+- [Codex Workflows](ai-context/codex-workflows.md)
 - [Architecture Summary](ai-context/architecture-summary.md)
 - [Coding Guidelines](ai-context/coding-guidelines.md)
 - [UI Guidelines](ai-context/ui-guidelines.md)
