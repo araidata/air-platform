@@ -64,4 +64,6 @@ Build in this order:
 
 When implementing a change, keep the repo memory current. Update status docs and todos when the implementation state changes.
 
+When completing a task listed in the README Build Checklist, update the checkbox only after the task is implemented, verified, and reflected in `docs/ai-context/implementation-status.md` plus the relevant todo file. The README checklist is agent-maintained; do not add GitHub Actions or hooks to tick boxes automatically unless the user explicitly requests that later.
+
 If a future agent is unsure whether to build infrastructure or workflow, choose workflow.

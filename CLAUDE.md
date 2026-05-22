@@ -72,6 +72,8 @@ After meaningful changes, update:
 - `docs/ai-context/current-state.md` if the project phase or architecture changed
 - `docs/decisions/` if a durable architecture decision was made
 
+When completing a task listed in the README Build Checklist, tick the README checkbox in the same commit as the completed work. Only tick a box after implementation, verification, and status/todo documentation updates are complete. Do not add automatic README-ticking hooks or GitHub Actions unless the user explicitly requests that later.
+
 ## Claude Commands
 
 Claude command templates live in `.claude/commands/`:

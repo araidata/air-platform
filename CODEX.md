@@ -71,6 +71,10 @@ Do not build backend complexity until Phase 2 unless the current task explicitly
 
 For code changes, run the smallest meaningful verification available. If no tests or app code exist yet, verify file structure and documentation links.
 
+## README Build Checklist
+
+When Codex completes a task listed in the README Build Checklist, update the checkbox in the same commit as the completed work. Only tick a box after implementation, verification, and status/todo documentation updates are done. Do not add automation that edits the README checklist unless the user explicitly requests it later.
+
 ## Workflow Playbooks
 
 Detailed Codex playbooks for next-task selection, mock UI work, status updates, scanner adapters, architecture review, and commit/push behavior live in `docs/ai-context/codex-workflows.md`.

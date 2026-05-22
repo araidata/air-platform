@@ -129,6 +129,92 @@ See [Phased Build Plan](docs/roadmap/phased-build-plan.md) for details.
 - Phase 7: OneTrust and Governance Export Support.
 - Phase 8: Operational Maturity.
 
+## Build Checklist
+
+This checklist is maintained by AI agents and human operators. It is not GitHub automation. When an AI agent completes a task, it should tick the checkbox in the same commit as the completed and verified work.
+
+AI completion rule:
+
+- Only mark a box complete after the work is implemented, verified, and reflected in the relevant status or todo docs.
+- Do not mark future work complete just because planning documentation exists.
+- If a task is partially done, leave it unchecked and update `docs/ai-context/implementation-status.md`.
+
+### Phase 0 — Repository and AI Context Foundation
+
+- [x] Create repository AI assistant files: `CLAUDE.md`, `AGENTS.md`, and `CODEX.md`.
+- [x] Add Cursor and GitHub Copilot rules.
+- [x] Add Claude Code command prompts.
+- [x] Add Codex workflow playbooks.
+- [x] Document project philosophy, constraints, and current state.
+- [x] Document roadmap, architecture, scanner strategy, findings, evidence, governance, integrations, UI guidance, todos, and ADRs.
+- [x] Add README AI-updated build checklist.
+
+### Phase 1 — Operational UI and Mock Data
+
+- [ ] Create the frontend application scaffold.
+- [ ] Add centralized mock data for systems, assessments, findings, evidence, scores, and reviews.
+- [ ] Build the Executive Dashboard.
+- [ ] Build the AI Inventory page.
+- [ ] Build the Findings Queue.
+- [ ] Build the System Detail Page.
+- [ ] Build the Evidence & Audit Page.
+- [ ] Build the AI Review Board Queue starter view.
+
+### Phase 2 — Findings, Evidence, and Assessment Workflow
+
+- [ ] Create backend persistence.
+- [ ] Create database models and migrations.
+- [ ] Implement assessment workflow mechanics.
+- [ ] Implement finding lifecycle status transitions.
+- [ ] Implement evidence records and evidence-to-finding links.
+- [ ] Implement owners, due dates, retest status, and audit events.
+
+### Phase 3 — Scoring Engine
+
+- [ ] Implement explainable domain scoring.
+- [ ] Calculate score impact from findings.
+- [ ] Show score history and score explanations.
+- [ ] Connect scoring to system, assessment, finding, and governance views.
+
+### Phase 4 — Scanner Adapter Framework
+
+- [ ] Implement scanner adapter interface.
+- [ ] Implement mock scanner adapter.
+- [ ] Create scanner run records.
+- [ ] Capture raw output and logs as evidence.
+- [ ] Normalize mock scanner output into findings.
+
+### Phase 5 — First Real Scanner Integration
+
+- [ ] Select first real scanner, likely garak or AgentSeal.
+- [ ] Run the scanner through Docker or CLI adapter execution.
+- [ ] Parse scanner output.
+- [ ] Preserve raw scanner evidence.
+- [ ] Create normalized findings from scanner results.
+
+### Phase 6 — Bias and Civil Rights Assessment Support
+
+- [ ] Add bias and civil-rights assessment templates.
+- [ ] Add language access scenarios.
+- [ ] Add human appeal path checks.
+- [ ] Add fairness-oriented findings and evidence views.
+
+### Phase 7 — OneTrust and Governance Export Support
+
+- [ ] Add CSV exports for inventory, findings, assessments, and risk acceptances.
+- [ ] Add structured JSON governance exports.
+- [ ] Add audit packet export.
+- [ ] Draft OneTrust field mapping.
+- [ ] Support manual OneTrust upload workflow.
+
+### Phase 8 — Operational Maturity
+
+- [ ] Add retest scheduling.
+- [ ] Add improved reporting.
+- [ ] Add optional notifications.
+- [ ] Add better operator filters and saved views.
+- [ ] Add operational health checks.
+
 ## Development Workflow
 
 Future AI agents should:
@@ -137,7 +223,7 @@ Future AI agents should:
 2. Check `docs/ai-context/implementation-status.md` and `docs/ai-context/next-steps.md`.
 3. Preserve the small-operator, single-VM, mock-first philosophy.
 4. Implement one narrow workflow at a time.
-5. Update implementation status and todos after meaningful changes.
+5. Update implementation status, todos, and README checklist boxes after completed verified work.
 6. Avoid building real scanner integrations until the adapter framework and mock workflow are stable.
 
 ## What To Build Next
