@@ -15,7 +15,7 @@
 
 ## Current Priority
 
-Complete Phase 0 documentation and begin Phase 1 mock-data UI.
+Begin Phase 2 findings, evidence, and assessment workflow behind the completed Phase 1 mock-data UI.
 
 ## What Matters Most
 

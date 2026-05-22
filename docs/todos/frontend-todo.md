@@ -1,24 +1,25 @@
 # Frontend TODO
 
+## Completed
+
+- Created Next.js frontend scaffold under `apps/web`.
+- Added application shell and navigation.
+- Added centralized mock data module.
+- Built Executive Dashboard.
+- Built AI Inventory.
+- Built Findings Queue.
+- Built System Detail Page.
+- Built Evidence & Audit Page.
+- Built AI Review Board Queue starter view.
+
 ## Next
-
-- Create frontend scaffold.
-- Add application shell and navigation.
-- Add mock data module.
-- Build Executive Dashboard.
-- Build AI Inventory.
-- Build Findings Queue.
-- Build System Detail Page.
-- Build Evidence & Audit Page.
-
-## Later
 
 - Assessment Workspace.
 - Bias & Civil Rights Dashboard.
 - Security Findings Dashboard.
-- AI Review Board Queue.
 - Reports Page.
 - Settings / Integrations Page.
+- Replace mock data with API-backed data after Phase 2 persistence exists.
 
 ## UI Requirements
 

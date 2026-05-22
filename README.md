@@ -44,7 +44,7 @@ The platform should orchestrate those tools, normalize their outputs, preserve e
 
 ## Current Status
 
-The repository is currently in Phase 0: documentation and AI-assistant operating structure. Application code has not been built yet.
+The repository has entered Phase 1: Operational UI and Mock Data. A Next.js frontend scaffold now exists under `apps/web` with centralized mock records and the initial operations-center pages.
 
 Completed now:
 
@@ -56,11 +56,9 @@ Completed now:
 
 Not built yet:
 
-- Next.js application.
 - Backend API.
 - Database schema.
 - Docker Compose runtime.
-- Mock data seed scripts.
 - Scanner adapter code.
 - Real scanner integrations.
 - OneTrust integration.
@@ -151,14 +149,14 @@ AI completion rule:
 
 ### Phase 1 — Operational UI and Mock Data
 
-- [ ] Create the frontend application scaffold.
-- [ ] Add centralized mock data for systems, assessments, findings, evidence, scores, and reviews.
-- [ ] Build the Executive Dashboard.
-- [ ] Build the AI Inventory page.
-- [ ] Build the Findings Queue.
-- [ ] Build the System Detail Page.
-- [ ] Build the Evidence & Audit Page.
-- [ ] Build the AI Review Board Queue starter view.
+- [x] Create the frontend application scaffold.
+- [x] Add centralized mock data for systems, assessments, findings, evidence, scores, and reviews.
+- [x] Build the Executive Dashboard.
+- [x] Build the AI Inventory page.
+- [x] Build the Findings Queue.
+- [x] Build the System Detail Page.
+- [x] Build the Evidence & Audit Page.
+- [x] Build the AI Review Board Queue starter view.
 
 ### Phase 2 — Findings, Evidence, and Assessment Workflow
 
@@ -228,15 +226,7 @@ Future AI agents should:
 
 ## What To Build Next
 
-The recommended next development task is Phase 1: create the first operational UI using mock data:
-
-- Executive Dashboard.
-- AI Inventory.
-- Findings Queue.
-- System Detail Page.
-- Evidence & Audit Page.
-
-This should be a usable front end with seeded mock data before backend persistence is introduced.
+The recommended next development task is Phase 2: begin the findings, evidence, and assessment workflow mechanics behind the mock UI, while keeping persistence and scanner integration deliberately scoped.
 
 ## What Not To Build Yet
 

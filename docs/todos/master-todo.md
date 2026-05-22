@@ -2,23 +2,23 @@
 
 This backlog is intentionally detailed and realistic for a single Linux VM, Docker Compose deployment, and one or two operators.
 
+## Completed In Phase 1
+
+- Created Next.js app under `apps/web`.
+- Configured TypeScript and TailwindCSS through the Next.js scaffold.
+- Created operational app shell with left navigation and top header.
+- Added centralized mock data for systems, assessments, findings, evidence, scores, and AI Review Board reviews.
+- Built Executive Dashboard, AI Inventory, Findings Queue, System Detail, Evidence and Audit, and AIRB Review Queue starter routes.
+- Added score cards, risk heatmap, trend visualization, inventory table, findings queue table, evidence list, and governance review cards using mock data.
+
 ## Frontend TODO
 
-- Create Next.js app under `apps/web`.
-- Configure TypeScript.
-- Configure TailwindCSS.
 - Configure shadcn/ui.
-- Create operational app shell with left navigation.
-- Add top header with environment, search, and user menu placeholder.
-- Build Executive Dashboard route.
-- Build score card components.
-- Build risk heatmap component.
-- Build trend chart component with Recharts.
-- Build AI Inventory table with TanStack Table.
+- Add user menu placeholder when authentication direction is known.
+- Replace simple trend visualization with Recharts if charting needs grow.
+- Replace native inventory table with TanStack Table if sorting and column controls become necessary.
 - Add inventory filters for department, risk tier, approval status, public-facing, rights-impacting, and data type.
-- Build System Detail page.
 - Add system detail tabs: overview, findings, evidence, scores, assessments, decisions, activity.
-- Build Findings Queue table.
 - Add severity, status, owner, SLA, department, and domain filters.
 - Build Finding Detail page.
 - Add workflow transition dialog.
@@ -26,9 +26,7 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - Add risk acceptance dialog.
 - Build Bias and Civil Rights Dashboard.
 - Build Security Findings Dashboard.
-- Build AIRB Review Queue.
 - Build AIRB Review Detail page.
-- Build Evidence and Audit page.
 - Build Deployment Approval page.
 - Build Governance Reports page.
 - Add empty states.

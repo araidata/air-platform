@@ -1,61 +1,35 @@
 # Next Steps
 
-The next development work should begin Phase 1: Operational UI and Mock Data.
+The next development work should begin Phase 2: Findings, Evidence, and Assessment Workflow.
 
 ## Recommended Next Task
 
-Create the first frontend scaffold and mock-data-driven operational pages:
+Add the first backend persistence and workflow mechanics behind the Phase 1 mock UI:
 
-1. Executive Dashboard.
-2. AI Inventory.
-3. Findings Queue.
-4. System Detail Page.
-5. Evidence & Audit Page.
-
-This should validate navigation, information density, risk presentation, findings triage, and evidence visibility before backend persistence exists.
+1. Define persisted records for systems, assessments, findings, evidence, and AI Review Board reviews.
+2. Implement finding lifecycle status transitions.
+3. Implement evidence records and evidence-to-finding links.
+4. Track owners, due dates, retest status, risk acceptance references, and audit events.
+5. Keep the frontend usable with mock data until the API contract is stable enough to replace it.
 
 ## Why This Is Next
 
-The project needs an operational surface before real integrations. If scanner work starts too early, the repo risks becoming a scanner experiment collection instead of a governance platform.
+The Phase 1 UI now shows the operating model. The next highest-value step is making the core assurance records durable without jumping ahead to scanner integrations or OneTrust support.
 
-The UI will clarify:
+The workflow layer should clarify:
 
-- What data needs to exist.
-- How findings should be triaged.
-- How evidence should be displayed.
-- How risk scoring should be explained.
-- What backend APIs are actually needed.
+- Which fields are required for findings and evidence.
+- How status changes are audited.
+- How evidence supports closure, retest, and risk acceptance.
+- Which API boundaries the frontend actually needs.
+- How board decisions depend on evidence completeness.
 
-## Mock Data To Include
+## Keep From Phase 1
 
-Seed systems:
-
-- Public Benefits Chatbot.
-- Sheriff Incident Summary Assistant.
-- Permit Review Assistant.
-- HR Resume Screening AI.
-- Citizen Services RAG Chatbot.
-
-Seed findings:
-
-- Prompt injection vulnerability.
-- Spanish-language explanation disparity.
-- Missing human appeal path.
-- Excessive MCP/tool permissions.
-- Incomplete audit logging.
-- Possible sensitive data leakage.
-- Weak governance evidence.
-- Missing risk acceptance.
-- Missing retest documentation.
-
-## Definition Of Done For Phase 1 Start
-
-- App scaffold exists.
-- Mock data is centralized.
-- Initial pages render from mock data.
-- No real scanner integration is attempted.
-- UI follows `docs/ui-ux/design-system.md`.
-- Status docs are updated.
+- Centralized mock data remains the frontend source of truth until APIs exist.
+- Findings and evidence stay central.
+- Review board workflow stays operational and audit-friendly.
+- Scanner outputs remain mock records only.
 
 ## Do Not Do Next
 

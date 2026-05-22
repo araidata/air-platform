@@ -2,16 +2,16 @@
 
 ## Phase 1
 
-- Show AI Review Board queue with mock data.
-- Show approval status on system detail.
-- Show governance evidence gaps.
+- [x] Show AI Review Board queue with mock data.
+- [x] Show approval status on system detail.
+- [x] Show governance evidence gaps.
 
 ## Phase 2
 
-- Persist review decisions.
-- Persist risk acceptances.
-- Track approval blockers.
-- Track remediation conditions.
+- [ ] Persist review decisions.
+- [ ] Persist risk acceptances.
+- [ ] Track approval blockers.
+- [ ] Track remediation conditions.
 
 ## Phase 6
 

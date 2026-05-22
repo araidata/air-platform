@@ -20,23 +20,28 @@ Update this file whenever the repository meaningfully changes.
   - Mock-first development.
   - API-first platform.
   - CLI/container-first scanners through adapters.
-
-## In Progress
-
-- Phase 0 repository foundation.
-- Documentation alignment across AI-assistant files and domain docs.
-
-## Next
-
-- Phase 1 operational UI with mock data:
+- Created Phase 1 Next.js frontend scaffold under `apps/web`.
+- Added centralized mock data for systems, assessments, findings, evidence, scores, and AI Review Board reviews.
+- Built mock-data-driven Phase 1 pages:
   - Executive Dashboard.
   - AI Inventory.
   - Findings Queue.
   - System Detail Page.
   - Evidence & Audit Page.
   - AI Review Board Queue.
-- Establish mock seed data for systems, findings, evidence, and assessments.
-- Decide exact frontend scaffold when implementation begins.
+- Verified the frontend with `npm run lint`, `npm run build`, and HTTP route smoke checks for all Phase 1 pages.
+
+## In Progress
+
+- Phase 1 UI refinement as future workflow requirements become clearer.
+
+## Next
+
+- Phase 2 findings, evidence, and assessment workflow:
+  - Backend persistence.
+  - Finding lifecycle transitions.
+  - Evidence records and links.
+  - Owners, due dates, retest status, risk acceptance, and audit events.
 
 ## Blocked
 
@@ -62,9 +67,9 @@ Update this file whenever the repository meaningfully changes.
 
 ## Current Known Issues
 
-- No app code exists yet.
-- Documentation exists in both new and earlier paths; future cleanup may consolidate older docs after implementation begins.
-- No automated tests exist because no application code exists.
+- Documentation exists in both new and earlier paths; future cleanup may consolidate older docs after implementation stabilizes.
+- No automated tests exist yet beyond lint, production build, and manual HTTP route smoke checks.
+- Browser plugin localhost verification was blocked by the in-app browser with `ERR_BLOCKED_BY_CLIENT`; route smoke verification was used as a fallback.
 
 ## Update Template
 

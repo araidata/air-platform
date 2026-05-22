@@ -1,6 +1,6 @@
 # Current State
 
-County AI Assurance Operations Center is currently a documentation-first repository. Its purpose is to prepare a durable operating structure for future AI-assisted development before building the application.
+County AI Assurance Operations Center has moved from a documentation-first repository into the first mock UI implementation. The project still preserves durable operating context for future AI-assisted development, but there is now a working frontend scaffold to validate the operational workflow.
 
 ## Product Definition
 
@@ -21,9 +21,9 @@ It is intended for one or two operators who need to manage:
 
 ## Current Phase
 
-Phase 0: Repository and AI Context Foundation.
+Phase 1: Operational UI and Mock Data.
 
-The current work is to establish documentation, assistant rules, architecture context, todo files, and decision records.
+The current work is to validate navigation, information density, risk presentation, findings triage, evidence visibility, and AI Review Board workflow before backend persistence exists.
 
 ## Exists Now
 
@@ -36,22 +36,22 @@ The current work is to establish documentation, assistant rules, architecture co
 - Integration planning.
 - Roadmap and todo files.
 - ADRs for core architectural constraints.
+- Next.js frontend scaffold under `apps/web`.
+- Centralized mock data for systems, assessments, findings, evidence, scores, and reviews.
+- Mock-data-driven pages for executive dashboard, inventory, findings queue, system detail, evidence, and AI Review Board queue.
 
 ## Does Not Exist Yet
 
-- Application code.
-- Next.js frontend.
 - Backend API.
 - Database migrations.
 - Docker Compose runtime.
-- Seed data scripts.
 - Scanner adapter code.
 - Real scanner integrations.
 - OneTrust integration.
 
 ## Highest-Value Next Step
 
-Build Phase 1: an operational UI with mock data for the dashboard, inventory, findings queue, system detail, evidence page, and AI Review Board queue.
+Begin Phase 2 workflow mechanics behind the UI: persisted findings and evidence records, assessment workflow transitions, retest and risk acceptance lifecycle, and audit events.
 
 Do not start with scanner integrations.
 
