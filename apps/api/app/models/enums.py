@@ -85,6 +85,21 @@ class AuditEventType(str, Enum):
     airb_decision_recorded = "airb_decision_recorded"
     score_recalculated = "score_recalculated"
     score_changed = "score_changed"
+    scanner_run_created = "scanner_run_created"
+    scanner_execution_started = "scanner_execution_started"
+    scanner_execution_completed = "scanner_execution_completed"
+    scanner_execution_failed = "scanner_execution_failed"
+    scanner_output_preserved = "scanner_output_preserved"
+    findings_normalized = "findings_normalized"
+    scanner_findings_created = "scanner_findings_created"
+
+
+class ScannerExecutionStatus(str, Enum):
+    pending = "pending"
+    running = "running"
+    completed = "completed"
+    failed = "failed"
+    cancelled = "cancelled"
 
 
 class RetestStatus(str, Enum):

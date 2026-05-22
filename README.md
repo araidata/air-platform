@@ -44,7 +44,7 @@ The platform should orchestrate those tools, normalize their outputs, preserve e
 
 ## Current Status
 
-The repository has completed Phase 3 — Scoring Engine. A Next.js frontend scaffold exists under `apps/web`, and a FastAPI backend exists under `apps/api` with SQLAlchemy models, Alembic migrations, workflow services, seed data, tests for the core assurance records, and an explainable scoring engine. The platform runs as a Docker Compose stack with frontend, backend, and PostgreSQL containers.
+The repository has completed Phase 4 — AI Assessment Ecosystem Foundation. A Next.js frontend exists under `apps/web`, and a FastAPI backend exists under `apps/api` with SQLAlchemy models, Alembic migrations, workflow services, seed data, tests for the core assurance records, an explainable scoring engine, and an evidence-preserving mock scanner ecosystem. The platform runs as a Docker Compose stack with frontend, backend, PostgreSQL, and a local scanner artifact volume.
 
 Completed now:
 
@@ -67,10 +67,15 @@ Completed now:
 - Runtime smoke test covering frontend load, backend health, DB health, seeded API endpoints, and frontend/backend proxy connectivity.
 - Phase 3 scoring models, Alembic migration, deterministic domain scoring engine, score history, score explanations, score snapshots, score APIs, recalculation workflows, seed-time score generation, and scoring tests.
 - Frontend score integrations for the executive dashboard, system detail, findings queue, AI Review Board queue, and governance reports route.
+- Phase 4 scanner ecosystem models for scanner definitions, scan types, assessment profiles, scanner runs, and scanner results.
+- Scanner adapter contract, deterministic mock scanner adapter, finding normalization layer, scanner execution service, and synchronous mock execution APIs.
+- Raw scanner JSON and execution log preservation under the scanner artifact volume, with evidence records linked to systems and assessments.
+- Scanner-created normalized findings that reuse the existing findings workflow, evidence architecture, audit events, and score recalculation hooks.
+- Seeded scanner registry, scan types, assessment profiles, completed and failed mock scanner runs, generated evidence, and score recalculations.
+- Scanner Ecosystem frontend route for registry review, profile selection, recommended scans, scanner run details, and mock assessment execution.
 
 Not built yet:
 
-- Scanner adapter code.
 - Real scanner integrations.
 - OneTrust integration.
 
@@ -133,10 +138,10 @@ See [Phased Build Plan](docs/roadmap/phased-build-plan.md) for details.
 - Phase 2: Findings, Evidence, and Assessment Workflow.
 - Phase 2.5 — Runtime Stabilization.
 - Phase 3: Scoring Engine.
-- Phase 4: Scanner Adapter Framework.
+- Phase 4: AI Assessment Ecosystem Foundation.
 - Phase 5: First Real Scanner Integration.
-- Phase 6: Bias and Civil Rights Assessment Support.
-- Phase 7: OneTrust and Governance Export Support.
+- Phase 6: Bias and Civil Rights Assessment Maturity.
+- Phase 7: Governance Exports and OneTrust Workflow Support.
 - Phase 8: Operational Maturity.
 
 ## Build Checklist
@@ -217,13 +222,15 @@ Intentionally deferred:
 - [x] Show score history and score explanations.
 - [x] Connect scoring to system, assessment, finding, and governance views.
 
-### Phase 4 — Scanner Adapter Framework
+### Phase 4 — AI Assessment Ecosystem Foundation
 
-- [ ] Implement scanner adapter interface.
-- [ ] Implement mock scanner adapter.
-- [ ] Create scanner run records.
-- [ ] Capture raw output and logs as evidence.
-- [ ] Normalize mock scanner output into findings.
+- [x] Implement scanner adapter interface.
+- [x] Implement mock scanner adapter.
+- [x] Create scanner run records.
+- [x] Capture raw output and logs as evidence.
+- [x] Normalize mock scanner output into findings.
+- [x] Add scanner registry, scan types, assessment profiles, and scan recommendation APIs.
+- [x] Add Scanner Ecosystem frontend route for registry, profiles, recommendations, run detail, and mock execution.
 
 ### Phase 5 — First Real Scanner Integration
 
@@ -269,7 +276,7 @@ Future AI agents should:
 
 ## What To Build Next
 
-The recommended next development task is Phase 4: implement the scanner adapter framework, starting with an adapter contract and mock scanner adapter that preserves raw output as evidence and normalizes mock findings.
+The recommended next development task is Phase 5: integrate the first real scanner, likely garak or AgentSeal, through the Phase 4 adapter contract. The first real scanner should preserve raw output, parse structured results, normalize findings, generate evidence, and trigger score recalculation without changing the core workflow model.
 
 ## What Not To Build Yet
 

@@ -9,6 +9,7 @@ from app.api.routes import (
     owners,
     retests,
     scores,
+    scanners,
     systems,
 )
 
@@ -22,3 +23,4 @@ api_router.include_router(retests.router, tags=["retests"])
 api_router.include_router(airb_reviews.router, prefix="/airb-reviews", tags=["airb"])
 api_router.include_router(owners.router, prefix="/owners", tags=["owners"])
 api_router.include_router(scores.router, tags=["scores"])
+api_router.include_router(scanners.router, tags=["scanners"])

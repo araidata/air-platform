@@ -1,6 +1,22 @@
 # Scanner Adapter Contract
 
-This contract defines what every scanner adapter should eventually provide.
+This contract defines what every scanner adapter should provide. Phase 4 implements the first concrete version in `apps/api/app/scanners/adapters/base.py` and `apps/api/app/scanners/adapters/mock_adapter.py`.
+
+## Phase 4 Implemented Contract
+
+The implemented adapter protocol supports:
+
+- `get_name()`
+- `get_version()`
+- `validate_configuration()`
+- `execute()`
+- `parse_output()`
+- `normalize_findings()`
+- `generate_evidence()`
+
+Adapters receive a `ScannerExecutionContext` with the scanner run, system, risk tier, scan type, scan domain, and optional assessment profile. They return a `ScannerExecutionResult` containing execution status, raw structured output, execution logs, optional error message, and optional artifact metadata.
+
+The `ScannerExecutionService` owns persistence, evidence generation, audit events, finding creation, and score recalculation. Adapters do not write directly to database workflow tables.
 
 ## Required Methods
 
@@ -91,3 +107,7 @@ Adapters should distinguish:
 - Normalization failure.
 
 Whenever possible, preserve evidence before returning failure.
+
+## Phase 5 Extension Rule
+
+The first real scanner adapter should add only the scanner-specific execution and parser logic needed for one tool. It should reuse the Phase 4 service, result shape, evidence workflow, and finding normalizer rather than creating a scanner-specific workflow.

@@ -58,3 +58,30 @@ Phase 3 adds deterministic score APIs:
 - `POST /assessments/{id}/recalculate-scores`
 
 The recalculation endpoints run synchronously in the FastAPI service layer and reuse the existing database and audit-event architecture.
+
+## Phase 4 Scanner Ecosystem APIs
+
+Phase 4 adds scanner ecosystem APIs:
+
+- `GET /scanner-definitions`
+- `GET /scanner-definitions/{id}`
+- `POST /scanner-definitions`
+- `PATCH /scanner-definitions/{id}`
+- `GET /scan-types`
+- `GET /scan-types/{id}`
+- `POST /scan-types`
+- `PATCH /scan-types/{id}`
+- `GET /assessment-profiles`
+- `GET /assessment-profiles/{id}`
+- `POST /assessment-profiles`
+- `PATCH /assessment-profiles/{id}`
+- `GET /scanner-runs`
+- `GET /scanner-runs/{id}`
+- `POST /scanner-runs`
+- `POST /scanner-runs/{id}/execute`
+- `GET /scanner-results/{id}`
+- `GET /scanner-adapters`
+- `GET /systems/{id}/recommended-scans`
+- `GET /systems/{id}/scanner-runs`
+
+Scanner execution remains synchronous and local in Phase 4. The API starts mock adapter execution, preserves artifacts, creates evidence, normalizes findings, and recalculates scores through the existing service layer.

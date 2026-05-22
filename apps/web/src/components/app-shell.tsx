@@ -22,9 +22,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <p className="text-xs font-medium uppercase tracking-[0.08em] text-zinc-500">
               Operating mode
             </p>
-            <p className="mt-2 text-sm text-zinc-200">Phase 3 scoring</p>
+            <p className="mt-2 text-sm text-zinc-200">Phase 4 assessment ecosystem</p>
             <p className="mt-1 text-xs leading-5 text-zinc-500">
-              Mock-first UI with backend persistence, workflow APIs, and score APIs.
+              Mock-first scanner execution with evidence, findings, and score APIs.
             </p>
           </div>
         </aside>

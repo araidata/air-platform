@@ -31,10 +31,12 @@ services:
       ENVIRONMENT: ${ENVIRONMENT:-development}
       RUN_SEED: ${RUN_SEED:-true}
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
+      SCANNER_STORAGE_ROOT: ${SCANNER_STORAGE_ROOT:-/data/scanner-runs}
     ports:
       - "${API_HOST_PORT:-8000}:${API_PORT:-8000}"
     volumes:
       - ./apps/api:/app
+      - scanner_data:/data
     depends_on:
       postgres:
         condition: service_healthy
@@ -82,3 +84,4 @@ volumes:
   postgres_data:
   web_node_modules:
   web_next:
+  scanner_data:

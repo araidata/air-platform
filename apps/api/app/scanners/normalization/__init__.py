@@ -1,0 +1,1 @@
+"""Scanner finding normalization."""

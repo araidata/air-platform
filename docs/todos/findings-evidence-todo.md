@@ -24,6 +24,14 @@
 - [x] Persist score impact explanations in the backend.
 - [x] Render score impact explanations in the mock-first frontend.
 
+## Phase 4
+
+- [x] Generate evidence records from scanner raw output and execution logs.
+- [x] Generate finding-level evidence records from mock scanner output.
+- [x] Normalize scanner findings into the existing finding workflow.
+- [x] Preserve scanner run metadata in evidence metadata.
+- [x] Recalculate scores when scanner-created findings and evidence are created.
+
 ## Deferred
 
 - Complex chain-of-custody workflow.

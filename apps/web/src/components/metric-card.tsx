@@ -3,6 +3,7 @@ type MetricCardProps = {
   value: string | number;
   detail: string;
   tone?: "neutral" | "good" | "warn" | "bad";
+  badgeLabel?: string;
 };
 
 const toneClasses = {
@@ -17,6 +18,7 @@ export function MetricCard({
   value,
   detail,
   tone = "neutral",
+  badgeLabel = "Phase 3",
 }: MetricCardProps) {
   return (
     <section className="rounded-lg border border-white/10 bg-white/[0.055] p-4 shadow-[0_14px_40px_rgba(0,0,0,0.18)]">
@@ -28,7 +30,7 @@ export function MetricCard({
           {value}
         </p>
         <span className="rounded-md border border-white/10 bg-black/20 px-2 py-1 font-mono text-[11px] text-zinc-400">
-          Phase 3
+          {badgeLabel}
         </span>
       </div>
       <p className="mt-3 text-sm leading-5 text-zinc-400">{detail}</p>

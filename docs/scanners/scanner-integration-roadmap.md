@@ -11,9 +11,13 @@ Scanner integrations should begin after workflows, evidence, and scoring exist.
 - Exercises normalization pipeline.
 - Creates findings from fixtures.
 
+Status: implemented and verified in Phase 4.
+
 ### Step 2 - Security Scanner
 
 Candidate: garak or PyRIT.
+
+Phase 5 should choose one first real scanner, with garak or AgentSeal as the current preferred candidates.
 
 Goals:
 

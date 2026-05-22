@@ -29,55 +29,51 @@ Update this file whenever the repository meaningfully changes.
   - System Detail Page.
   - Evidence & Audit Page.
   - AI Review Board Queue.
-- Verified the frontend with `npm run lint`, `npm run build`, and HTTP route smoke checks for all Phase 1 pages.
 - Created Phase 2 FastAPI backend under `apps/api`.
-- Added SQLAlchemy 2.x models for:
-  - AI systems.
-  - Assessments.
-  - Findings.
-  - Evidence.
-  - Owners.
-  - Retests.
-  - AIRB reviews.
-  - Framework mappings.
-  - Risk acceptances.
-  - Audit events.
-- Added Alembic configuration and initial Phase 2 workflow migration.
-- Added REST endpoints for systems, assessments, findings, evidence, audit events, retests, AIRB reviews, and owners.
-- Added workflow services for finding transitions, assessment status changes, evidence creation, retest tracking, and audit logging.
-- Added Phase 2 seed data for the five mock systems, realistic findings, evidence, framework mappings, AIRB reviews, and audit records.
-- Added backend tests covering model creation, valid and invalid finding transitions, evidence creation, audit event creation, retest creation/update, and API route smoke flows.
-- Added lightweight frontend API client layer while preserving mock data as the frontend source of truth.
-- Verified Phase 2 with `py -m pytest`, `py -m compileall app`, in-memory Alembic migration upgrade, and `npm.cmd run build`.
-- Completed Phase 2.5 — Runtime Stabilization:
-  - Added Docker Compose runtime with `frontend`, `backend`, and `postgres` services.
-  - Added backend Dockerfile and startup script.
-  - Added frontend Dockerfile and same-origin `/api/backend/*` proxy.
-  - Added `.env.example` for backend, frontend, and PostgreSQL configuration.
-  - Added PostgreSQL named volume persistence and container health checks.
-  - Added `/health/db` for database connectivity validation.
-  - Backend startup now waits for PostgreSQL, runs Alembic migrations, and loads idempotent seed data when `RUN_SEED=true`.
-  - Added `scripts/runtime-smoke-test.py`.
-  - Fixed PostgreSQL seed startup by flushing evidence records before creating evidence audit events.
-- Verified Phase 2.5 with:
-  - `docker compose config`.
-  - `docker compose up --build -d`.
-  - `docker compose exec -T backend alembic current`.
-  - `docker compose exec -T backend python -m compileall app`.
-  - `docker run --rm -v "${PWD}\apps\api:/app" -w /app python:3.12-slim sh -c "pip install -q -r requirements-dev.txt && pytest"`.
-  - `npm.cmd run build`.
-  - `docker run --rm --network air-platform_default ... scripts/runtime-smoke-test.py`.
-  - `docker compose down` followed by `docker compose up -d` without removing volumes.
-  - Host-facing checks for backend health, systems API, frontend load, and frontend/backend proxy.
-- Completed Phase 3 â€” Scoring Engine:
-  - Added score persistence models for domain scores, score history, score explanations, and score snapshots.
-  - Added Alembic scoring migration.
-  - Added deterministic scoring rules for security, privacy, bias/civil-rights, explainability, governance evidence, and overall governance.
-  - Added score explanations tied to findings, evidence gaps, workflow gaps, remediation credit, and weighted aggregation.
-  - Added score recalculation APIs and service-layer recalculation hooks for finding, evidence, retest, assessment, system, and AIRB workflow changes.
-  - Added seed-time score recalculation for all seeded systems.
-  - Added frontend score cards, domain breakdowns, score history, explanation panels, AIRB score context, findings impact summaries, and a governance reports route.
-  - Verified with local backend tests, backend compile, frontend lint, frontend production build, Alembic migration test, Docker Compose runtime startup, score API checks, recalculation checks, frontend score-view checks, and disposable-container backend tests.
+- Added SQLAlchemy 2.x models, Alembic migrations, APIs, workflow services, seed data, and tests for systems, assessments, findings, evidence, owners, retests, AIRB reviews, framework mappings, risk acceptances, and audit events.
+- Completed Phase 2.5 Runtime Stabilization:
+  - Docker Compose runtime with `frontend`, `backend`, and `postgres`.
+  - Backend and frontend Dockerfiles.
+  - Backend startup migration and seed flow.
+  - PostgreSQL persistence.
+  - Same-origin frontend/backend proxy.
+  - Health checks and runtime smoke test.
+- Completed Phase 3 Scoring Engine:
+  - Score persistence models for domain scores, score history, score explanations, and score snapshots.
+  - Deterministic scoring rules for security, privacy, bias/civil-rights, explainability, governance evidence, and overall governance.
+  - Score explanations tied to findings, evidence gaps, workflow gaps, remediation credit, and weighted aggregation.
+  - Score APIs and service-layer recalculation hooks.
+  - Seed-time score recalculation and frontend score integrations.
+- Completed Phase 4 AI Assessment Ecosystem Foundation:
+  - Added `ScannerDefinition`, `ScanType`, `AssessmentProfile`, `ScannerRun`, and `ScannerResult` models.
+  - Added Alembic migration `202605220002_phase_4_scanner_ecosystem.py`.
+  - Added scanner adapter contract under `apps/api/app/scanners/adapters/base.py`.
+  - Added deterministic mock scanner adapter under `apps/api/app/scanners/adapters/mock_adapter.py`.
+  - Added normalization layer under `apps/api/app/scanners/normalization/finding_normalizer.py`.
+  - Added `ScannerExecutionService` for run creation, mock execution, raw output and log preservation, evidence generation, finding normalization, audit events, and score recalculation.
+  - Added APIs for scanner definitions, scan types, assessment profiles, scanner runs, scanner results, scanner adapters, system scan recommendations, and system scanner runs.
+  - Added Docker Compose `scanner_data` volume and `SCANNER_STORAGE_ROOT`.
+  - Added seeded scanner registry entries for mock scanners and future-ready garak, AgentSeal, PyRIT, ModelScan, Fairlearn, Aequitas, IBM AI Fairness 360, Giskard, Ragas, DeepEval, and Promptfoo.
+  - Added seeded scan types across security, privacy, bias/civil-rights, explainability, governance, RAG integrity, agent safety, supply chain, and model integrity.
+  - Added seeded assessment profiles for public-facing chatbots, rights-impacting AI, law enforcement/CJIS AI, HR/employment AI, RAG applications, agentic/tool-using AI, and low-risk internal AI.
+  - Added seeded completed and failed mock scanner runs, evidence records, normalized findings, and score recalculations.
+  - Added Scanner Ecosystem frontend route with registry, profile selection, recommended scans, mock assessment runner, scanner run table, run detail, normalized findings, and generated evidence counts.
+  - Added scanner tests for adapter execution, normalization, finding creation, evidence generation, raw output persistence, scanner run persistence, score integration, API responses, invalid execution, malformed output, failed normalization, and preserved failure logs.
+
+## Verification
+
+- `py -m pytest` from `apps/api`: 18 passed.
+- `py -m compileall app` from `apps/api`.
+- SQLite Alembic upgrade to `202605220002`.
+- `npm.cmd run lint` from `apps/web`.
+- `npm.cmd run build` from `apps/web`.
+- `docker compose config --quiet`.
+- `docker compose up --build -d` with `API_HOST_PORT=8010`, `FRONTEND_HOST_PORT=3010`, and `POSTGRES_PORT=55432`.
+- `docker compose exec -T backend alembic current`: `202605220002 (head)`.
+- `py scripts/runtime-smoke-test.py --backend-url http://localhost:8010 --frontend-url http://localhost:3010`.
+- Runtime scanner API checks for `/scanner-definitions`, `/scan-types`, `/assessment-profiles`, `/scanner-runs`, and `/scanner-adapters`.
+- Runtime mock scanner execution through the API: completed with one normalized finding, preserved raw output, and six score records.
+- Browser verification of `http://localhost:3010/scanners`: page loaded, no relevant console errors, mock run interaction completed, completed-run count increased, and run artifacts showed preserved output.
 
 ## In Progress
 
@@ -85,12 +81,12 @@ Update this file whenever the repository meaningfully changes.
 
 ## Next
 
-- Begin Phase 4 scanner adapter framework:
-  - Adapter contract.
-  - Mock scanner adapter.
-  - Scanner run records.
-  - Raw output and log preservation as evidence.
-  - Normalization into findings.
+- Begin Phase 5 first real scanner integration:
+  - Choose garak or AgentSeal as the first real scanner.
+  - Implement one CLI/Docker adapter through the Phase 4 contract.
+  - Preserve raw scanner output and logs before parsing.
+  - Add parser fixtures and normalization tests.
+  - Keep real scanner-specific metadata in evidence or constrained result metadata, not in core finding fields.
 
 ## Blocked
 
@@ -98,7 +94,7 @@ Update this file whenever the repository meaningfully changes.
 
 ## Intentionally Deferred
 
-- Real scanner integrations.
+- Multiple real scanner integrations.
 - OneTrust API integration.
 - Background job execution.
 - Authentication and authorization.
@@ -115,9 +111,8 @@ Update this file whenever the repository meaningfully changes.
 ## Current Known Issues
 
 - Documentation exists in both new and earlier paths; future cleanup may consolidate older docs after implementation stabilizes.
-- Docker Desktop initially was not running in the current session, but it was started and Phase 3 Docker Compose runtime verification completed successfully.
-- Host ports `8000` and `3000` were already allocated on the verification machine. Runtime verification used `API_HOST_PORT=8010` and `FRONTEND_HOST_PORT=3010`; the default `.env.example` remains `8000` and `3000`.
-- Browser plugin localhost verification was previously blocked by the in-app browser with `ERR_BLOCKED_BY_CLIENT`; route smoke verification was used as a fallback for Phase 1.
+- Browser verification used the Node-backed Browser runtime because the direct Browser MCP tool did not lazy-load through tool discovery.
+- Host ports `8000`, `3000`, and `5432` may already be allocated on the verification machine. Phase 4 runtime verification used `API_HOST_PORT=8010`, `FRONTEND_HOST_PORT=3010`, and `POSTGRES_PORT=55432`.
 
 ## Update Template
 

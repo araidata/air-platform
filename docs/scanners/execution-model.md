@@ -26,6 +26,8 @@ scanner-runs/
     run-metadata.json
 ```
 
+Phase 4 stores scanner artifacts in the configured `SCANNER_STORAGE_ROOT`. Docker Compose sets this to `/data/scanner-runs` and mounts the `scanner_data` volume at `/data`. Local non-Docker tests can override the storage root in `ScannerExecutionService`.
+
 ## Captured Artifacts
 
 Capture:
@@ -57,6 +59,7 @@ Do not build distributed orchestration until one-VM execution is insufficient.
 If a scan fails:
 
 - Preserve logs.
+- Preserve raw output when execution produced any structured output before parsing or normalization failed.
 - Mark run status clearly.
 - Do not create unsupported findings.
 - Show operator-readable failure reason.

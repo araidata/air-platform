@@ -81,7 +81,7 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - Create departments table.
 - [x] Create systems table.
 - [x] Create assessments table.
-- Create scanner_runs table.
+- [x] Create scanner_runs table.
 - [x] Create findings table.
 - [x] Create evidence table.
 - [x] Create scores table.
@@ -167,16 +167,19 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 
 ## Scanner Integration TODO
 
-- Define adapter interface.
-- Create scanner registry.
-- Create mock scanner adapter.
-- Create scanner run model.
-- Create scanner workspace volume.
-- Implement Docker execution wrapper.
-- Capture stdout, stderr, exit code, and artifacts.
-- Preserve raw output as evidence.
-- Implement normalization pipeline.
-- Add fixture tests.
+- [x] Define adapter interface.
+- [x] Create scanner registry.
+- [x] Create scan type framework.
+- [x] Create assessment profiles.
+- [x] Create mock scanner adapter.
+- [x] Create scanner run model.
+- [x] Create scanner result model.
+- [x] Create scanner workspace volume.
+- [x] Capture mock raw output, logs, and artifacts.
+- [x] Preserve raw output as evidence.
+- [x] Implement normalization pipeline.
+- [x] Add fixture and API tests.
+- Implement Docker/CLI execution wrapper for the first real scanner.
 - Add first security scanner adapter after workflow readiness.
 - Add first bias/fairness scanner adapter after workflow readiness.
 - Add first LLM/RAG evaluation adapter after workflow readiness.
@@ -191,7 +194,7 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - Test workflow transitions.
 - [x] Test score calculations.
 - Test evidence linking.
-- Test scanner mock normalization.
+- [x] Test scanner mock normalization.
 - Test API pagination and filters.
 - [x] Add runtime smoke test for frontend, backend, database, migrations, seed data, and core API endpoints.
 

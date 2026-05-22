@@ -9,6 +9,7 @@ import {
   FileSearch,
   Gauge,
   Library,
+  Radar,
   Scale,
 } from "lucide-react";
 
@@ -18,6 +19,7 @@ const navItems = [
   { href: "/findings", label: "Findings Queue", icon: ClipboardList },
   { href: "/systems/public-benefits-chatbot", label: "System Detail", icon: FileSearch },
   { href: "/evidence", label: "Evidence & Audit", icon: Library },
+  { href: "/scanners", label: "Scanner Ecosystem", icon: Radar },
   { href: "/review-board", label: "AI Review Board", icon: Scale },
   { href: "/reports", label: "Governance Reports", icon: BarChart3 },
 ];

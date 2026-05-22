@@ -27,7 +27,7 @@
 
 ## Next
 
-- Begin Phase 4 scanner adapter framework after reading scanner docs.
+- Begin Phase 5 first real scanner integration after reading scanner docs.
 - Add pagination and filtering once UI integration needs are clearer.
 
 ## Completed In Phase 3
@@ -36,6 +36,17 @@
 - [x] Added score APIs and recalculation endpoints.
 - [x] Added service-layer score recalculation hooks for workflow changes.
 - [x] Added backend scoring tests.
+
+## Completed In Phase 4
+
+- [x] Added scanner registry, scan type, assessment profile, scanner run, and scanner result models.
+- [x] Added scanner ecosystem Alembic migration.
+- [x] Added scanner adapter contract and deterministic mock adapter.
+- [x] Added scanner execution service and normalization layer.
+- [x] Added scanner APIs and recommendation endpoints.
+- [x] Added raw output and log preservation as evidence.
+- [x] Added score recalculation through scanner-created findings.
+- [x] Added scanner tests.
 
 ## Deferred
 

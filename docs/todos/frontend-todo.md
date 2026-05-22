@@ -17,6 +17,9 @@
 - Added Phase 3 score integrations for dashboard, system detail, findings queue, AI Review Board queue, and governance reports.
 - Added frontend API client types and helpers for score APIs.
 - Verified score views in Docker Compose.
+- Added Phase 4 Scanner Ecosystem route for scanner registry, scan types, assessment profiles, recommendations, scanner runs, run detail, generated evidence counts, and mock execution.
+- Added frontend API client types and helpers for scanner ecosystem APIs.
+- Verified Scanner Ecosystem route in Docker Compose and Browser runtime.
 
 ## Next
 
@@ -24,7 +27,7 @@
 - Bias & Civil Rights Dashboard.
 - Security Findings Dashboard.
 - Settings / Integrations Page.
-- Replace mock data with API-backed data after Phase 3 scoring contracts are stable enough for UI adoption.
+- Continue replacing mock-only surfaces with API-backed operational data where the backend contracts are stable.
 
 ## UI Requirements
 

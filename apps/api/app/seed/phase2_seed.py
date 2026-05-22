@@ -12,11 +12,13 @@ from app.models.finding import Finding
 from app.models.framework_mapping import FrameworkMapping
 from app.models.owner import Owner
 from app.scoring.scoring_engine import ScoringEngine
+from app.seed.phase4_seed import seed_phase4
 
 
 def seed_phase2(db: Session) -> None:
     existing = db.scalar(select(AISystem).where(AISystem.system_name == "Public Benefits Chatbot"))
     if existing:
+        seed_phase4(db)
         _recalculate_seed_scores(db)
         db.commit()
         return
@@ -462,6 +464,7 @@ def seed_phase2(db: Session) -> None:
             )
         )
     db.flush()
+    seed_phase4(db)
     _recalculate_seed_scores(db)
     db.commit()
 

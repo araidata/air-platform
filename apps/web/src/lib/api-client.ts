@@ -118,6 +118,108 @@ export type ApiScoreHistory = {
   created_at: string;
 };
 
+export type ApiAssessment = {
+  id: string;
+  system_id: string;
+  assessment_type: string;
+  initiated_by: string;
+  status: string;
+  started_at: string | null;
+  completed_at: string | null;
+  summary: string | null;
+  overall_score: number | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ApiScannerDefinition = {
+  id: string;
+  scanner_name: string;
+  display_name: string;
+  description: string;
+  scanner_category: string;
+  adapter_name: string;
+  scanner_version: string;
+  execution_mode: string;
+  supported_domains: string[];
+  supported_scan_types: string[];
+  enabled: boolean;
+  mock_supported: boolean;
+  requires_credentials: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ApiScanType = {
+  id: string;
+  name: string;
+  display_name: string;
+  description: string;
+  domain: string;
+  default_severity: string;
+  required_for_risk_tiers: string[];
+  applicable_system_types: string[];
+  evidence_expectations: string[];
+  enabled: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ApiAssessmentProfile = {
+  id: string;
+  profile_name: string;
+  description: string;
+  applicable_risk_tiers: string[];
+  applicable_system_types: string[];
+  required_scan_types: string[];
+  optional_scan_types: string[];
+  required_evidence_types: string[];
+  recommended_scanners: string[];
+  governance_expectations: string[];
+  score_domains_affected: string[];
+  enabled: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ApiScannerRun = {
+  id: string;
+  system_id: string;
+  assessment_id: string;
+  scanner_definition_id: string;
+  scan_type_id: string;
+  assessment_profile_id: string | null;
+  scanner_name: string;
+  scanner_version: string;
+  adapter_name: string;
+  execution_status: string;
+  started_at: string | null;
+  completed_at: string | null;
+  initiated_by: string;
+  raw_output_path: string | null;
+  log_path: string | null;
+  finding_count: number;
+  error_message: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ApiRecommendedScan = {
+  scan_type: ApiScanType;
+  required: boolean;
+  reason: string;
+  available_scanners: ApiScannerDefinition[];
+};
+
+export type ApiScanRecommendations = {
+  system_id: string;
+  risk_tier: string;
+  assessment_profile: ApiAssessmentProfile | null;
+  required_scans: ApiRecommendedScan[];
+  optional_scans: ApiRecommendedScan[];
+};
+
 export const apiClient = {
   systems: () => request<ApiSystem[]>("/systems"),
   system: (id: string) => request<ApiSystem>(`/systems/${id}`),
@@ -125,6 +227,7 @@ export const apiClient = {
   finding: (id: string) => request<ApiFinding>(`/findings/${id}`),
   evidence: () => request<ApiEvidence[]>("/evidence"),
   evidenceRecord: (id: string) => request<ApiEvidence>(`/evidence/${id}`),
+  assessments: () => request<ApiAssessment[]>("/assessments"),
   scores: () => request<ApiScore[]>("/scores"),
   score: (id: string) => request<ApiScore>(`/scores/${id}`),
   systemScores: (id: string) => request<ApiScore[]>(`/systems/${id}/scores`),
@@ -143,4 +246,30 @@ export const apiClient = {
         }),
       },
     ),
+  scannerDefinitions: () => request<ApiScannerDefinition[]>("/scanner-definitions"),
+  scanTypes: () => request<ApiScanType[]>("/scan-types"),
+  assessmentProfiles: () => request<ApiAssessmentProfile[]>("/assessment-profiles"),
+  scannerRuns: () => request<ApiScannerRun[]>("/scanner-runs"),
+  systemScannerRuns: (id: string) => request<ApiScannerRun[]>(`/systems/${id}/scanner-runs`),
+  recommendedScans: (systemId: string, profileId?: string) => {
+    const query = profileId ? `?assessment_profile_id=${profileId}` : "";
+    return request<ApiScanRecommendations>(`/systems/${systemId}/recommended-scans${query}`);
+  },
+  createScannerRun: (payload: {
+    system_id: string;
+    assessment_id?: string;
+    scanner_definition_id: string;
+    scan_type_id: string;
+    assessment_profile_id?: string;
+    initiated_by?: string;
+  }) =>
+    request<ApiScannerRun>("/scanner-runs", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+  executeScannerRun: (id: string, initiatedBy = "operator") =>
+    request<ApiScannerRun>(`/scanner-runs/${id}/execute`, {
+      method: "POST",
+      body: JSON.stringify({ initiated_by: initiatedBy }),
+    }),
 };

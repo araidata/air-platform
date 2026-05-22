@@ -125,29 +125,41 @@ Do not build:
 - Unexplainable risk formulas.
 - Executive-only scores without evidence drill-down.
 
-## Phase 4 — Scanner Adapter Framework
+## Phase 4 — AI Assessment Ecosystem Foundation
 
 Purpose:
-Build the scanner adapter interface and mock adapter implementation.
+Build the scanner and assessment ecosystem foundation around the existing findings, evidence, scoring, and governance workflows.
 
-Build:
+Built:
 
 - Adapter contract.
+- Base scanner adapter abstraction.
 - Mock scanner adapter.
+- Scanner registry.
+- Scan type framework.
+- Assessment profiles.
+- Lightweight scan recommendation logic.
 - Scanner run records.
+- Scanner result records.
 - Raw output and log capture.
+- Evidence generation from scanner output.
 - Normalization path into findings.
+- Score recalculation from scanner-created findings.
+- Scanner execution APIs.
+- Scanner Ecosystem frontend route.
+- Seeded scanner definitions, scan types, profiles, completed runs, failed runs, findings, evidence, and score recalculations.
 
 Do not build:
 
 - Multiple real scanner integrations.
 - API services per scanner.
 - Distributed orchestration.
+- Auto-scheduling or continuous scanner monitoring.
 
 ## Phase 5 — First Real Scanner Integration
 
 Purpose:
-Integrate one scanner first, likely garak or AgentSeal, through Docker/CLI adapter execution.
+Integrate one scanner first, likely garak or AgentSeal, through the Phase 4 adapter contract and Docker/CLI execution.
 
 Build:
 
@@ -156,6 +168,7 @@ Build:
 - Parser for structured output.
 - Evidence storage for raw output.
 - Normalized findings from scanner results.
+- Fixture coverage for successful, empty, failed, malformed, and partial scanner outputs.
 
 Do not build:
 

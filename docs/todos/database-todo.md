@@ -35,9 +35,18 @@
 - [x] Create `score_snapshots` table.
 - [x] Verify the Phase 3 scoring migration in Docker Compose.
 
+## Completed In Phase 4
+
+- [x] Create `scanner_definitions` table.
+- [x] Create `scan_types` table.
+- [x] Create `assessment_profiles` table.
+- [x] Create `scanner_runs` table.
+- [x] Create `scanner_results` table.
+- [x] Verify the Phase 4 scanner ecosystem migration in Docker Compose.
+- [x] Add seeded scanner registry, scan types, assessment profiles, scanner runs, scanner results, generated evidence, and normalized findings.
+
 ## Deferred Candidate Tables
 
-- `scanner_runs`
 - `departments`
 - `deployment_approvals`
 

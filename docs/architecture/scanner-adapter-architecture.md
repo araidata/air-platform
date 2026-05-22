@@ -49,6 +49,18 @@ Adapters should support:
 - `map_to_frameworks()`
 - `calculate_score_impact()`
 
+Phase 4 implements the practical adapter contract as:
+
+- `get_name()`
+- `get_version()`
+- `validate_configuration()`
+- `execute()`
+- `parse_output()`
+- `normalize_findings()`
+- `generate_evidence()`
+
+The scanner execution service owns database persistence, evidence creation, audit events, finding creation, and score recalculation.
+
 ## Adapter Types
 
 - Mock adapter for Phase 4.
@@ -60,3 +72,7 @@ Adapters should support:
 ## Evidence Rule
 
 Every scanner run must preserve raw output and logs even when parsing fails. A failed scan can still produce useful evidence.
+
+## Phase 4 Runtime
+
+The Docker Compose runtime mounts `scanner_data` at `/data`; `SCANNER_STORAGE_ROOT` defaults to `/data/scanner-runs` in Compose. Each run writes `raw-output.json` and `execution.log` under its run ID directory.

@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     api_port: int = 8000
     environment: str = "development"
     allowed_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
+    scanner_storage_root: str = "data/scanner-runs"
 
     @property
     def cors_origins(self) -> list[str]:

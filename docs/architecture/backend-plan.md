@@ -12,7 +12,8 @@
 
 - Implemented in Phase 2: `systems`, `findings`, `evidence`, `assessments`, `owners`, `retests`, `airb`, `audit`, `framework_mappings`, and `risk_acceptances`.
 - Implemented in Phase 3 code: `scoring`.
-- Deferred: `scanner_runs`, `deployment_approvals`, `reports`, and `integrations`.
+- Implemented in Phase 4 code: `scanner_definitions`, `scan_types`, `assessment_profiles`, `scanner_runs`, `scanner_results`, scanner adapters, scanner execution service, and scanner normalization.
+- Deferred: `deployment_approvals`, `reports`, and `integrations`.
 
 ## First Endpoints
 
@@ -28,6 +29,11 @@
 - `GET /scores`, `GET /scores/{id}`, `GET /scores/{id}/explanations`.
 - `GET /systems/{id}/scores`, `GET /systems/{id}/score-history`.
 - `POST /systems/{id}/recalculate-scores`, `POST /assessments/{id}/recalculate-scores`.
+- `GET /scanner-definitions`, `GET /scanner-definitions/{id}`, `POST /scanner-definitions`, `PATCH /scanner-definitions/{id}`.
+- `GET /scan-types`, `GET /scan-types/{id}`, `POST /scan-types`, `PATCH /scan-types/{id}`.
+- `GET /assessment-profiles`, `GET /assessment-profiles/{id}`, `POST /assessment-profiles`, `PATCH /assessment-profiles/{id}`.
+- `GET /scanner-runs`, `GET /scanner-runs/{id}`, `POST /scanner-runs`, `POST /scanner-runs/{id}/execute`.
+- `GET /scanner-results/{id}`, `GET /scanner-adapters`, `GET /systems/{id}/recommended-scans`, `GET /systems/{id}/scanner-runs`.
 
 ## Services
 
@@ -38,7 +44,7 @@
 - Retest service.
 - Scoring engine and deterministic domain calculators.
 - Seed service.
-- Scanner adapter service later.
+- Scanner execution service, mock adapter, and finding normalizer.
 
 ## Migration And Seed Commands
 
