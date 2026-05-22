@@ -1,21 +1,25 @@
 # Backend TODO
 
+## Completed In Phase 2
+
+- [x] Create FastAPI backend service under `apps/api`.
+- [x] Add environment-driven database connection.
+- [x] Implement systems API.
+- [x] Implement findings API.
+- [x] Implement evidence API.
+- [x] Implement assessment API.
+- [x] Implement AIRB review API.
+- [x] Implement owners API.
+- [x] Implement retest API.
+- [x] Add audit event recording.
+- [x] Add workflow services for findings, assessments, evidence, retests, and audit events.
+- [x] Add seed command and backend tests.
+
 ## Next
 
-- Wait until Phase 2 unless frontend mock data exposes urgent API needs.
-- Define API contracts from UI data requirements.
-- Plan routes for systems, assessments, findings, evidence, scanner runs, scores, reviews, reports, and integrations.
-
-## Phase 2
-
-- Create backend service.
-- Add database connection.
-- Implement systems API.
-- Implement findings API.
-- Implement evidence API.
-- Implement assessment API.
-- Implement review decision API.
-- Add audit event recording.
+- Implement Phase 3 scoring service and score endpoints.
+- Add pagination and filtering once UI integration needs are clearer.
+- Add Docker Compose runtime and live PostgreSQL smoke testing.
 
 ## Deferred
 

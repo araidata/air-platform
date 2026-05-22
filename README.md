@@ -44,7 +44,7 @@ The platform should orchestrate those tools, normalize their outputs, preserve e
 
 ## Current Status
 
-The repository has entered Phase 1: Operational UI and Mock Data. A Next.js frontend scaffold now exists under `apps/web` with centralized mock records and the initial operations-center pages.
+The repository has completed Phase 2: Findings, Evidence, and Assessment Workflow. A Next.js frontend scaffold exists under `apps/web`, and a FastAPI backend now exists under `apps/api` with SQLAlchemy models, Alembic migrations, workflow services, seed data, and tests for the core assurance records.
 
 Completed now:
 
@@ -53,11 +53,16 @@ Completed now:
 - Architecture and scanner strategy docs.
 - Findings, evidence, governance, integration, UI, todo, and ADR documentation.
 - Claude Code command templates for future sessions.
+- Next.js frontend scaffold and mock operations-center pages.
+- FastAPI backend scaffold under `apps/api`.
+- SQLAlchemy models and Alembic migration for systems, assessments, findings, evidence, owners, retests, AIRB reviews, framework mappings, risk acceptances, and audit events.
+- REST endpoints for systems, assessments, findings, evidence, audit events, retests, AIRB reviews, and owners.
+- Workflow services enforcing finding and assessment transitions with audit logging.
+- Phase 2 seed data matching the mock county AI systems.
+- Basic backend tests for model creation, lifecycle transitions, evidence creation, retests, audit events, and API smoke flows.
 
 Not built yet:
 
-- Backend API.
-- Database schema.
 - Docker Compose runtime.
 - Scanner adapter code.
 - Real scanner integrations.
@@ -160,12 +165,12 @@ AI completion rule:
 
 ### Phase 2 — Findings, Evidence, and Assessment Workflow
 
-- [ ] Create backend persistence.
-- [ ] Create database models and migrations.
-- [ ] Implement assessment workflow mechanics.
-- [ ] Implement finding lifecycle status transitions.
-- [ ] Implement evidence records and evidence-to-finding links.
-- [ ] Implement owners, due dates, retest status, and audit events.
+- [x] Create backend persistence.
+- [x] Create database models and migrations.
+- [x] Implement assessment workflow mechanics.
+- [x] Implement finding lifecycle status transitions.
+- [x] Implement evidence records and evidence-to-finding links.
+- [x] Implement owners, due dates, retest status, and audit events.
 
 ### Phase 3 — Scoring Engine
 
@@ -226,7 +231,7 @@ Future AI agents should:
 
 ## What To Build Next
 
-The recommended next development task is Phase 2: begin the findings, evidence, and assessment workflow mechanics behind the mock UI, while keeping persistence and scanner integration deliberately scoped.
+The recommended next development task is Phase 3: implement the explainable scoring engine that derives domain and overall scores from systems, assessments, findings, evidence completeness, retest outcomes, and risk acceptances.
 
 ## What Not To Build Yet
 

@@ -4,17 +4,24 @@ Evidence is the basis for auditability, scoring, review decisions, remediation, 
 
 ## Evidence Types
 
-- `raw_scanner_output`
-- `scanner_log`
-- `prompt_output`
-- `uploaded_report`
-- `assessment_note`
+- `raw_log`
 - `screenshot`
-- `dataset_summary`
-- `policy_document`
-- `review_decision`
-- `risk_acceptance`
-- `retest_result`
+- `uploaded_file`
+- `scanner_output`
+- `prompt`
+- `model_response`
+- `export`
+- `note`
+- `reference`
+
+Earlier conceptual evidence types map into these Phase 2 records:
+
+- `raw_scanner_output` and `scanner_log` -> `scanner_output` or `raw_log`
+- `prompt_output` -> paired `prompt` and `model_response`
+- `uploaded_report` -> `uploaded_file`
+- `assessment_note` -> `note`
+- `screenshot`
+- `dataset_summary`, `policy_document`, `review_decision`, `risk_acceptance`, and `retest_result` -> `reference`, `note`, `export`, or `uploaded_file` depending on storage form
 
 ## Core Fields
 
@@ -31,6 +38,27 @@ Evidence is the basis for auditability, scoring, review decisions, remediation, 
 - `created_by`
 - `source`
 - `retention_category`
+
+## Implemented Phase 2 Fields
+
+The `evidence` table currently stores:
+
+- `id`
+- `finding_id`
+- `assessment_id`
+- `system_id`
+- `evidence_type`
+- `title`
+- `description`
+- `file_path`
+- `raw_text`
+- `content_type`
+- `created_by`
+- `created_at`
+- `hash`
+- `metadata_json`
+
+Evidence creation is handled through `EvidenceService`, which validates links, derives assessment/system references from a finding when possible, and creates an `evidence_created` audit event.
 
 ## Evidence Principles
 

@@ -30,18 +30,37 @@ Update this file whenever the repository meaningfully changes.
   - Evidence & Audit Page.
   - AI Review Board Queue.
 - Verified the frontend with `npm run lint`, `npm run build`, and HTTP route smoke checks for all Phase 1 pages.
+- Created Phase 2 FastAPI backend under `apps/api`.
+- Added SQLAlchemy 2.x models for:
+  - AI systems.
+  - Assessments.
+  - Findings.
+  - Evidence.
+  - Owners.
+  - Retests.
+  - AIRB reviews.
+  - Framework mappings.
+  - Risk acceptances.
+  - Audit events.
+- Added Alembic configuration and initial Phase 2 workflow migration.
+- Added REST endpoints for systems, assessments, findings, evidence, audit events, retests, AIRB reviews, and owners.
+- Added workflow services for finding transitions, assessment status changes, evidence creation, retest tracking, and audit logging.
+- Added Phase 2 seed data for the five mock systems, realistic findings, evidence, framework mappings, AIRB reviews, and audit records.
+- Added backend tests covering model creation, valid and invalid finding transitions, evidence creation, audit event creation, retest creation/update, and API route smoke flows.
+- Added lightweight frontend API client layer while preserving mock data as the frontend source of truth.
+- Verified Phase 2 with `py -m pytest`, `py -m compileall app`, in-memory Alembic migration upgrade, and `npm.cmd run build`.
 
 ## In Progress
 
-- Phase 1 UI refinement as future workflow requirements become clearer.
+- Phase 3 scoring design and implementation planning.
 
 ## Next
 
-- Phase 2 findings, evidence, and assessment workflow:
-  - Backend persistence.
-  - Finding lifecycle transitions.
-  - Evidence records and links.
-  - Owners, due dates, retest status, risk acceptance, and audit events.
+- Phase 3 scoring engine:
+  - Explainable domain scoring.
+  - Score impact calculation from findings.
+  - Score history and score explanations.
+  - API surfaces that the frontend can adopt without removing mock data abruptly.
 
 ## Blocked
 
@@ -51,7 +70,6 @@ Update this file whenever the repository meaningfully changes.
 
 - Real scanner integrations.
 - OneTrust API integration.
-- Database schema and migrations.
 - Background job execution.
 - Authentication and authorization.
 - Docker Compose runtime.
@@ -68,8 +86,8 @@ Update this file whenever the repository meaningfully changes.
 ## Current Known Issues
 
 - Documentation exists in both new and earlier paths; future cleanup may consolidate older docs after implementation stabilizes.
-- No automated tests exist yet beyond lint, production build, and manual HTTP route smoke checks.
-- Browser plugin localhost verification was blocked by the in-app browser with `ERR_BLOCKED_BY_CLIENT`; route smoke verification was used as a fallback.
+- No Docker Compose runtime exists yet, so PostgreSQL was not live-smoke-tested. The initial Alembic migration was sanity-checked against SQLite, and backend workflow tests use SQLite.
+- Browser plugin localhost verification was previously blocked by the in-app browser with `ERR_BLOCKED_BY_CLIENT`; route smoke verification was used as a fallback for Phase 1.
 
 ## Update Template
 

@@ -9,12 +9,14 @@
 
 ## Phase 2
 
-- [ ] Add persisted finding records.
-- [ ] Add evidence records.
-- [ ] Implement finding lifecycle transitions.
-- [ ] Add retest status.
-- [ ] Add risk acceptance reference.
-- [ ] Add audit events for status changes.
+- [x] Add persisted finding records.
+- [x] Add evidence records.
+- [x] Implement finding lifecycle transitions.
+- [x] Add retest status.
+- [x] Add risk acceptance reference.
+- [x] Add audit events for status changes.
+- [x] Add evidence-to-finding and evidence-to-assessment links.
+- [x] Add basic tests for evidence creation and lifecycle audit events.
 
 ## Phase 3
 

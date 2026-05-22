@@ -37,46 +37,47 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 
 ## Backend TODO
 
-- Create FastAPI app under `apps/api`.
-- Add health endpoint.
-- Configure environment loading.
-- Configure database connection.
+- [x] Create FastAPI app under `apps/api`.
+- [x] Add health endpoint.
+- [x] Configure environment loading.
+- [x] Configure database connection.
 - Configure Redis connection.
-- Add Pydantic schemas.
-- Add route modules.
-- Add service modules.
-- Add audit event service.
-- Add finding workflow service.
-- Add evidence service.
+- [x] Add Pydantic schemas.
+- [x] Add route modules.
+- [x] Add service modules.
+- [x] Add audit event service.
+- [x] Add finding workflow service.
+- [x] Add evidence service.
 - Add scoring service.
-- Add seed command.
+- [x] Add seed command.
 - Add pagination helpers.
 - Add filtering helpers.
 - Add structured error responses.
-- Add OpenAPI tags.
-- Add tests for health, systems, findings, evidence, scoring, and workflows.
+- [x] Add OpenAPI tags.
+- [x] Add tests for health, systems, findings, evidence, and workflows.
+- Add tests for scoring.
 
 ## Database TODO
 
-- Choose SQLAlchemy or SQLModel.
-- Configure Alembic.
+- [x] Choose SQLAlchemy or SQLModel.
+- [x] Configure Alembic.
 - Create departments table.
-- Create systems table.
-- Create assessments table.
+- [x] Create systems table.
+- [x] Create assessments table.
 - Create scanner_runs table.
-- Create findings table.
-- Create evidence table.
+- [x] Create findings table.
+- [x] Create evidence table.
 - Create scores table.
-- Create AIRB reviews table.
+- [x] Create AIRB reviews table.
 - Create deployment approvals table.
-- Create risk acceptances table.
-- Create framework mappings table.
-- Create audit events table.
-- Add indexes for findings queue filters.
-- Add indexes for inventory filters.
-- Add indexes for evidence search.
-- Add seed data migrations or seed script.
-- Add test database setup.
+- [x] Create risk acceptances table.
+- [x] Create framework mappings table.
+- [x] Create audit events table.
+- [x] Add indexes for findings queue filters.
+- [x] Add indexes for inventory filters.
+- [x] Add indexes for evidence search.
+- [x] Add seed data migrations or seed script.
+- [x] Add test database setup.
 
 ## Dashboards TODO
 
@@ -105,7 +106,7 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 
 ## AIRB Workflow TODO
 
-- Create AIRB review model.
+- [x] Create AIRB review model.
 - Implement states: Draft, Under Review, Security Review Required, Bias Review Required, Privacy Review Required, Legal Review Required, Approved, Approved with Exception, Blocked.
 - Build review packet API.
 - Build review queue UI.
@@ -117,7 +118,7 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 
 ## Evidence System TODO
 
-- Create evidence metadata model.
+- [x] Create evidence metadata model.
 - Implement local artifact storage path.
 - Implement hash calculation.
 - Implement evidence upload endpoint.

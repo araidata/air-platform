@@ -1,6 +1,6 @@
 # Data Model Overview
 
-This document describes the initial conceptual model. Actual database migrations should refine names and constraints while preserving these domain boundaries.
+This document describes the initial conceptual model and the Phase 2 implemented database model. Future migrations should refine names and constraints while preserving these domain boundaries.
 
 ## Core Entities
 
@@ -10,6 +10,8 @@ This document describes the initial conceptual model. Actual database migrations
 - Name.
 - Executive owner.
 - Operational contact.
+
+Status: deferred. Phase 2 stores department ownership directly on AI systems and owners.
 
 ### AI System
 
@@ -36,6 +38,8 @@ This document describes the initial conceptual model. Actual database migrations
 - Created at.
 - Updated at.
 
+Status: implemented as `ai_systems`.
+
 ### Assessment
 
 - ID.
@@ -46,6 +50,8 @@ This document describes the initial conceptual model. Actual database migrations
 - Scope.
 - Created at.
 - Updated at.
+
+Status: implemented as `assessments` with status values `draft`, `running`, `under_review`, `completed`, `blocked`, and `archived`.
 
 ### Scanner Run
 
@@ -60,6 +66,8 @@ This document describes the initial conceptual model. Actual database migrations
 - Exit code.
 - Raw output evidence ID.
 - Error summary.
+
+Status: deferred to the scanner adapter phase.
 
 ### Finding
 
@@ -79,6 +87,8 @@ This document describes the initial conceptual model. Actual database migrations
 - Created at.
 - Updated at.
 
+Status: implemented as `findings` with explicit workflow transitions, due dates, retest status, score impact JSON, risk acceptance flag, approval-blocking flag, and owner assignment.
+
 ### Evidence
 
 - ID.
@@ -94,6 +104,8 @@ This document describes the initial conceptual model. Actual database migrations
 - Created by.
 - Created at.
 
+Status: implemented as `evidence` with links to findings, assessments, and systems. Database records store metadata and references; large artifacts remain external to the database.
+
 ### Score
 
 - ID.
@@ -102,6 +114,8 @@ This document describes the initial conceptual model. Actual database migrations
 - Value.
 - Explanation JSON.
 - Calculated at.
+
+Status: deferred to Phase 3.
 
 ### AIRB Review
 
@@ -114,6 +128,8 @@ This document describes the initial conceptual model. Actual database migrations
 - Rationale.
 - Created at.
 - Updated at.
+
+Status: implemented as `airb_reviews`.
 
 ### Deployment Approval
 
@@ -128,6 +144,8 @@ This document describes the initial conceptual model. Actual database migrations
 - Created at.
 - Updated at.
 
+Status: deferred.
+
 ### Risk Acceptance
 
 - ID.
@@ -140,6 +158,8 @@ This document describes the initial conceptual model. Actual database migrations
 - Evidence ID.
 - Created at.
 
+Status: implemented as `risk_acceptances` for lifecycle support.
+
 ### Audit Event
 
 - ID.
@@ -149,6 +169,46 @@ This document describes the initial conceptual model. Actual database migrations
 - Entity ID.
 - Details JSON.
 - Created at.
+
+Status: implemented as append-only `audit_events`.
+
+### Owner
+
+- ID.
+- Display name.
+- Email.
+- Department.
+- Role.
+- Created at.
+- Updated at.
+
+Status: implemented as `owners` for assignment and accountability, not authentication.
+
+### Retest
+
+- ID.
+- Finding ID.
+- Initiated by.
+- Status.
+- Notes.
+- Result summary.
+- Started at.
+- Completed at.
+- Created at.
+- Updated at.
+
+Status: implemented as `retests`.
+
+### Framework Mapping
+
+- ID.
+- Finding ID.
+- Framework.
+- Control.
+- Description.
+- Created at.
+
+Status: implemented as `framework_mappings`.
 
 ## Relationship Notes
 

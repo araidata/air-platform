@@ -1,17 +1,33 @@
 # Database TODO
 
-## Phase 2 Candidate Tables
+## Completed In Phase 2
 
-- `systems`
-- `assessments`
-- `findings`
-- `evidence`
-- `scanner_runs`
+- [x] Configure SQLAlchemy 2.x models.
+- [x] Configure Alembic.
+- [x] Create `ai_systems` table.
+- [x] Create `assessments` table.
+- [x] Create `findings` table.
+- [x] Create `evidence` table.
+- [x] Create `owners` table.
+- [x] Create `retests` table.
+- [x] Create `airb_reviews` table.
+- [x] Create `risk_acceptances` table.
+- [x] Create `framework_mappings` table.
+- [x] Create `audit_events` table.
+- [x] Add indexes for common queue and relationship filters.
+- [x] Add Phase 2 seed script.
+- [x] Add SQLite-backed test database setup.
+
+## Phase 3 Candidate Tables
+
 - `score_snapshots`
-- `review_decisions`
-- `risk_acceptances`
-- `audit_events`
-- `framework_mappings`
+- `score_explanations`
+
+## Deferred Candidate Tables
+
+- `scanner_runs`
+- `departments`
+- `deployment_approvals`
 
 ## Seed Data
 

@@ -5,15 +5,28 @@ Findings are the core operational unit of the platform.
 ## Lifecycle States
 
 - `new`: Finding has been created and needs triage.
-- `triaged`: Operator reviewed severity, owner, and evidence.
-- `assigned`: Owner is responsible for remediation or response.
+- `under_review`: Operator is reviewing severity, owner, and evidence.
 - `in_remediation`: Fix or mitigation is underway.
+- `awaiting_retest`: Remediation is complete and needs validation.
+- `mitigated`: Retest or review indicates the finding is addressed.
 - `risk_accepted`: Authorized reviewer accepted the risk.
-- `ready_for_retest`: Remediation is complete and needs validation.
-- `retest_passed`: Finding has been validated as resolved.
-- `retest_failed`: Finding still reproduces or evidence is insufficient.
-- `closed`: Finding is resolved, accepted, or otherwise complete.
 - `false_positive`: Finding is not valid, with rationale preserved.
+- `closed`: Finding is resolved, accepted, or otherwise complete.
+
+## Implemented Transitions
+
+Phase 2 enforces these transitions in `FindingWorkflowService`:
+
+- `new` -> `under_review`
+- `under_review` -> `in_remediation`
+- `under_review` -> `risk_accepted`
+- `under_review` -> `false_positive`
+- `in_remediation` -> `awaiting_retest`
+- `awaiting_retest` -> `mitigated`
+- `awaiting_retest` -> `in_remediation`
+- `mitigated` -> `closed`
+- `risk_accepted` -> `closed`
+- `false_positive` -> `closed`
 
 ## Required Transitions
 
@@ -24,6 +37,8 @@ Every transition should preserve:
 - Rationale.
 - Evidence references when applicable.
 - Previous and new state.
+
+Phase 2 records this through append-only audit events with `event_type=finding_status_changed`. Risk acceptance transitions also create a `risk_acceptances` record and a `risk_accepted` audit event.
 
 ## Finding Sources
 
@@ -61,3 +76,5 @@ Closing a finding requires one of:
 - Risk acceptance.
 - False-positive rationale.
 - Governance decision with evidence reference.
+
+Phase 2 enforces transition shape but does not yet enforce closure evidence completeness. That should become part of Phase 3 scoring and later governance maturity work.
