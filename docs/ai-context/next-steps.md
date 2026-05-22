@@ -2,6 +2,8 @@
 
 The next development work should begin Phase 3: Scoring Engine.
 
+Phase 2.5 — Runtime Stabilization is complete. The Docker Compose runtime now starts the frontend, backend, and PostgreSQL together, applies migrations, loads seed data, and passes runtime smoke tests.
+
 ## Recommended Next Task
 
 Add explainable scoring on top of the Phase 2 backend workflow records:
@@ -14,7 +16,7 @@ Add explainable scoring on top of the Phase 2 backend workflow records:
 
 ## Why This Is Next
 
-The Phase 2 backend now makes the core assurance records durable. The next highest-value step is turning those records into explainable scores without jumping ahead to scanner integrations or OneTrust support.
+The Phase 2 backend makes the core assurance records durable, and Phase 2.5 makes the platform runnable with PostgreSQL. The next highest-value step is turning those records into explainable scores without jumping ahead to scanner integrations or OneTrust support.
 
 The scoring layer should clarify:
 
@@ -30,6 +32,7 @@ The scoring layer should clarify:
 - Review board workflow stays operational and audit-friendly.
 - Scanner outputs remain mock records only.
 - The Phase 2 API client layer can be used when the frontend starts moving off mock data.
+- Keep Docker Compose startup simple: frontend, backend, and PostgreSQL only.
 
 ## Do Not Do Next
 

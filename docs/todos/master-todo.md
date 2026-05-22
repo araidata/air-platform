@@ -11,6 +11,20 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - Built Executive Dashboard, AI Inventory, Findings Queue, System Detail, Evidence and Audit, and AIRB Review Queue starter routes.
 - Added score cards, risk heatmap, trend visualization, inventory table, findings queue table, evidence list, and governance review cards using mock data.
 
+## Completed In Phase 2.5
+
+- [x] Add Docker Compose runtime.
+- [x] Add frontend container.
+- [x] Add backend API container.
+- [x] Add PostgreSQL runtime.
+- [x] Add Alembic migration execution during backend startup.
+- [x] Add shared environment configuration with `.env.example`.
+- [x] Add frontend/backend integration through the Next.js backend proxy.
+- [x] Add seed-data loading during backend startup.
+- [x] Add health endpoint and database health endpoint.
+- [x] Add runtime smoke testing.
+- [x] Add persistent PostgreSQL volume.
+
 ## Frontend TODO
 
 - Configure shadcn/ui.
@@ -39,6 +53,7 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 
 - [x] Create FastAPI app under `apps/api`.
 - [x] Add health endpoint.
+- [x] Add database health endpoint.
 - [x] Configure environment loading.
 - [x] Configure database connection.
 - Configure Redis connection.
@@ -56,6 +71,8 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - [x] Add OpenAPI tags.
 - [x] Add tests for health, systems, findings, evidence, and workflows.
 - Add tests for scoring.
+- [x] Add backend Dockerfile.
+- [x] Add container startup migration and seed flow.
 
 ## Database TODO
 
@@ -78,6 +95,9 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - [x] Add indexes for evidence search.
 - [x] Add seed data migrations or seed script.
 - [x] Add test database setup.
+- [x] Add PostgreSQL Docker Compose runtime.
+- [x] Add persistent PostgreSQL Docker volume.
+- [x] Verify Alembic migrations against live PostgreSQL.
 
 ## Dashboards TODO
 
@@ -172,15 +192,16 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - Test evidence linking.
 - Test scanner mock normalization.
 - Test API pagination and filters.
+- [x] Add runtime smoke test for frontend, backend, database, migrations, seed data, and core API endpoints.
 
 ## Operational Maturity TODO
 
-- Add Docker Compose.
-- Add environment templates.
-- Add local startup docs.
+- [x] Add Docker Compose.
+- [x] Add environment templates.
+- [x] Add local startup docs.
 - Add backup scripts.
 - Add restore runbook.
-- Add health checks.
+- [x] Add health checks.
 - Add structured logging.
 - Add operator runbooks.
 - Add admin settings page later.

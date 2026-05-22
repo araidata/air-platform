@@ -44,7 +44,7 @@ The platform should orchestrate those tools, normalize their outputs, preserve e
 
 ## Current Status
 
-The repository has completed Phase 2: Findings, Evidence, and Assessment Workflow. A Next.js frontend scaffold exists under `apps/web`, and a FastAPI backend now exists under `apps/api` with SQLAlchemy models, Alembic migrations, workflow services, seed data, and tests for the core assurance records.
+The repository has completed Phase 2.5 — Runtime Stabilization. A Next.js frontend scaffold exists under `apps/web`, and a FastAPI backend exists under `apps/api` with SQLAlchemy models, Alembic migrations, workflow services, seed data, and tests for the core assurance records. The platform now runs as a Docker Compose stack with frontend, backend, and PostgreSQL containers.
 
 Completed now:
 
@@ -60,10 +60,14 @@ Completed now:
 - Workflow services enforcing finding and assessment transitions with audit logging.
 - Phase 2 seed data matching the mock county AI systems.
 - Basic backend tests for model creation, lifecycle transitions, evidence creation, retests, audit events, and API smoke flows.
+- Docker Compose runtime with `frontend`, `backend`, and `postgres` services.
+- Backend container startup flow that waits for PostgreSQL, applies Alembic migrations, loads idempotent seed data, and starts FastAPI.
+- Frontend container with same-origin backend proxy support through `/api/backend/*`.
+- PostgreSQL persistent named volume and service health checks.
+- Runtime smoke test covering frontend load, backend health, DB health, seeded API endpoints, and frontend/backend proxy connectivity.
 
 Not built yet:
 
-- Docker Compose runtime.
 - Scanner adapter code.
 - Real scanner integrations.
 - OneTrust integration.
@@ -125,6 +129,7 @@ See [Phased Build Plan](docs/roadmap/phased-build-plan.md) for details.
 - Phase 0: Repository and AI Context Foundation.
 - Phase 1: Operational UI and Mock Data.
 - Phase 2: Findings, Evidence, and Assessment Workflow.
+- Phase 2.5 — Runtime Stabilization.
 - Phase 3: Scoring Engine.
 - Phase 4: Scanner Adapter Framework.
 - Phase 5: First Real Scanner Integration.
@@ -171,6 +176,37 @@ AI completion rule:
 - [x] Implement finding lifecycle status transitions.
 - [x] Implement evidence records and evidence-to-finding links.
 - [x] Implement owners, due dates, retest status, and audit events.
+
+### Phase 2.5 — Runtime Stabilization
+
+Objective:
+Make the disconnected frontend, backend, migration, seed, and database components run as one local operational platform.
+
+Rationale:
+The project needs a repeatable one-VM Docker Compose runtime before scoring or scanner-adapter work adds more moving pieces.
+
+Deliverables and operational outcomes:
+
+- [x] Add Docker Compose runtime.
+- [x] Add frontend container.
+- [x] Add backend API container.
+- [x] Add PostgreSQL runtime.
+- [x] Add persistent PostgreSQL volume.
+- [x] Add shared environment configuration with `.env.example`.
+- [x] Execute Alembic migrations during backend startup.
+- [x] Load idempotent seed data during backend startup.
+- [x] Add backend startup validation and health checks.
+- [x] Add frontend/backend integration through a same-origin proxy.
+- [x] Add runtime smoke testing.
+- [x] Document developer startup, migration, seed, reset, and troubleshooting workflows.
+
+Intentionally deferred:
+
+- Scanner execution containers.
+- Redis or background job systems.
+- Kubernetes, Helm, or distributed infrastructure.
+- Production reverse proxy and TLS hardening.
+- Enterprise authentication.
 
 ### Phase 3 — Scoring Engine
 

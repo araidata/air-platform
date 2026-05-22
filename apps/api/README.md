@@ -1,6 +1,6 @@
 # County AI Assurance API
 
-FastAPI backend for Phase 2 findings, evidence, and assessment workflow.
+FastAPI backend for Phase 2 findings, evidence, and assessment workflow plus the Phase 2.5 Docker runtime.
 
 ## Local Setup
 
@@ -28,6 +28,31 @@ The checked-in initial migration creates all Phase 2 workflow tables.
 
 ```powershell
 uvicorn app.main:app --reload
+```
+
+## Docker Runtime
+
+From the repository root:
+
+```powershell
+docker compose up --build
+```
+
+The backend container waits for PostgreSQL, runs `alembic upgrade head`, runs `python -m app.seed.run_seed` when `RUN_SEED=true`, and starts Uvicorn.
+
+Useful runtime commands:
+
+```powershell
+docker compose exec backend alembic current
+docker compose exec backend alembic upgrade head
+docker compose exec backend python -m app.seed.run_seed
+```
+
+Health endpoints:
+
+```text
+GET /health
+GET /health/db
 ```
 
 ## Seed Data

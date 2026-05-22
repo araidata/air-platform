@@ -163,6 +163,64 @@ Findings are the operational center of the platform. Scanner integrations are no
 - Autonomous remediation.
 - Complex escalation automation.
 
+## Phase 2.5 — Runtime Stabilization
+
+### Objectives
+
+- Add the Docker Compose runtime that matches the single-VM deployment model.
+- Containerize the FastAPI backend and Next.js frontend.
+- Run PostgreSQL as the primary runtime database with persistent storage.
+- Execute Alembic migrations and seed data during backend startup.
+- Validate frontend, backend, database, migration, seed, and API connectivity.
+
+### Rationale
+
+The workflow backend and mock frontend need to run as one platform before scoring, scanner adapters, or export workflows are added.
+
+### Dependencies
+
+- Phase 2 backend models, migrations, routes, and seed data.
+- Existing Next.js frontend scaffold.
+- Docker and Docker Compose on the operator machine or VM.
+
+### Deliverables
+
+- `docker-compose.yml`.
+- Backend and frontend Dockerfiles.
+- `.env.example`.
+- PostgreSQL named volume.
+- Health endpoints and practical container health checks.
+- Runtime smoke test.
+- Updated deployment and startup documentation.
+
+### Operational Outcomes
+
+- A new developer can copy `.env.example` to `.env`, run `docker compose up`, and access the seeded platform.
+- Backend startup waits for PostgreSQL, runs migrations, loads seed data, and starts FastAPI.
+- Frontend reaches the backend through a same-origin proxy.
+- PostgreSQL data persists across container restart when volumes are preserved.
+
+### Implementation Risks
+
+- Host port conflicts on developer machines.
+- Treating this phase as production hardening instead of runtime stabilization.
+
+### Intentionally Waits Until Later
+
+- Scanner execution containers.
+- Redis and background jobs.
+- Production TLS/reverse proxy hardening.
+- Backup automation.
+- Enterprise authentication.
+
+### Should Not Yet Be Built
+
+- Kubernetes.
+- Helm.
+- Service mesh.
+- Distributed workers.
+- Cloud infrastructure modules.
+
 ## Phase 3 - Scoring And Evidence System
 
 ### Objectives

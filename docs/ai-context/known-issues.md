@@ -2,13 +2,13 @@
 
 ## Current Issues
 
-- No application code exists yet.
-- No frontend scaffold exists yet.
-- No backend API exists yet.
-- No database schema exists yet.
-- No Docker Compose runtime exists yet.
-- No automated tests exist yet.
-- No mock data implementation exists yet.
+- Frontend pages still use mock data as the primary rendered source.
+- Backend tests use SQLite for fast workflow coverage; Docker smoke tests cover live PostgreSQL runtime behavior.
+- No scanner adapter code exists yet.
+- No real scanner integrations exist yet.
+- No OneTrust integration exists yet.
+- No production backup or restore automation exists yet.
+- Host port conflicts can require `API_HOST_PORT` or `FRONTEND_HOST_PORT` overrides on developer machines.
 
 ## Documentation Issues
 

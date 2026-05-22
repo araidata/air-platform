@@ -62,6 +62,46 @@ Do not build:
 - OneTrust API integration.
 - Distributed workers.
 
+## Phase 2.5 — Runtime Stabilization
+
+Objectives:
+
+- Make the platform runnable with Docker Compose.
+- Run frontend, backend, and PostgreSQL together on one host.
+- Apply Alembic migrations inside the backend container.
+- Load idempotent seed data into PostgreSQL.
+- Validate frontend/backend connectivity and API persistence.
+
+Rationale:
+
+Phase 2 created the backend workflow records, but the repository still needed an operational runtime. This phase turns the code into a reproducible one-VM platform before Phase 3 scoring adds more business logic.
+
+Deliverables:
+
+- `docker-compose.yml` with `frontend`, `backend`, and `postgres` services.
+- Backend Dockerfile and startup script.
+- Frontend Dockerfile and same-origin backend proxy.
+- `.env.example` for runtime configuration.
+- PostgreSQL named volume.
+- Health checks for practical startup validation.
+- Runtime smoke test script.
+- Deployment documentation for startup, migrations, seed, reset, and troubleshooting.
+
+Operational outcomes:
+
+- A developer can copy `.env.example` to `.env`, run `docker compose up`, and use seeded data.
+- Backend startup validates PostgreSQL, applies migrations, seeds data, and exposes FastAPI.
+- The frontend can reach the backend through `/api/backend/*`.
+- PostgreSQL data survives container restart when volumes are preserved.
+
+What intentionally remains deferred:
+
+- Scanner execution containers.
+- Redis, queues, and background job systems.
+- Production reverse proxy, TLS, and backup automation.
+- Kubernetes, Helm, service mesh, or distributed infrastructure.
+- Enterprise authentication and authorization.
+
 ## Phase 3 — Scoring Engine
 
 Purpose:

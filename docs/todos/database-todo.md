@@ -18,6 +18,15 @@
 - [x] Add Phase 2 seed script.
 - [x] Add SQLite-backed test database setup.
 
+## Completed In Phase 2.5
+
+- [x] Add PostgreSQL Docker Compose runtime.
+- [x] Add persistent `postgres_data` Docker volume.
+- [x] Run Alembic migrations against live PostgreSQL in the backend container.
+- [x] Load seeded systems, findings, assessments, and evidence into PostgreSQL.
+- [x] Verify persistence after `docker compose down` and restart without deleting volumes.
+- [x] Fix seed ordering so evidence audit events receive PostgreSQL evidence IDs.
+
 ## Phase 3 Candidate Tables
 
 - `score_snapshots`

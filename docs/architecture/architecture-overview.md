@@ -138,8 +138,13 @@ Initial deployment is Docker Compose on one Linux VM:
 - `web`.
 - `api`.
 - `postgres`.
-- `redis`.
-- `scanner-runner`.
-- Optional reverse proxy.
+
+Phase 2.5 runtime includes only:
+
+- `frontend`.
+- `backend`.
+- `postgres`.
+
+Later deployment hardening may add an optional reverse proxy. Redis and scanner runners remain deferred until real workflow need exists.
 
 No Kubernetes, service mesh, distributed worker fleet, or cloud-native event pipeline should be introduced before operational workflows prove the need.

@@ -11,6 +11,9 @@
 - Built System Detail Page.
 - Built Evidence & Audit Page.
 - Built AI Review Board Queue starter view.
+- Added frontend Dockerfile for the Phase 2.5 runtime.
+- Added same-origin `/api/backend/*` proxy for backend connectivity in Docker Compose.
+- Updated the frontend API client to use `NEXT_PUBLIC_API_URL`.
 
 ## Next
 
@@ -19,7 +22,7 @@
 - Security Findings Dashboard.
 - Reports Page.
 - Settings / Integrations Page.
-- Replace mock data with API-backed data after Phase 2 persistence exists.
+- Replace mock data with API-backed data after Phase 3 scoring contracts are stable enough for UI adoption.
 
 ## UI Requirements
 

@@ -4,11 +4,10 @@ This file tracks known and expected technical debt. It should be updated as impl
 
 ## Current Debt
 
-- No application skeleton exists.
-- No runtime exists.
-- No tests exist.
-- No database migrations exist.
-- No seed scripts exist.
+- Frontend pages still use centralized mock data as their source of truth.
+- Backend automated tests use SQLite; live PostgreSQL is covered by Docker runtime smoke testing instead of a full test suite.
+- Evidence artifact storage is metadata/text only; local artifact volume workflow is deferred until file upload is implemented.
+- No production backup or restore scripts exist yet.
 
 ## Expected Early Debt
 

@@ -4,13 +4,11 @@ The roadmap should remain governance-led. Add technical capability only when it 
 
 ## Near-Term After Foundation
 
-- Implement running web and API applications.
-- Add seeded AI systems.
-- Add mock findings and dashboards.
-- Add findings workflow transitions.
-- Add evidence records and audit trail.
-- Add score explanations.
-- Add AIRB workflow.
+- Maintain the Docker Compose runtime for web, API, and PostgreSQL.
+- Implement the Phase 3 scoring engine.
+- Add score explanations and score history.
+- Wire API-backed data into frontend workflows intentionally.
+- Continue maturing AIRB workflow details.
 
 ## Mid-Term
 

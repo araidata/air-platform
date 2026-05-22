@@ -49,6 +49,26 @@ Update this file whenever the repository meaningfully changes.
 - Added backend tests covering model creation, valid and invalid finding transitions, evidence creation, audit event creation, retest creation/update, and API route smoke flows.
 - Added lightweight frontend API client layer while preserving mock data as the frontend source of truth.
 - Verified Phase 2 with `py -m pytest`, `py -m compileall app`, in-memory Alembic migration upgrade, and `npm.cmd run build`.
+- Completed Phase 2.5 — Runtime Stabilization:
+  - Added Docker Compose runtime with `frontend`, `backend`, and `postgres` services.
+  - Added backend Dockerfile and startup script.
+  - Added frontend Dockerfile and same-origin `/api/backend/*` proxy.
+  - Added `.env.example` for backend, frontend, and PostgreSQL configuration.
+  - Added PostgreSQL named volume persistence and container health checks.
+  - Added `/health/db` for database connectivity validation.
+  - Backend startup now waits for PostgreSQL, runs Alembic migrations, and loads idempotent seed data when `RUN_SEED=true`.
+  - Added `scripts/runtime-smoke-test.py`.
+  - Fixed PostgreSQL seed startup by flushing evidence records before creating evidence audit events.
+- Verified Phase 2.5 with:
+  - `docker compose config`.
+  - `docker compose up --build -d`.
+  - `docker compose exec -T backend alembic current`.
+  - `docker compose exec -T backend python -m compileall app`.
+  - `docker run --rm -v "${PWD}\apps\api:/app" -w /app python:3.12-slim sh -c "pip install -q -r requirements-dev.txt && pytest"`.
+  - `npm.cmd run build`.
+  - `docker run --rm --network air-platform_default ... scripts/runtime-smoke-test.py`.
+  - `docker compose down` followed by `docker compose up -d` without removing volumes.
+  - Host-facing checks for backend health, systems API, frontend load, and frontend/backend proxy.
 
 ## In Progress
 
@@ -72,8 +92,7 @@ Update this file whenever the repository meaningfully changes.
 - OneTrust API integration.
 - Background job execution.
 - Authentication and authorization.
-- Docker Compose runtime.
-- Production deployment.
+- Production hardening beyond the local Docker Compose runtime.
 - Kubernetes or distributed orchestration.
 
 ## Architectural Decisions
@@ -86,7 +105,8 @@ Update this file whenever the repository meaningfully changes.
 ## Current Known Issues
 
 - Documentation exists in both new and earlier paths; future cleanup may consolidate older docs after implementation stabilizes.
-- No Docker Compose runtime exists yet, so PostgreSQL was not live-smoke-tested. The initial Alembic migration was sanity-checked against SQLite, and backend workflow tests use SQLite.
+- The local Windows `py` and `python` launchers are unavailable in this session, so backend compile verification was run inside the backend container.
+- Host ports `8000` and `3000` were already allocated on the verification machine. Runtime verification used `API_HOST_PORT=8010` and `FRONTEND_HOST_PORT=3010`; the default `.env.example` remains `8000` and `3000`.
 - Browser plugin localhost verification was previously blocked by the in-app browser with `ERR_BLOCKED_BY_CLIENT`; route smoke verification was used as a fallback for Phase 1.
 
 ## Update Template

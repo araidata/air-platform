@@ -47,7 +47,15 @@ py -m app.seed.run_seed
 py -m pytest
 ```
 
-The current automated tests use SQLite for speed. Live PostgreSQL smoke testing should be added with Docker Compose when the runtime exists.
+From the repository root in the Phase 2.5 Docker runtime:
+
+```powershell
+docker compose exec backend alembic upgrade head
+docker compose exec backend python -m app.seed.run_seed
+docker compose exec backend alembic current
+```
+
+The current automated tests use SQLite for speed. Live PostgreSQL runtime behavior is smoke-tested through Docker Compose.
 
 ## Backend Guardrails
 

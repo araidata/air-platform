@@ -1,5 +1,10 @@
 # API Surface Plan
 
+## Health
+
+- `GET /health`
+- `GET /health/db`
+
 ## Systems
 
 - `GET /systems`

@@ -42,7 +42,16 @@ Start from the UI data needs. Avoid backend-first guessing.
 - Status transitions.
 - Audit events.
 
-## 5. Add Scoring
+## 5. Stabilize Runtime
+
+- Docker Compose startup.
+- Frontend container.
+- Backend API container.
+- PostgreSQL container and named volume.
+- Container migration and seed startup flow.
+- Runtime smoke tests.
+
+## 6. Add Scoring
 
 - Domain score inputs.
 - Finding severity and confidence impact.
@@ -50,7 +59,7 @@ Start from the UI data needs. Avoid backend-first guessing.
 - Score history.
 - Explanation text.
 
-## 6. Add Adapter Framework
+## 7. Add Adapter Framework
 
 - Adapter interface.
 - Mock adapter.
@@ -58,11 +67,11 @@ Start from the UI data needs. Avoid backend-first guessing.
 - Evidence capture.
 - Normalization path.
 
-## 7. Add One Real Scanner
+## 8. Add One Real Scanner
 
 Pick one scanner. Prefer garak or AgentSeal. Integrate through Docker/CLI execution and normalize results.
 
-## 8. Add Governance Exports
+## 9. Add Governance Exports
 
 - CSV first.
 - JSON second.

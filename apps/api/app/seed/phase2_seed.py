@@ -367,6 +367,7 @@ def seed_phase2(db: Session) -> None:
         ),
     ]
     db.add_all(evidence)
+    db.flush()
 
     db.add_all(
         [
