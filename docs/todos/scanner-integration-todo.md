@@ -14,6 +14,7 @@
 - [x] Normalize mock scanner findings.
 - [x] Trigger score recalculation from scanner findings.
 - [x] Add scanner recommendation APIs and Scanner Ecosystem UI.
+- [x] Filter scanner launch workflows by system target configuration and compatible scanner tags.
 
 ## Phase 5
 

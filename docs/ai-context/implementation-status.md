@@ -94,6 +94,12 @@ Update this file whenever the repository meaningfully changes.
   - Reworked `/systems/[id]` into an API-backed system detail route so newly-created systems can be inspected from the inventory table.
   - Added API client helpers for system create/update/archive-by-status, assessment creation, finding updates/transitions/retests, owners, and AIRB create/update workflows.
   - Added lightweight frontend route-contract coverage for Phase 7 workflow controls without adding new test dependencies.
+- Completed targeted Assessment Target Configuration correction:
+  - Added lightweight system fields for target type, target location, authentication type/reference, assessment method, compatible scanner tags, manual-review-only, and uploaded-artifact support.
+  - Added Alembic migration `202605220004_assessment_target_config.py`.
+  - Updated system intake/edit UI, guided assessment launch, scanner execution UI, and system detail to expose target configuration.
+  - Passed target metadata into scanner execution context, preserved scanner output metadata, and filtered scanner recommendations/runs by system compatibility.
+  - Updated seeded demo systems with realistic chatbot, internal RAG, HR/vendor, policy document, and agent target configurations.
 
 ## Verification
 
@@ -143,6 +149,17 @@ Update this file whenever the repository meaningfully changes.
 - Browser-executed scanner run through `/scanners`; completed run detail showed preserved artifacts.
 - Browser-created and approved AIRB intake through `/review-board`.
 - Browser-saved finding triage through `/findings` and verified evidence chain detail through `/evidence`.
+- `py -m compileall app` from `apps/api` after Assessment Target Configuration correction.
+- `py -m pytest` from `apps/api`: 33 passed after Assessment Target Configuration correction.
+- `npm.cmd test` from `apps/web` after Assessment Target Configuration correction.
+- `npm.cmd run lint` from `apps/web` after Assessment Target Configuration correction.
+- `npm.cmd run build` from `apps/web` after Assessment Target Configuration correction.
+- `docker compose config --quiet` after Assessment Target Configuration correction.
+- `docker compose up --build -d` with `COMPOSE_PROJECT_NAME=air_target_verify`, `API_HOST_PORT=8014`, `FRONTEND_HOST_PORT=3514`, and `POSTGRES_PORT=55444`.
+- `docker compose exec -T backend alembic current`: `202605220004 (head)`.
+- `py scripts/runtime-smoke-test.py --backend-url http://localhost:8014 --frontend-url http://localhost:3514`: passed.
+- Runtime seeded system target check confirmed chatbot, RAG endpoint, vendor AI, agent, and manual uploaded-document target configurations.
+- Browser verification of `http://localhost:3514/inventory`, `/workflows`, and `/scanners`: assessment target markers rendered and no console errors.
 
 ## In Progress
 

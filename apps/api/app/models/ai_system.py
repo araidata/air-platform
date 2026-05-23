@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, Optional
 
-from sqlalchemy import Boolean, String, Text
+from sqlalchemy import Boolean, JSON, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
@@ -26,6 +26,14 @@ class AISystem(IdMixin, TimestampMixin, Base):
     deployment_environment: Mapped[str] = mapped_column(String(80), nullable=False)
     risk_tier: Mapped[str] = mapped_column(String(40), nullable=False, default="moderate")
     approval_status: Mapped[str] = mapped_column(String(80), nullable=False, default="pending")
+    target_type: Mapped[str] = mapped_column(String(80), nullable=False, default="manual_review_only")
+    target_location: Mapped[str] = mapped_column(String(500), nullable=False, default="manual review packet")
+    authentication_type: Mapped[str] = mapped_column(String(80), nullable=False, default="none")
+    authentication_reference: Mapped[Optional[str]] = mapped_column(String(300))
+    assessment_method: Mapped[str] = mapped_column(String(80), nullable=False, default="manual_governance_review")
+    scanner_compatible: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    manual_review_only: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    uploaded_artifact_supported: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 
     assessments: Mapped[List["Assessment"]] = relationship(back_populates="system")
     findings: Mapped[List["Finding"]] = relationship(back_populates="system")

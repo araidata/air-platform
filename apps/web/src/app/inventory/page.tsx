@@ -25,6 +25,14 @@ const emptyForm = {
   deployment_environment: "pilot",
   risk_tier: "moderate",
   approval_status: "pending",
+  target_type: "web_chatbot",
+  target_location: "",
+  authentication_type: "none",
+  authentication_reference: "",
+  assessment_method: "hybrid",
+  scanner_compatible: ["prompt_injection"],
+  manual_review_only: false,
+  uploaded_artifact_supported: true,
 };
 
 type SystemForm = typeof emptyForm;
@@ -44,12 +52,44 @@ const fromSystem = (system: ApiSystem): SystemForm => ({
   deployment_environment: system.deployment_environment,
   risk_tier: system.risk_tier,
   approval_status: system.approval_status,
+  target_type: system.target_type,
+  target_location: system.target_location,
+  authentication_type: system.authentication_type,
+  authentication_reference: system.authentication_reference ?? "",
+  assessment_method: system.assessment_method,
+  scanner_compatible: system.scanner_compatible ?? [],
+  manual_review_only: system.manual_review_only,
+  uploaded_artifact_supported: system.uploaded_artifact_supported,
 });
 
 const fieldClass =
   "mt-2 h-10 w-full rounded-md border border-white/10 bg-black/30 px-3 text-sm text-zinc-100";
 const textAreaClass =
   "mt-2 min-h-24 w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm text-zinc-100";
+
+const targetTypes = [
+  "web_chatbot",
+  "rest_api",
+  "rag_endpoint",
+  "agent",
+  "local_model",
+  "vendor_ai",
+  "uploaded_prompts",
+  "uploaded_documents",
+  "manual_review_only",
+];
+
+const authenticationTypes = ["none", "bearer_token", "api_key", "session_auth", "uploaded_credentials"];
+const assessmentMethods = ["automated_scan", "manual_governance_review", "hybrid"];
+const scannerCompatibilityOptions = [
+  "garak",
+  "prompt_injection",
+  "jailbreak",
+  "toxicity",
+  "rag_integrity",
+  "civil_rights",
+  "manual_only",
+];
 
 export default function InventoryPage() {
   const [systems, setSystems] = useState<ApiSystem[]>([]);
@@ -108,6 +148,7 @@ export default function InventoryPage() {
       ...form,
       model_provider: form.model_provider || null,
       model_version: form.model_version || null,
+      authentication_reference: form.authentication_reference || null,
     };
     try {
       if (editingId) {
@@ -133,6 +174,15 @@ export default function InventoryPage() {
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Unable to archive system");
     }
+  }
+
+  function toggleScannerCompatibility(value: string) {
+    setForm((current) => ({
+      ...current,
+      scanner_compatible: current.scanner_compatible.includes(value)
+        ? current.scanner_compatible.filter((item) => item !== value)
+        : [...current.scanner_compatible, value],
+    }));
   }
 
   return (
@@ -169,7 +219,7 @@ export default function InventoryPage() {
               {editingId ? "Edit System" : "Add System"}
             </h2>
             <p className="mt-1 text-sm text-zinc-500">
-              Capture ownership, deployment, risk tier, data flags, and governance posture.
+              Capture ownership, deployment, risk tier, assessment target, scanner fit, and governance posture.
             </p>
           </div>
           {editingId ? (
@@ -268,6 +318,89 @@ export default function InventoryPage() {
             />
           </label>
         </div>
+        <div className="mt-5 border-t border-white/10 pt-4">
+          <h3 className="text-sm font-semibold text-zinc-100">Assessment Target</h3>
+          <div className="mt-3 grid gap-3 lg:grid-cols-4">
+            <label>
+              <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">Target type</span>
+              <select
+                value={form.target_type}
+                onChange={(event) => updateForm("target_type", event.target.value)}
+                className={fieldClass}
+              >
+                {targetTypes.map((item) => (
+                  <option key={item} value={item}>
+                    {labelize(item)}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="lg:col-span-2">
+              <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">Target location</span>
+              <input
+                value={form.target_location}
+                onChange={(event) => updateForm("target_location", event.target.value)}
+                placeholder="https://chat.county.gov or uploaded prompts"
+                className={fieldClass}
+              />
+            </label>
+            <label>
+              <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">Authentication type</span>
+              <select
+                value={form.authentication_type}
+                onChange={(event) => updateForm("authentication_type", event.target.value)}
+                className={fieldClass}
+              >
+                {authenticationTypes.map((item) => (
+                  <option key={item} value={item}>
+                    {labelize(item)}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="lg:col-span-2">
+              <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">Authentication reference</span>
+              <input
+                value={form.authentication_reference}
+                onChange={(event) => updateForm("authentication_reference", event.target.value)}
+                placeholder="Optional credential record or test account reference"
+                className={fieldClass}
+              />
+            </label>
+            <label>
+              <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">Assessment method</span>
+              <select
+                value={form.assessment_method}
+                onChange={(event) => updateForm("assessment_method", event.target.value)}
+                className={fieldClass}
+              >
+                {assessmentMethods.map((item) => (
+                  <option key={item} value={item}>
+                    {labelize(item)}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+        </div>
+        <div className="mt-5 border-t border-white/10 pt-4">
+          <h3 className="text-sm font-semibold text-zinc-100">Scanner Compatibility</h3>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {scannerCompatibilityOptions.map((item) => (
+              <label
+                key={item}
+                className="inline-flex items-center gap-2 rounded-md border border-white/10 bg-black/20 px-3 py-2 text-sm text-zinc-300"
+              >
+                <input
+                  type="checkbox"
+                  checked={form.scanner_compatible.includes(item)}
+                  onChange={() => toggleScannerCompatibility(item)}
+                />
+                {labelize(item)}
+              </label>
+            ))}
+          </div>
+        </div>
         <div className="mt-4 flex flex-wrap gap-3">
           {[
             ["public_facing", "Public-facing"],
@@ -276,6 +409,8 @@ export default function InventoryPage() {
             ["uses_pii", "PII"],
             ["uses_phi", "PHI"],
             ["uses_cjis", "CJIS"],
+            ["manual_review_only", "Manual review only"],
+            ["uploaded_artifact_supported", "Uploaded artifacts supported"],
           ].map(([key, label]) => (
             <label
               key={key}
@@ -294,7 +429,7 @@ export default function InventoryPage() {
           <button
             type="button"
             onClick={saveSystem}
-            disabled={!form.system_name || !form.department_owner || !form.business_purpose}
+            disabled={!form.system_name || !form.department_owner || !form.business_purpose || !form.target_location}
             className="inline-flex h-10 items-center gap-2 rounded-md border border-cyan-300/25 bg-cyan-300/10 px-4 text-sm font-medium text-cyan-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Save className="size-4" aria-hidden="true" />
@@ -345,6 +480,9 @@ export default function InventoryPage() {
                   <p className="mt-2 font-mono text-xs text-zinc-600">
                     {system.model_provider ?? "Provider not set"} / {system.model_version ?? "version not set"}
                   </p>
+                  <p className="mt-1 font-mono text-xs text-cyan-100/70">
+                    {labelize(system.target_type)} / {system.target_location}
+                  </p>
                 </div>
               </Td>
               <Td>{system.department_owner}</Td>
@@ -375,6 +513,7 @@ export default function InventoryPage() {
               <Td>
                 <StatusPill value={system.approval_status} />
                 <p className="mt-2 text-sm text-zinc-500">{labelize(system.deployment_environment)}</p>
+                <p className="mt-1 text-xs text-zinc-500">{labelize(system.assessment_method)}</p>
               </Td>
               <Td>{formatDate(system.updated_at)}</Td>
               <Td>

@@ -90,6 +90,7 @@ Development bootstrap now explicitly runs Phase 2, Phase 4, and Phase 6 seed pha
 - API-backed evidence review workspace under `apps/web/src/app/evidence/page.tsx`.
 - API-backed AIRB intake and decision workspace under `apps/web/src/app/review-board/page.tsx`.
 - API-backed system detail route under `apps/web/src/app/systems/[id]/page.tsx`.
+- Assessment Target Configuration on system records and UI workflows, including target type/location, authentication type/reference, assessment method, scanner compatibility tags, manual-review-only, and uploaded-artifact support.
 
 ## Does Not Exist Yet
 

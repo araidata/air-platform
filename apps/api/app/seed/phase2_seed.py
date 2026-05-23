@@ -17,6 +17,8 @@ from app.scoring.scoring_engine import ScoringEngine
 def seed_phase2(db: Session) -> None:
     existing = db.scalar(select(AISystem).where(AISystem.system_name == "Public Benefits Chatbot"))
     if existing:
+        _update_seed_target_config(db)
+        db.commit()
         return
 
     owners = [
@@ -59,6 +61,13 @@ def seed_phase2(db: Session) -> None:
             deployment_environment="pilot",
             risk_tier="high",
             approval_status="under_review",
+            target_type="web_chatbot",
+            target_location="https://benefits-chat.county.example",
+            authentication_type="none",
+            assessment_method="hybrid",
+            scanner_compatible=["garak", "prompt_injection", "jailbreak", "toxicity", "civil_rights"],
+            manual_review_only=False,
+            uploaded_artifact_supported=True,
         ),
         AISystem(
             system_name="Sheriff Incident Summary Assistant",
@@ -75,6 +84,14 @@ def seed_phase2(db: Session) -> None:
             deployment_environment="internal",
             risk_tier="critical",
             approval_status="blocked",
+            target_type="agent",
+            target_location="http://internal-api:8000/incident-summary",
+            authentication_type="bearer_token",
+            authentication_reference="County IT scanner token record",
+            assessment_method="hybrid",
+            scanner_compatible=["prompt_injection", "jailbreak", "unsafe_tool_use"],
+            manual_review_only=False,
+            uploaded_artifact_supported=True,
         ),
         AISystem(
             system_name="Permit Review Assistant",
@@ -91,6 +108,13 @@ def seed_phase2(db: Session) -> None:
             deployment_environment="pilot",
             risk_tier="moderate",
             approval_status="approved",
+            target_type="uploaded_documents",
+            target_location="uploaded permit packets",
+            authentication_type="none",
+            assessment_method="manual_governance_review",
+            scanner_compatible=["manual_only"],
+            manual_review_only=True,
+            uploaded_artifact_supported=True,
         ),
         AISystem(
             system_name="HR Resume Screening AI",
@@ -107,6 +131,14 @@ def seed_phase2(db: Session) -> None:
             deployment_environment="vendor_sandbox",
             risk_tier="high",
             approval_status="under_review",
+            target_type="vendor_ai",
+            target_location="vendor AI sandbox portal",
+            authentication_type="uploaded_credentials",
+            authentication_reference="HR vendor assessment credentials file",
+            assessment_method="hybrid",
+            scanner_compatible=["civil_rights", "human_appeal_path_missing"],
+            manual_review_only=False,
+            uploaded_artifact_supported=True,
         ),
         AISystem(
             system_name="Citizen Services RAG Chatbot",
@@ -123,6 +155,14 @@ def seed_phase2(db: Session) -> None:
             deployment_environment="pilot",
             risk_tier="moderate",
             approval_status="draft",
+            target_type="rag_endpoint",
+            target_location="http://internal-api:8000/rag/chat",
+            authentication_type="api_key",
+            authentication_reference="County Manager test API key record",
+            assessment_method="hybrid",
+            scanner_compatible=["prompt_injection", "rag_integrity", "toxicity"],
+            manual_review_only=False,
+            uploaded_artifact_supported=True,
         ),
     ]
     db.add_all(systems)
@@ -461,6 +501,64 @@ def seed_phase2(db: Session) -> None:
         )
     db.flush()
     db.commit()
+
+
+def _update_seed_target_config(db: Session) -> None:
+    configs = {
+        "Public Benefits Chatbot": {
+            "target_type": "web_chatbot",
+            "target_location": "https://benefits-chat.county.example",
+            "authentication_type": "none",
+            "authentication_reference": None,
+            "assessment_method": "hybrid",
+            "scanner_compatible": ["garak", "prompt_injection", "jailbreak", "toxicity", "civil_rights"],
+            "manual_review_only": False,
+            "uploaded_artifact_supported": True,
+        },
+        "Sheriff Incident Summary Assistant": {
+            "target_type": "agent",
+            "target_location": "http://internal-api:8000/incident-summary",
+            "authentication_type": "bearer_token",
+            "authentication_reference": "County IT scanner token record",
+            "assessment_method": "hybrid",
+            "scanner_compatible": ["prompt_injection", "jailbreak", "unsafe_tool_use"],
+            "manual_review_only": False,
+            "uploaded_artifact_supported": True,
+        },
+        "Permit Review Assistant": {
+            "target_type": "uploaded_documents",
+            "target_location": "uploaded permit packets",
+            "authentication_type": "none",
+            "authentication_reference": None,
+            "assessment_method": "manual_governance_review",
+            "scanner_compatible": ["manual_only"],
+            "manual_review_only": True,
+            "uploaded_artifact_supported": True,
+        },
+        "HR Resume Screening AI": {
+            "target_type": "vendor_ai",
+            "target_location": "vendor AI sandbox portal",
+            "authentication_type": "uploaded_credentials",
+            "authentication_reference": "HR vendor assessment credentials file",
+            "assessment_method": "hybrid",
+            "scanner_compatible": ["civil_rights", "human_appeal_path_missing"],
+            "manual_review_only": False,
+            "uploaded_artifact_supported": True,
+        },
+        "Citizen Services RAG Chatbot": {
+            "target_type": "rag_endpoint",
+            "target_location": "http://internal-api:8000/rag/chat",
+            "authentication_type": "api_key",
+            "authentication_reference": "County Manager test API key record",
+            "assessment_method": "hybrid",
+            "scanner_compatible": ["prompt_injection", "rag_integrity", "toxicity"],
+            "manual_review_only": False,
+            "uploaded_artifact_supported": True,
+        },
+    }
+    for system in db.scalars(select(AISystem).where(AISystem.system_name.in_(configs))).all():
+        for key, value in configs[system.system_name].items():
+            setattr(system, key, value)
 
 
 def recalculate_seed_scores(db: Session) -> None:

@@ -35,6 +35,14 @@ export type ApiSystem = {
   deployment_environment: string;
   risk_tier: string;
   approval_status: string;
+  target_type: string;
+  target_location: string;
+  authentication_type: string;
+  authentication_reference: string | null;
+  assessment_method: string;
+  scanner_compatible: string[];
+  manual_review_only: boolean;
+  uploaded_artifact_supported: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -305,6 +313,14 @@ export const apiClient = {
     deployment_environment: string;
     risk_tier: string;
     approval_status: string;
+    target_type: string;
+    target_location: string;
+    authentication_type: string;
+    authentication_reference?: string | null;
+    assessment_method: string;
+    scanner_compatible: string[];
+    manual_review_only: boolean;
+    uploaded_artifact_supported: boolean;
   }) =>
     request<ApiSystem>("/systems", {
       method: "POST",

@@ -10,8 +10,15 @@ class ScannerExecutionContext:
     system_id: str
     system_name: str
     risk_tier: str
+    target_type: str
+    target_location: str
+    authentication_type: str
+    assessment_method: str
     scan_type: str
     scan_domain: str
+    scanner_compatible: list[str] = field(default_factory=list)
+    manual_review_only: bool = False
+    uploaded_artifact_supported: bool = False
     profile_name: str | None = None
     artifact_dir: str | None = None
 

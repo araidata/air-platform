@@ -110,14 +110,10 @@ export default function GuidedWorkflowPage() {
   }, [recommendations, selectedScanTypeIds]);
   const firstSelectedScan = selectedScans[0]?.scan_type;
   const compatibleScanners = useMemo(() => {
-    if (!firstSelectedScan) return scanners.filter((scanner) => scanner.enabled);
-    return scanners.filter(
-      (scanner) =>
-        scanner.enabled &&
-        (scanner.supported_scan_types.length === 0 ||
-          scanner.supported_scan_types.includes(firstSelectedScan.name)),
-    );
-  }, [firstSelectedScan, scanners]);
+    if (selectedScans[0]) return selectedScans[0].available_scanners;
+    const recommended = [...(recommendations?.required_scans ?? []), ...(recommendations?.optional_scans ?? [])];
+    return recommended[0]?.available_scanners ?? scanners.filter((scanner) => scanner.enabled);
+  }, [recommendations, scanners, selectedScans]);
   const activeScannerId = compatibleScanners.some((scanner) => scanner.id === selectedScannerId)
     ? selectedScannerId
     : compatibleScanners[0]?.id ?? "";
@@ -148,7 +144,7 @@ export default function GuidedWorkflowPage() {
         status: executeScanner ? "running" : "under_review",
         started_at: new Date().toISOString(),
         summary: `Guided assessment for ${selectedSystem.system_name}`,
-        notes: `Domains: ${selectedDomains.join(", ")}. Profile: ${selectedProfile.profile_name}.`,
+        notes: `Domains: ${selectedDomains.join(", ")}. Profile: ${selectedProfile.profile_name}. Target: ${selectedSystem.target_type} at ${selectedSystem.target_location}.`,
       });
       setCreatedAssessment(assessment);
 
@@ -283,11 +279,32 @@ export default function GuidedWorkflowPage() {
               </select>
             </label>
             {selectedSystem ? (
-              <div className="mt-3 flex flex-wrap gap-2">
-                <StatusPill value={selectedSystem.risk_tier} />
-                <StatusPill value={selectedSystem.approval_status} />
-                {selectedSystem.public_facing ? <StatusPill value="public_facing" /> : null}
-                {selectedSystem.rights_impacting ? <StatusPill value="rights_impacting" /> : null}
+              <div className="mt-3 space-y-3">
+                <div className="flex flex-wrap gap-2">
+                  <StatusPill value={selectedSystem.risk_tier} />
+                  <StatusPill value={selectedSystem.approval_status} />
+                  <StatusPill value={selectedSystem.target_type} />
+                  <StatusPill value={selectedSystem.assessment_method} />
+                  {selectedSystem.public_facing ? <StatusPill value="public_facing" /> : null}
+                  {selectedSystem.rights_impacting ? <StatusPill value="rights_impacting" /> : null}
+                </div>
+                <div className="grid gap-3 md:grid-cols-2">
+                  <Info label="Target location" value={selectedSystem.target_location} />
+                  <Info label="Authentication" value={labelize(selectedSystem.authentication_type)} />
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {(selectedSystem.scanner_compatible.length
+                    ? selectedSystem.scanner_compatible
+                    : ["no scanner compatibility set"]
+                  ).map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-md border border-white/10 bg-black/20 px-2 py-1 text-xs text-zinc-300"
+                    >
+                      {labelize(item)}
+                    </span>
+                  ))}
+                </div>
               </div>
             ) : null}
           </div>
@@ -401,6 +418,11 @@ export default function GuidedWorkflowPage() {
                   {scanner.display_name}
                 </button>
               ))}
+              {!compatibleScanners.length ? (
+                <p className="text-sm text-zinc-500">
+                  No automated scanner is compatible with this target configuration.
+                </p>
+              ) : null}
             </div>
             <div className="mt-4 flex flex-wrap gap-3">
               <button
@@ -443,6 +465,12 @@ export default function GuidedWorkflowPage() {
             <div>
               <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">System</p>
               <p className="mt-1 text-zinc-100">{selectedSystem?.system_name ?? "Select a system"}</p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Assessment target</p>
+              <p className="mt-1 text-zinc-100">
+                {selectedSystem ? `${labelize(selectedSystem.target_type)} / ${selectedSystem.target_location}` : "Select a system"}
+              </p>
             </div>
             <div>
               <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Profile</p>
@@ -493,5 +521,14 @@ export default function GuidedWorkflowPage() {
         </aside>
       </div>
     </AppShell>
+  );
+}
+
+function Info({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-md border border-white/10 bg-black/20 p-3">
+      <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">{label}</p>
+      <p className="mt-2 break-all text-sm text-zinc-200">{value}</p>
+    </div>
   );
 }

@@ -31,6 +31,13 @@ def create_system(db):
         deployment_environment="pilot",
         risk_tier="high",
         approval_status="under_review",
+        target_type="web_chatbot",
+        target_location="https://benefits-chat.county.example",
+        authentication_type="none",
+        assessment_method="hybrid",
+        scanner_compatible=["prompt_injection", "jailbreak", "garak"],
+        manual_review_only=False,
+        uploaded_artifact_supported=True,
     )
     db.add(system)
     db.flush()

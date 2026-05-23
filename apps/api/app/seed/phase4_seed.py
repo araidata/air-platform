@@ -180,8 +180,8 @@ def _seed_mock_runs(
     service = ScannerExecutionService(db)
     plan = [
         ("Public Benefits Chatbot", "prompt_injection", "mock_ai_security_scanner", "Public-Facing Chatbot Review"),
+        ("Public Benefits Chatbot", "language_access_disparity", "mock_bias_civil_rights_scanner", "Public-Facing Chatbot Review"),
         ("Sheriff Incident Summary Assistant", "unsafe_tool_use", "mock_ai_security_scanner", "Law Enforcement / CJIS AI Review"),
-        ("Permit Review Assistant", "missing_approval", "mock_governance_evidence_scanner", "Low-Risk Internal AI Review"),
         ("HR Resume Screening AI", "human_appeal_path_missing", "mock_bias_civil_rights_scanner", "HR / Employment AI Review"),
         ("Citizen Services RAG Chatbot", "rag_poisoning", "mock_ai_security_scanner", "RAG Application Review"),
     ]

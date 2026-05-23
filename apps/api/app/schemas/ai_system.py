@@ -1,7 +1,24 @@
 from datetime import datetime
-from typing import Optional
+from typing import Literal, Optional
+
+from pydantic import Field
 
 from app.schemas.base import ApiModel, StrictApiModel
+
+
+TargetType = Literal[
+    "web_chatbot",
+    "rest_api",
+    "rag_endpoint",
+    "agent",
+    "local_model",
+    "vendor_ai",
+    "uploaded_prompts",
+    "uploaded_documents",
+    "manual_review_only",
+]
+AuthenticationType = Literal["none", "bearer_token", "api_key", "session_auth", "uploaded_credentials"]
+AssessmentMethod = Literal["automated_scan", "manual_governance_review", "hybrid"]
 
 
 class AISystemCreate(StrictApiModel):
@@ -19,6 +36,14 @@ class AISystemCreate(StrictApiModel):
     deployment_environment: str = "pilot"
     risk_tier: str = "moderate"
     approval_status: str = "pending"
+    target_type: TargetType = "manual_review_only"
+    target_location: str = "manual review packet"
+    authentication_type: AuthenticationType = "none"
+    authentication_reference: Optional[str] = None
+    assessment_method: AssessmentMethod = "manual_governance_review"
+    scanner_compatible: list[str] = Field(default_factory=list)
+    manual_review_only: bool = False
+    uploaded_artifact_supported: bool = False
 
 
 class AISystemUpdate(StrictApiModel):
@@ -36,6 +61,14 @@ class AISystemUpdate(StrictApiModel):
     deployment_environment: Optional[str] = None
     risk_tier: Optional[str] = None
     approval_status: Optional[str] = None
+    target_type: Optional[TargetType] = None
+    target_location: Optional[str] = None
+    authentication_type: Optional[AuthenticationType] = None
+    authentication_reference: Optional[str] = None
+    assessment_method: Optional[AssessmentMethod] = None
+    scanner_compatible: Optional[list[str]] = None
+    manual_review_only: Optional[bool] = None
+    uploaded_artifact_supported: Optional[bool] = None
 
 
 class AISystemRead(ApiModel):
@@ -54,5 +87,13 @@ class AISystemRead(ApiModel):
     deployment_environment: str
     risk_tier: str
     approval_status: str
+    target_type: str
+    target_location: str
+    authentication_type: str
+    authentication_reference: Optional[str]
+    assessment_method: str
+    scanner_compatible: list[str]
+    manual_review_only: bool
+    uploaded_artifact_supported: bool
     created_at: datetime
     updated_at: datetime

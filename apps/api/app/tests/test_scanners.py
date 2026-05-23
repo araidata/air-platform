@@ -305,6 +305,9 @@ def test_scanner_execution_persists_run_artifacts_evidence_findings_and_scores(d
     assert executed.execution_status == ScannerExecutionStatus.completed.value
     assert Path(executed.raw_output_path).exists()
     assert Path(executed.log_path).exists()
+    raw_text = Path(executed.raw_output_path).read_text(encoding="utf-8")
+    assert "target_type" in raw_text
+    assert system.target_location in raw_text
     assert db_session.query(ScannerResult).filter_by(scanner_run_id=run.id).one()
     assert db_session.query(Finding).filter_by(system_id=system.id).count() == 1
     run_evidence = [
@@ -314,6 +317,30 @@ def test_scanner_execution_persists_run_artifacts_evidence_findings_and_scores(d
     ]
     assert len(run_evidence) >= 3
     assert db_session.query(DomainScore).filter_by(system_id=system.id).count() >= 6
+
+
+def test_scanner_creation_rejects_manual_review_only_system(db_session, tmp_path):
+    system, assessment, scanner, scan_type, _ = create_scanner_setup(db_session)
+    system.assessment_method = "manual_governance_review"
+    system.manual_review_only = True
+    system.scanner_compatible = ["manual_only"]
+    service = ScannerExecutionService(db_session, storage_root=tmp_path)
+
+    try:
+        service.create_run(
+            ScannerRunCreate(
+                system_id=system.id,
+                assessment_id=assessment.id,
+                scanner_definition_id=scanner.id,
+                scan_type_id=scan_type.id,
+                initiated_by="pytest",
+            )
+        )
+    except Exception as exc:
+        assert getattr(exc, "status_code", None) == 400
+        assert "target configuration" in str(exc.detail)
+    else:
+        raise AssertionError("Manual-review-only systems should not create automated scanner runs")
 
 
 def test_invalid_scanner_execution_rejects_disabled_scanner(db_session, tmp_path):
@@ -389,6 +416,12 @@ def test_scanner_api_routes_create_execute_and_recommend(client, tmp_path):
             "deployment_environment": "pilot",
             "risk_tier": "high",
             "approval_status": "under_review",
+            "target_type": "web_chatbot",
+            "target_location": "https://benefits-chat.county.example",
+            "authentication_type": "none",
+            "assessment_method": "hybrid",
+            "scanner_compatible": ["prompt_injection", "garak"],
+            "uploaded_artifact_supported": True,
         },
     ).json()
     assessment = client.post(
@@ -452,6 +485,7 @@ def test_scanner_api_routes_create_execute_and_recommend(client, tmp_path):
     )
     assert recommendations.status_code == 200
     assert recommendations.json()["required_scans"]
+    assert recommendations.json()["required_scans"][0]["available_scanners"]
 
     run = client.post(
         "/scanner-runs",

@@ -125,20 +125,27 @@ export default function ScannerEcosystemPage() {
 
   const selectedSystem = systems.find((system) => system.id === selectedSystemId);
   const selectedScanType = scanTypes.find((scanType) => scanType.id === selectedScanTypeId);
+  const recommendedScans = useMemo(
+    () => [...(recommendations?.required_scans ?? []), ...(recommendations?.optional_scans ?? [])],
+    [recommendations],
+  );
   const enabledScanners = useMemo(
     () => scanners.filter((scanner) => scanner.enabled),
     [scanners],
   );
   const compatibleScanners = useMemo(
-    () =>
-      selectedScanType
+    () => {
+      const recommended = recommendedScans.find((item) => item.scan_type.id === selectedScanTypeId);
+      if (recommended) return recommended.available_scanners;
+      return selectedScanType
         ? enabledScanners.filter(
-        (scanner) =>
-          scanner.supported_scan_types.length === 0 ||
-          scanner.supported_scan_types.includes(selectedScanType.name),
-      )
-        : enabledScanners,
-    [enabledScanners, selectedScanType],
+            (scanner) =>
+              scanner.supported_scan_types.length === 0 ||
+              scanner.supported_scan_types.includes(selectedScanType.name),
+          )
+        : enabledScanners;
+    },
+    [enabledScanners, recommendedScans, selectedScanType, selectedScanTypeId],
   );
   const selectedSystemAssessments = assessments.filter(
     (assessment) => assessment.system_id === selectedSystemId,
@@ -300,6 +307,14 @@ export default function ScannerEcosystemPage() {
           </button>
         </div>
         <div className="mt-3">
+          {selectedSystem ? (
+            <div className="mb-4 grid gap-3 lg:grid-cols-4">
+              <Info label="Target type" value={labelize(selectedSystem.target_type)} />
+              <Info label="Target location" value={selectedSystem.target_location} />
+              <Info label="Authentication" value={labelize(selectedSystem.authentication_type)} />
+              <Info label="Assessment method" value={labelize(selectedSystem.assessment_method)} />
+            </div>
+          ) : null}
           <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">Scanner</span>
           <div className="mt-2 flex flex-wrap gap-2">
             {compatibleScanners.map((scanner) => (
@@ -316,6 +331,11 @@ export default function ScannerEcosystemPage() {
                 {scanner.display_name}
               </button>
             ))}
+            {!compatibleScanners.length ? (
+              <p className="text-sm text-zinc-500">
+                No enabled scanner matches this system target and scan type.
+              </p>
+            ) : null}
           </div>
         </div>
       </section>
@@ -327,7 +347,7 @@ export default function ScannerEcosystemPage() {
             <h2 className="text-base font-semibold text-zinc-50">Recommended Scans</h2>
           </div>
           <div className="space-y-3">
-            {[...(recommendations?.required_scans ?? []), ...(recommendations?.optional_scans ?? [])]
+            {recommendedScans
               .slice(0, 8)
               .map((item) => (
                 <div key={item.scan_type.id} className="rounded-lg border border-white/10 bg-black/20 p-3">
@@ -436,6 +456,12 @@ export default function ScannerEcosystemPage() {
                   </p>
                 </div>
                 <div className="rounded-lg border border-white/10 bg-black/20 p-3">
+                  <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Target</p>
+                  <p className="mt-2 break-all text-sm text-zinc-100">
+                    {systems.find((system) => system.id === selectedRun.system_id)?.target_location ?? selectedSystem?.target_location}
+                  </p>
+                </div>
+                <div className="rounded-lg border border-white/10 bg-black/20 p-3">
                   <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Raw output</p>
                   <p className="mt-2 break-all font-mono text-xs text-zinc-400">
                     {selectedRun.raw_output_path ?? "pending"}
@@ -479,5 +505,14 @@ export default function ScannerEcosystemPage() {
         </section>
       </div>
     </AppShell>
+  );
+}
+
+function Info({ label, value }: { label: string; value: string | undefined }) {
+  return (
+    <div className="rounded-md border border-white/10 bg-black/20 p-3">
+      <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">{label}</p>
+      <p className="mt-2 break-all text-sm text-zinc-200">{value ?? "Not configured"}</p>
+    </div>
   );
 }

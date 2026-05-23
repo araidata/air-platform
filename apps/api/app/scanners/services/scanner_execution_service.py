@@ -56,6 +56,8 @@ class ScannerExecutionService:
             and scan_type.name not in scanner_definition.supported_scan_types
         ):
             raise HTTPException(status_code=400, detail="Scanner does not support scan type")
+        if not self._system_supports_scanner(system, scanner_definition, scan_type):
+            raise HTTPException(status_code=400, detail="Scanner is not compatible with system target configuration")
 
         run = ScannerRun(
             system_id=system.id,
@@ -113,6 +115,13 @@ class ScannerExecutionService:
             system_id=system.id,
             system_name=system.system_name,
             risk_tier=system.risk_tier,
+            target_type=system.target_type,
+            target_location=system.target_location,
+            authentication_type=system.authentication_type,
+            assessment_method=system.assessment_method,
+            scanner_compatible=system.scanner_compatible or [],
+            manual_review_only=system.manual_review_only,
+            uploaded_artifact_supported=system.uploaded_artifact_supported,
             scan_type=scan_type.name,
             scan_domain=scan_type.domain,
             profile_name=profile.profile_name if profile else None,
@@ -281,7 +290,7 @@ class ScannerExecutionService:
                 "scan_type": scan_type,
                 "required": is_required,
                 "reason": ", ".join(reasons) or "available scan",
-                "available_scanners": self.available_scanners_for(scan_type.name),
+                "available_scanners": self.available_scanners_for(scan_type.name, system),
             }
             if is_required:
                 required.append(record)
@@ -295,7 +304,11 @@ class ScannerExecutionService:
             "optional_scans": optional,
         }
 
-    def available_scanners_for(self, scan_type_name: str) -> list[ScannerDefinition]:
+    def available_scanners_for(
+        self,
+        scan_type_name: str,
+        system: AISystem | None = None,
+    ) -> list[ScannerDefinition]:
         scanners = self.db.scalars(
             select(ScannerDefinition)
             .where(
@@ -306,8 +319,41 @@ class ScannerExecutionService:
         return [
             scanner
             for scanner in scanners
-            if not scanner.supported_scan_types or scan_type_name in scanner.supported_scan_types
+            if (not scanner.supported_scan_types or scan_type_name in scanner.supported_scan_types)
+            and (system is None or self._system_supports_scanner(system, scanner, scan_type_name))
         ]
+
+    def _system_supports_scanner(
+        self,
+        system: AISystem,
+        scanner: ScannerDefinition,
+        scan_type: ScanType | str,
+    ) -> bool:
+        if system.manual_review_only or system.assessment_method == "manual_governance_review":
+            return False
+        compatible = set(system.scanner_compatible or [])
+        if not compatible:
+            return True
+        if "manual_only" in compatible:
+            return False
+        scan_type_name = scan_type.name if isinstance(scan_type, ScanType) else scan_type
+        aliases = {
+            scanner.scanner_name,
+            scanner.scanner_category,
+            scan_type_name,
+            scan_type_name.replace("_resistance", ""),
+        }
+        if isinstance(scan_type, ScanType):
+            aliases.add(scan_type.domain)
+            if scan_type.domain == "bias_civil_rights":
+                aliases.add("civil_rights")
+            if scan_type.domain == "rag_integrity":
+                aliases.add("rag_integrity")
+        if scan_type_name == "jailbreak_resistance":
+            aliases.add("jailbreak")
+        if scan_type_name == "rag_poisoning":
+            aliases.add("rag_integrity")
+        return bool(compatible.intersection(aliases))
 
     def _resolve_assessment(self, system: AISystem, payload: ScannerRunCreate) -> Assessment:
         if payload.assessment_id:
@@ -424,6 +470,9 @@ class ScannerExecutionService:
                     "scanner_run_id": run.id,
                     "scanner_name": run.scanner_name,
                     "adapter_name": run.adapter_name,
+                    "target_type": self.db.get(AISystem, run.system_id).target_type,
+                    "target_location": self.db.get(AISystem, run.system_id).target_location,
+                    "assessment_method": self.db.get(AISystem, run.system_id).assessment_method,
                 },
             )
         )

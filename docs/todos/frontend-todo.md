@@ -26,6 +26,7 @@
 - Implemented API-backed evidence detail review with linked system, assessment, finding, scanner run, artifact references, raw text, and chain-of-evidence display.
 - Implemented API-backed AIRB intake and decision controls for approvals, exceptions, blocked decisions, review indicators, decision notes, and exception expiration.
 - Implemented API-backed system detail route for systems created from the UI.
+- Added assessment target configuration to system intake, guided assessment launch, scanner execution, and system detail surfaces.
 - Verified Phase 7 Docker runtime and browser workflows.
 
 ## Next

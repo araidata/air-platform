@@ -15,6 +15,9 @@ async function expectContains(file, fragments) {
 await expectContains("src/app/inventory/page.tsx", [
   "Add System",
   "Edit System",
+  "Assessment Target",
+  "Scanner Compatibility",
+  "Manual review only",
   "Archive",
   "createSystem",
   "updateSystem",
@@ -22,11 +25,20 @@ await expectContains("src/app/inventory/page.tsx", [
 
 await expectContains("src/app/workflows/page.tsx", [
   "Guided Operator Workflow",
+  "Target location",
   "Choose Assessment Profile",
   "Review Recommended Scans",
+  "No automated scanner is compatible",
   "Create and run first scan",
   "createAssessment",
   "executeScannerRun",
+]);
+
+await expectContains("src/app/scanners/page.tsx", [
+  "Target type",
+  "Target location",
+  "Assessment method",
+  "No enabled scanner matches this system target",
 ]);
 
 await expectContains("src/app/findings/page.tsx", [

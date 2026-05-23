@@ -97,6 +97,12 @@ export default function SystemDetailPage() {
                 <Info label="Environment" value={labelize(system.deployment_environment)} />
                 <Info label="Model" value={`${system.model_provider ?? "Provider not set"} / ${system.model_version ?? "version not set"}`} />
               </div>
+              <div className="mt-4 grid gap-4 md:grid-cols-4">
+                <Info label="Target type" value={labelize(system.target_type)} />
+                <Info label="Target location" value={system.target_location} />
+                <Info label="Authentication" value={labelize(system.authentication_type)} />
+                <Info label="Assessment method" value={labelize(system.assessment_method)} />
+              </div>
               <div className="mt-5 grid gap-4 md:grid-cols-[240px_1fr]">
                 <div className="rounded-lg border border-white/10 bg-black/20 p-4">
                   <ScoreRing score={overallScore} />

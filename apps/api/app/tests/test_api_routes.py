@@ -136,3 +136,42 @@ def test_patch_finding_rejects_direct_status_mutation(client):
         json={"status": "closed", "actor": "Maya Johnson"},
     )
     assert response.status_code == 422
+
+
+def test_system_creation_accepts_target_configuration_and_validates_options(client):
+    response = client.post(
+        "/systems",
+        json={
+            "system_name": "Internal RAG Assistant",
+            "department_owner": "County Manager",
+            "business_purpose": "Answers policy questions from approved county documents.",
+            "deployment_environment": "pilot",
+            "risk_tier": "moderate",
+            "approval_status": "under_review",
+            "target_type": "rag_endpoint",
+            "target_location": "http://internal-api:8000/rag/chat",
+            "authentication_type": "api_key",
+            "authentication_reference": "County Manager test API key record",
+            "assessment_method": "hybrid",
+            "scanner_compatible": ["prompt_injection", "rag_integrity"],
+            "manual_review_only": False,
+            "uploaded_artifact_supported": True,
+        },
+    )
+
+    assert response.status_code == 201
+    payload = response.json()
+    assert payload["target_type"] == "rag_endpoint"
+    assert payload["target_location"] == "http://internal-api:8000/rag/chat"
+    assert payload["scanner_compatible"] == ["prompt_injection", "rag_integrity"]
+
+    invalid = client.post(
+        "/systems",
+        json={
+            "system_name": "Invalid Target",
+            "department_owner": "County IT",
+            "business_purpose": "Invalid target type should fail validation.",
+            "target_type": "network_scan",
+        },
+    )
+    assert invalid.status_code == 422

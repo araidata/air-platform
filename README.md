@@ -44,7 +44,7 @@ The platform should orchestrate those tools, normalize their outputs, preserve e
 
 ## Current Status
 
-The repository has completed Phase 7 - Guided Operational UI Workflows. A Next.js frontend exists under `apps/web`, and a FastAPI backend exists under `apps/api` with SQLAlchemy models, Alembic migrations, workflow services, seed data, tests for the core assurance records, an explainable scoring engine, an evidence-preserving scanner ecosystem, the first real garak CLI adapter, public-sector civil-rights review workflows, and guided operator UI surfaces. The platform runs as a Docker Compose stack with frontend, backend, PostgreSQL, and a local scanner artifact volume.
+The repository has completed Phase 7 - Guided Operational UI Workflows, with a targeted assessment-target correction for system intake and scanner launch. A Next.js frontend exists under `apps/web`, and a FastAPI backend exists under `apps/api` with SQLAlchemy models, Alembic migrations, workflow services, seed data, tests for the core assurance records, an explainable scoring engine, an evidence-preserving scanner ecosystem, the first real garak CLI adapter, public-sector civil-rights review workflows, guided operator UI surfaces, and system-level target configuration for automated and manual assessments. The platform runs as a Docker Compose stack with frontend, backend, PostgreSQL, and a local scanner artifact volume.
 
 Completed now:
 
@@ -79,6 +79,7 @@ Completed now:
 - garak findings normalized into the existing findings, evidence, audit event, and scoring workflows.
 - Civil-rights assessment templates, language-access scenarios, human appeal-path checks, fairness-oriented findings, fairness evidence types, AIRB civil-rights indicators, and the Civil Rights Review frontend route.
 - Phase 7 frontend workflow UX for system intake, assessment launch, scanner execution, findings triage, evidence review, AIRB intake/decisions, guided workflow navigation, and API-backed system detail.
+- Assessment target configuration on system records: target type, target location, authentication type/reference, assessment method, compatible scanner tags, manual-review-only flag, and uploaded-artifact support.
 
 Not built yet:
 

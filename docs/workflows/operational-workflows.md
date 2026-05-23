@@ -2,10 +2,14 @@
 
 ## AI System Intake
 
+Operators define both governance metadata and assessment target configuration during intake. Target configuration records where the AI exists, how reviewers or scanners reach it, whether the review is automated, manual, or hybrid, and which scanner families or methods are compatible.
+
 ```mermaid
 flowchart TD
     Draft["Draft system record"] --> Classify["Classify risk and data sensitivity"]
-    Classify --> Evidence["Attach initial governance evidence"]
+    Classify --> Target["Configure assessment target"]
+    Target --> Method["Choose automated, manual, or hybrid assessment method"]
+    Method --> Evidence["Attach initial governance evidence"]
     Evidence --> ReviewNeed{"Requires AIRB review?"}
     ReviewNeed -->|Yes| AIRB["Create AIRB review"]
     ReviewNeed -->|No| Active["Mark as inventory active"]
@@ -34,7 +38,8 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    Request["Assessment request"] --> Adapter["Scanner adapter"]
+    Request["Assessment request"] --> Target["System target configuration"]
+    Target --> Adapter["Compatible scanner adapter"]
     Adapter --> Container["Docker scanner execution"]
     Container --> Raw["Raw output"]
     Raw --> Evidence["Preserve raw evidence"]
@@ -42,6 +47,8 @@ flowchart LR
     Normalize --> Queue["Findings queue"]
     Queue --> Score["Recalculate scores"]
 ```
+
+Automated assessments use the system target type, target location, authentication type, assessment method, and compatible scanner tags to create scanner runs from the UI. Manual governance reviews use uploaded artifacts, reviewer notes, policy evidence, civil-rights checks, and AIRB workflow without requiring a scanner target.
 
 ## Deployment Approval Flow
 
