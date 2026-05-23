@@ -2,6 +2,7 @@ from app.models.ai_system import AISystem
 from app.models.airb_review import AirbReview
 from app.models.assessment import Assessment
 from app.models.assessment_profile import AssessmentProfile
+from app.models.assessment_tool_run import AssessmentToolRun
 from app.models.audit_event import AuditEvent
 from app.models.evidence import Evidence
 from app.models.finding import Finding
@@ -24,6 +25,7 @@ __all__ = [
     "AirbReview",
     "Assessment",
     "AssessmentProfile",
+    "AssessmentToolRun",
     "AuditEvent",
     "Evidence",
     "Finding",

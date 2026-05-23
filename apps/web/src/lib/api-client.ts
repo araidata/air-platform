@@ -295,6 +295,37 @@ export type ApiScanRecommendations = {
   optional_scans: ApiRecommendedScan[];
 };
 
+export type ApiAssessmentToolRun = {
+  id: string;
+  engine: string;
+  status: string;
+  target_name: string;
+  target_url: string;
+  method: string;
+  selected_tests: string[];
+  request_template: Record<string, unknown>;
+  response_path: string;
+  request_headers: Record<string, unknown>;
+  steps: Array<Record<string, string>>;
+  findings: Array<{
+    id: string;
+    test: string;
+    severity: string;
+    title: string;
+    rationale: string;
+    prompt: string;
+    response_excerpt: string;
+    remediation: string;
+  }>;
+  report: Record<string, unknown>;
+  artifacts: Record<string, unknown>;
+  error_message: string | null;
+  started_at: string | null;
+  completed_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 export const apiClient = {
   systems: () => request<ApiSystem[]>("/systems"),
   system: (id: string) => request<ApiSystem>(`/systems/${id}`),
@@ -484,4 +515,25 @@ export const apiClient = {
       body: JSON.stringify({ initiated_by: initiatedBy }),
     }),
   civilRightsSummary: () => request<ApiCivilRightsSummary>("/civil-rights/summary"),
+  assessmentToolRuns: () => request<ApiAssessmentToolRun[]>("/assessment-tool/runs"),
+  assessmentToolRun: (id: string) => request<ApiAssessmentToolRun>(`/assessment-tool/runs/${id}`),
+  assessmentToolReport: (id: string) =>
+    request<Record<string, unknown>>(`/assessment-tool/runs/${id}/report`),
+  createAssessmentToolRun: (payload: {
+    engine: "garak" | "http_tester";
+    target_name: string;
+    target_url: string;
+    method: "GET" | "POST";
+    request_template: Record<string, unknown>;
+    response_path: string;
+    auth_header_name?: string | null;
+    auth_header_value?: string | null;
+    selected_tests: string[];
+    generations?: number;
+    timeout_seconds?: number;
+  }) =>
+    request<ApiAssessmentToolRun>("/assessment-tool/runs", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
 };

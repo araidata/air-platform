@@ -15,6 +15,7 @@
 - [x] Trigger score recalculation from scanner findings.
 - [x] Add scanner recommendation APIs and Scanner Ecosystem UI.
 - [x] Filter scanner launch workflows by system target configuration and compatible scanner tags.
+- [x] Add direct garak and live HTTP assessment workbench without mock scanner choices.
 
 ## Phase 5
 

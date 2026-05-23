@@ -27,6 +27,7 @@
 - Implemented API-backed AIRB intake and decision controls for approvals, exceptions, blocked decisions, review indicators, decision notes, and exception expiration.
 - Implemented API-backed system detail route for systems created from the UI.
 - Added assessment target configuration to system intake, guided assessment launch, scanner execution, and system detail surfaces.
+- Replaced Scanner Ecosystem route with one-page Assessment Tool for garak and live HTTP endpoint testing.
 - Verified Phase 7 Docker runtime and browser workflows.
 
 ## Next

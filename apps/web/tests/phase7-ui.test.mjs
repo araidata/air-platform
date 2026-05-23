@@ -35,10 +35,25 @@ await expectContains("src/app/workflows/page.tsx", [
 ]);
 
 await expectContains("src/app/scanners/page.tsx", [
-  "Target type",
-  "Target location",
-  "Assessment method",
-  "No enabled scanner matches this system target",
+  "Assessment Tool",
+  "Garak",
+  "Live HTTP Tester",
+  "Endpoint URL",
+  "Execution Process",
+  "Findings",
+  "Raw report JSON",
+]);
+
+const scannerSource = await readFile(join(root, "src/app/scanners/page.tsx"), "utf8");
+for (const fragment of ["Mock AI Security Scanner", "Scanner Registry", "Recommended Scans"]) {
+  assert.ok(!scannerSource.includes(fragment), `src/app/scanners/page.tsx should not contain ${fragment}`);
+}
+
+await expectContains("src/lib/api-client.ts", [
+  "createAssessmentToolRun",
+  "assessmentToolRuns",
+  "assessmentToolRun",
+  "assessmentToolReport",
 ]);
 
 await expectContains("src/app/findings/page.tsx", [

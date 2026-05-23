@@ -28,6 +28,8 @@ class GarakCliAdapter:
             "prompt_injection",
             "jailbreak_resistance",
             "system_prompt_leakage",
+            "encoding_obfuscation",
+            "toxicity_unsafe_content",
         }:
             raise ValueError(f"garak adapter does not support scan type: {context.scan_type}")
         if not context.artifact_dir:
@@ -47,7 +49,7 @@ class GarakCliAdapter:
             completed = self._run_command(
                 metadata["command"],
                 cwd=garak_dir,
-                env=self._execution_env(garak_dir),
+                env=self._execution_env(garak_dir, context),
                 timeout=int(os.getenv("GARAK_TIMEOUT_SECONDS", str(self.default_timeout_seconds))),
             )
             exit_code = completed.returncode
@@ -180,16 +182,24 @@ class GarakCliAdapter:
         return []
 
     def _execution_metadata(self, context: ScannerExecutionContext, garak_dir: Path) -> dict[str, Any]:
+        target_type = context.execution_options.get(
+            "garak_target_type",
+            os.getenv("GARAK_TARGET_TYPE", self._target_for_scan_type(context.scan_type)),
+        )
+        probe = context.execution_options.get(
+            "garak_probes",
+            os.getenv("GARAK_PROBES", self._probe_for_scan_type(context.scan_type)),
+        )
         command = [
             os.getenv("GARAK_PYTHON", sys.executable),
             "-m",
             "garak",
             "--model_type",
-            os.getenv("GARAK_TARGET_TYPE", self._target_for_scan_type(context.scan_type)),
+            target_type,
             "--probes",
-            os.getenv("GARAK_PROBES", self._probe_for_scan_type(context.scan_type)),
+            probe,
             "--generations",
-            os.getenv("GARAK_GENERATIONS", "1"),
+            str(context.execution_options.get("generations", os.getenv("GARAK_GENERATIONS", "1"))),
             "--parallel_attempts",
             "1",
             "--parallel_requests",
@@ -200,6 +210,9 @@ class GarakCliAdapter:
             "--report_prefix",
             str(garak_dir / f"air-{context.run_id}"),
         ]
+        generator_option_file = context.execution_options.get("generator_option_file")
+        if generator_option_file:
+            command.extend(["-G", str(generator_option_file)])
         return {
             "scanner": self.get_name(),
             "scanner_version": self.get_version(),
@@ -212,17 +225,20 @@ class GarakCliAdapter:
             "assessment_method": context.assessment_method,
             "scanner_compatible": context.scanner_compatible,
             "command": command,
-            "target_type": os.getenv("GARAK_TARGET_TYPE", self._target_for_scan_type(context.scan_type)),
-            "probes": os.getenv("GARAK_PROBES", self._probe_for_scan_type(context.scan_type)),
+            "garak_target_type": target_type,
+            "probes": probe,
+            "generator_option_file": str(generator_option_file) if generator_option_file else None,
             "generated_at": datetime.utcnow().isoformat(),
         }
 
-    def _execution_env(self, garak_dir: Path) -> dict[str, str]:
+    def _execution_env(self, garak_dir: Path, context: ScannerExecutionContext | None = None) -> dict[str, str]:
         env = os.environ.copy()
         env["HOME"] = str(garak_dir / "home")
         env["XDG_CONFIG_HOME"] = str(garak_dir / "xdg-config")
         env["XDG_DATA_HOME"] = str(garak_dir / "xdg-data")
         env["PYTHONUNBUFFERED"] = "1"
+        if context and context.execution_options.get("rest_api_key"):
+            env["REST_API_KEY"] = str(context.execution_options["rest_api_key"])
         return env
 
     def _run_command(
@@ -265,6 +281,8 @@ class GarakCliAdapter:
             "prompt_injection": "promptinject.HijackLongPrompt",
             "jailbreak_resistance": "dan.DanInTheWild",
             "system_prompt_leakage": "sysprompt_extraction.SystemPromptExtraction",
+            "encoding_obfuscation": "encoding.InjectBase64",
+            "toxicity_unsafe_content": "lmrc.Profanity",
         }.get(scan_type, "promptinject.HijackLongPrompt")
 
     def _target_for_scan_type(self, scan_type: str) -> str:
@@ -311,4 +329,8 @@ class GarakCliAdapter:
             return "Strengthen system prompt confidentiality controls and add regression tests for prompt disclosure."
         if scan_type == "jailbreak_resistance":
             return "Add jailbreak regression prompts, refusal checks, and reviewer signoff before approval."
+        if scan_type == "encoding_obfuscation":
+            return "Add encoded-prompt handling tests and verify policy controls survive obfuscation."
+        if scan_type == "toxicity_unsafe_content":
+            return "Strengthen unsafe-content handling and verify refusal behavior with regression tests."
         return "Add prompt injection regression tests, harden system instructions, and gate sensitive actions."

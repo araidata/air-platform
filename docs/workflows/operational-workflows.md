@@ -50,6 +50,8 @@ flowchart LR
 
 Automated assessments use the system target type, target location, authentication type, assessment method, and compatible scanner tags to create scanner runs from the UI. Manual governance reviews use uploaded artifacts, reviewer notes, policy evidence, civil-rights checks, and AIRB workflow without requiring a scanner target.
 
+The `/scanners` route is now a direct assessment workbench. Operators can run garak presets or live HTTP tests by entering a target endpoint, request template, response path, and selected test suites, then reviewing execution steps, findings, artifacts, and report JSON on one page.
+
 ## Deployment Approval Flow
 
 ```mermaid

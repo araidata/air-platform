@@ -72,12 +72,12 @@ Development bootstrap now explicitly runs Phase 2, Phase 4, and Phase 6 seed pha
 - Score APIs for listing scores, retrieving explanations, system score history, and recalculating system or assessment scores.
 - Service-layer score recalculation hooks for findings, evidence, retests, assessments, systems, AIRB decisions, and scanner-created findings.
 - Frontend score integrations for executive dashboard, system detail, findings queue, AI Review Board queue, and governance reports.
-- Scanner Ecosystem frontend route under `apps/web/src/app/scanners/page.tsx`.
+- Assessment Tool frontend route under `apps/web/src/app/scanners/page.tsx` for direct garak and live HTTP endpoint testing without mock scanner choices.
 - garak CLI adapter under `apps/api/app/scanners/adapters/garak_adapter.py`.
 - Docker backend image installation of garak through `requirements-scanners.txt`.
 - Native garak JSONL report, hit log, HTML report, scanner configuration, stdout/stderr log, raw platform JSON, and normalized output artifact preservation.
 - Real garak findings normalized into existing finding, evidence, audit event, and score recalculation workflows.
-- Scanner Ecosystem frontend visibility for real scanner runs, adapters, evidence counts, normalized findings, and score change history.
+- Direct Assessment Tool frontend visibility for garak and live HTTP runs, execution steps, findings, artifacts, response excerpts, and report JSON.
 - Civil-rights assessment templates for rights-impacting AI, public benefits eligibility, HR/employment, law enforcement/CJIS, citizen-facing chatbots, accessibility/language access, and human review/appeals.
 - Language-access scenario records for English/Spanish evidence-backed review.
 - Human appeal-path check records for escalation, adverse decision review, override, and accessibility paths.
@@ -91,6 +91,7 @@ Development bootstrap now explicitly runs Phase 2, Phase 4, and Phase 6 seed pha
 - API-backed AIRB intake and decision workspace under `apps/web/src/app/review-board/page.tsx`.
 - API-backed system detail route under `apps/web/src/app/systems/[id]/page.tsx`.
 - Assessment Target Configuration on system records and UI workflows, including target type/location, authentication type/reference, assessment method, scanner compatibility tags, manual-review-only, and uploaded-artifact support.
+- Direct assessment-tool run persistence and APIs for one-page garak and live HTTP tester execution with process steps, findings, artifacts, and report JSON.
 
 ## Does Not Exist Yet
 

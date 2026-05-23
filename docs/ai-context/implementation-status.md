@@ -100,6 +100,12 @@ Update this file whenever the repository meaningfully changes.
   - Updated system intake/edit UI, guided assessment launch, scanner execution UI, and system detail to expose target configuration.
   - Passed target metadata into scanner execution context, preserved scanner output metadata, and filtered scanner recommendations/runs by system compatibility.
   - Updated seeded demo systems with realistic chatbot, internal RAG, HR/vendor, policy document, and agent target configurations.
+- Completed Garak + Live HTTP Assessment Workbench:
+  - Replaced `/scanners` registry-style UI with a direct assessment tool surface.
+  - Added `AssessmentToolRun` persistence and `/assessment-tool/runs` APIs.
+  - Added live HTTP endpoint tester with curated adversarial prompts, response extraction, finding heuristics, auth redaction, and report artifacts.
+  - Extended garak execution to accept UI-generated REST generator configuration and probe presets.
+  - Removed mock scanner choices, registry cards, recommended scan cards, and seeded mock run display from `/scanners`.
 
 ## Verification
 
@@ -160,6 +166,16 @@ Update this file whenever the repository meaningfully changes.
 - `py scripts/runtime-smoke-test.py --backend-url http://localhost:8014 --frontend-url http://localhost:3514`: passed.
 - Runtime seeded system target check confirmed chatbot, RAG endpoint, vendor AI, agent, and manual uploaded-document target configurations.
 - Browser verification of `http://localhost:3514/inventory`, `/workflows`, and `/scanners`: assessment target markers rendered and no console errors.
+- `py -m pytest` from `apps/api`: 38 passed after Garak + Live HTTP Assessment Workbench.
+- `npm.cmd test`, `npm.cmd run lint`, and `npm.cmd run build` from `apps/web` after Garak + Live HTTP Assessment Workbench.
+- `docker compose config --quiet` after Garak + Live HTTP Assessment Workbench.
+- `docker compose up --build -d` with `COMPOSE_PROJECT_NAME=air_local_test`, `API_HOST_PORT=8014`, `FRONTEND_HOST_PORT=3514`, and `POSTGRES_PORT=55444`.
+- `docker compose exec -T backend alembic current`: `202605220005 (head)`.
+- `py scripts/runtime-smoke-test.py --backend-url http://localhost:8014 --frontend-url http://localhost:3514`: passed.
+- Runtime live HTTP tester execution against a temporary local endpoint completed with one prompt-injection finding, report artifact, and redacted auth header.
+- Runtime garak assessment-tool execution completed with generated REST config, native garak JSONL/HTML artifacts, and assessment report artifact.
+- Browser verification of `http://localhost:3514/scanners`: Garak and Live HTTP Tester tabs rendered, target fields/progress/findings/report JSON were visible, a UI-triggered Live HTTP Tester run produced a real finding, and old mock scanner registry text was absent.
+- Added regression coverage for multi-preset garak runs so one malformed/partial preset output is marked failed without losing the overall assessment-tool run report.
 
 ## In Progress
 

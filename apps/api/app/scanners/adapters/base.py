@@ -19,6 +19,7 @@ class ScannerExecutionContext:
     scanner_compatible: list[str] = field(default_factory=list)
     manual_review_only: bool = False
     uploaded_artifact_supported: bool = False
+    execution_options: dict[str, Any] = field(default_factory=dict)
     profile_name: str | None = None
     artifact_dir: str | None = None
 

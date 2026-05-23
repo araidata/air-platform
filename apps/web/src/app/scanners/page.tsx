@@ -2,210 +2,149 @@
 
 import { useEffect, useMemo, useState } from "react";
 import {
-  Activity,
+  AlertTriangle,
+  Braces,
   CheckCircle2,
   FileJson,
   Play,
-  Radar,
-  ShieldCheck,
-  TriangleAlert,
+  RefreshCw,
+  ShieldAlert,
+  TerminalSquare,
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
-import { TableHead, TableShell, Td, Th } from "@/components/data-table";
-import { MetricCard } from "@/components/metric-card";
 import { PageHeader } from "@/components/page-header";
-import {
-  type ApiAssessment,
-  type ApiAssessmentProfile,
-  type ApiEvidence,
-  type ApiFinding,
-  type ApiScanRecommendations,
-  type ApiScanType,
-  type ApiScoreHistory,
-  type ApiScannerDefinition,
-  type ApiScannerRun,
-  type ApiSystem,
-  apiClient,
-} from "@/lib/api-client";
+import { type ApiAssessmentToolRun, apiClient } from "@/lib/api-client";
+import { formatDate, labelize, StatusPill, statusTone } from "@/lib/format";
 
-const toneForStatus = (status: string) => {
-  if (status === "completed") return "border-emerald-300/20 bg-emerald-300/10 text-emerald-100";
-  if (status === "failed") return "border-red-300/20 bg-red-300/10 text-red-100";
-  if (status === "running") return "border-cyan-300/20 bg-cyan-300/10 text-cyan-100";
-  return "border-zinc-500/20 bg-zinc-500/10 text-zinc-300";
-};
+const testOptions = [
+  { id: "prompt_injection", label: "Prompt Injection" },
+  { id: "jailbreak", label: "Jailbreak" },
+  { id: "system_prompt_leakage", label: "System Prompt Leakage" },
+  { id: "encoding_obfuscation", label: "Encoding / Obfuscation" },
+  { id: "toxicity_unsafe_content", label: "Toxicity / Unsafe Content" },
+  { id: "pii_leakage", label: "PII Leakage" },
+  { id: "policy_bypass", label: "Policy Bypass" },
+];
 
-const labelize = (value: string) =>
-  value
-    .split("_")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
+const garakTestIds = new Set([
+  "prompt_injection",
+  "jailbreak",
+  "system_prompt_leakage",
+  "encoding_obfuscation",
+  "toxicity_unsafe_content",
+]);
 
-export default function ScannerEcosystemPage() {
-  const [systems, setSystems] = useState<ApiSystem[]>([]);
-  const [assessments, setAssessments] = useState<ApiAssessment[]>([]);
-  const [scanners, setScanners] = useState<ApiScannerDefinition[]>([]);
-  const [scanTypes, setScanTypes] = useState<ApiScanType[]>([]);
-  const [profiles, setProfiles] = useState<ApiAssessmentProfile[]>([]);
-  const [runs, setRuns] = useState<ApiScannerRun[]>([]);
-  const [findings, setFindings] = useState<ApiFinding[]>([]);
-  const [evidence, setEvidence] = useState<ApiEvidence[]>([]);
-  const [scoreHistory, setScoreHistory] = useState<ApiScoreHistory[]>([]);
-  const [recommendations, setRecommendations] = useState<ApiScanRecommendations | null>(null);
-  const [selectedSystemId, setSelectedSystemId] = useState("");
-  const [selectedProfileId, setSelectedProfileId] = useState("");
-  const [selectedScanTypeId, setSelectedScanTypeId] = useState("");
-  const [selectedScannerId, setSelectedScannerId] = useState("");
-  const [selectedRun, setSelectedRun] = useState<ApiScannerRun | null>(null);
-  const [isExecuting, setIsExecuting] = useState(false);
+const defaultTemplate = `{
+  "prompt": "{{prompt}}"
+}`;
+
+const fieldClass =
+  "mt-2 h-10 w-full rounded-md border border-white/10 bg-black/30 px-3 text-sm text-zinc-100";
+const textAreaClass =
+  "mt-2 min-h-32 w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 font-mono text-xs leading-5 text-zinc-100";
+
+export default function ScannerWorkbenchPage() {
+  const [engine, setEngine] = useState<"garak" | "http_tester">("garak");
+  const [targetName, setTargetName] = useState("County AI endpoint");
+  const [targetUrl, setTargetUrl] = useState("http://localhost:8000/chat");
+  const [method, setMethod] = useState<"GET" | "POST">("POST");
+  const [requestTemplate, setRequestTemplate] = useState(defaultTemplate);
+  const [responsePath, setResponsePath] = useState("response");
+  const [authHeaderName, setAuthHeaderName] = useState("");
+  const [authHeaderValue, setAuthHeaderValue] = useState("");
+  const [generations, setGenerations] = useState(1);
+  const [timeoutSeconds, setTimeoutSeconds] = useState(60);
+  const [selectedTests, setSelectedTests] = useState<string[]>([
+    "prompt_injection",
+    "jailbreak",
+    "system_prompt_leakage",
+  ]);
+  const [runs, setRuns] = useState<ApiAssessmentToolRun[]>([]);
+  const [selectedRun, setSelectedRun] = useState<ApiAssessmentToolRun | null>(null);
+  const [isRunning, setIsRunning] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function loadData() {
-      try {
-        const [
-          systemRecords,
-          assessmentRecords,
-          scannerRecords,
-          scanTypeRecords,
-          profileRecords,
-          runRecords,
-          findingRecords,
-          evidenceRecords,
-        ] = await Promise.all([
-          apiClient.systems(),
-          apiClient.assessments(),
-          apiClient.scannerDefinitions(),
-          apiClient.scanTypes(),
-          apiClient.assessmentProfiles(),
-          apiClient.scannerRuns(),
-          apiClient.findings(),
-          apiClient.evidence(),
-        ]);
-        setSystems(systemRecords);
-        setAssessments(assessmentRecords);
-        setScanners(scannerRecords);
-        setScanTypes(scanTypeRecords);
-        setProfiles(profileRecords);
-        setRuns(runRecords);
-        setFindings(findingRecords);
-        setEvidence(evidenceRecords);
-        setSelectedSystemId(systemRecords[0]?.id ?? "");
-        setSelectedProfileId(profileRecords[0]?.id ?? "");
-        setSelectedScanTypeId(
-          scanTypeRecords.find((scanType) => scanType.name === "prompt_injection")?.id ??
-            scanTypeRecords[0]?.id ??
-            "",
-        );
-        setSelectedScannerId(scannerRecords.find((scanner) => scanner.enabled)?.id ?? "");
-        setSelectedRun(runRecords[0] ?? null);
-      } catch (caught) {
-        setError(caught instanceof Error ? caught.message : "Unable to load scanner data");
-      }
+    async function loadRuns() {
+      const records = await apiClient.assessmentToolRuns();
+      setRuns(records);
+      setSelectedRun((current) => current ?? records[0] ?? null);
     }
-    void loadData();
+    loadRuns().catch((caught) =>
+      setError(caught instanceof Error ? caught.message : "Unable to load assessment runs"),
+    );
   }, []);
 
-  useEffect(() => {
-    if (!selectedSystemId) return;
-    async function loadRecommendations() {
-      try {
-        const [nextRecommendations, nextScoreHistory] = await Promise.all([
-          apiClient.recommendedScans(selectedSystemId, selectedProfileId),
-          apiClient.systemScoreHistory(selectedSystemId),
-        ]);
-        setRecommendations(nextRecommendations);
-        setScoreHistory(nextScoreHistory);
-      } catch (caught) {
-        setError(caught instanceof Error ? caught.message : "Unable to load recommendations");
-      }
+  const visibleTestOptions = useMemo(
+    () => (engine === "garak" ? testOptions.filter((option) => garakTestIds.has(option.id)) : testOptions),
+    [engine],
+  );
+
+  const runLabel = useMemo(() => {
+    const testLabel = selectedTests.length === 1 ? labelize(selectedTests[0]) : `${selectedTests.length} tests`;
+    return engine === "garak" ? `Run garak ${testLabel}` : `Run live HTTP ${testLabel}`;
+  }, [engine, selectedTests]);
+
+  const severityCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const finding of selectedRun?.findings ?? []) {
+      counts.set(finding.severity, (counts.get(finding.severity) ?? 0) + 1);
     }
-    void loadRecommendations();
-  }, [selectedSystemId, selectedProfileId]);
+    return Array.from(counts.entries());
+  }, [selectedRun]);
 
-  const selectedSystem = systems.find((system) => system.id === selectedSystemId);
-  const selectedScanType = scanTypes.find((scanType) => scanType.id === selectedScanTypeId);
-  const recommendedScans = useMemo(
-    () => [...(recommendations?.required_scans ?? []), ...(recommendations?.optional_scans ?? [])],
-    [recommendations],
-  );
-  const enabledScanners = useMemo(
-    () => scanners.filter((scanner) => scanner.enabled),
-    [scanners],
-  );
-  const compatibleScanners = useMemo(
-    () => {
-      const recommended = recommendedScans.find((item) => item.scan_type.id === selectedScanTypeId);
-      if (recommended) return recommended.available_scanners;
-      return selectedScanType
-        ? enabledScanners.filter(
-            (scanner) =>
-              scanner.supported_scan_types.length === 0 ||
-              scanner.supported_scan_types.includes(selectedScanType.name),
-          )
-        : enabledScanners;
-    },
-    [enabledScanners, recommendedScans, selectedScanType, selectedScanTypeId],
-  );
-  const selectedSystemAssessments = assessments.filter(
-    (assessment) => assessment.system_id === selectedSystemId,
-  );
-  const latestAssessment = selectedSystemAssessments[0];
-  const selectedRunFindings = selectedRun
-    ? findings.filter(
-        (finding) =>
-          finding.scanner_name === selectedRun.scanner_name &&
-          finding.assessment_id === selectedRun.assessment_id,
-      )
-    : [];
-  const selectedRunEvidence = selectedRun
-    ? evidence.filter((record) => record.metadata_json?.scanner_run_id === selectedRun.id)
-    : [];
-  const selectedRunScoreChanges = selectedRun
-    ? scoreHistory.filter((record) => record.assessment_id === selectedRun.assessment_id)
-    : [];
-  const activeScannerId = compatibleScanners.some((scanner) => scanner.id === selectedScannerId)
-    ? selectedScannerId
-    : compatibleScanners[0]?.id;
+  function toggleTest(testId: string) {
+    setSelectedTests((current) =>
+      current.includes(testId)
+        ? current.filter((item) => item !== testId)
+        : [...current, testId],
+    );
+  }
 
-  async function runScannerAssessment() {
-    if (!selectedSystemId || !activeScannerId || !selectedScanTypeId) return;
-    setIsExecuting(true);
-    setError(null);
-    try {
-      const created = await apiClient.createScannerRun({
-        system_id: selectedSystemId,
-        assessment_id: latestAssessment?.id,
-        scanner_definition_id: activeScannerId,
-        scan_type_id: selectedScanTypeId,
-        assessment_profile_id: selectedProfileId || undefined,
-        initiated_by: "frontend-operator",
+  function selectEngine(nextEngine: "garak" | "http_tester") {
+    setEngine(nextEngine);
+    if (nextEngine === "garak") {
+      setSelectedTests((current) => {
+        const filtered = current.filter((testId) => garakTestIds.has(testId));
+        return filtered.length ? filtered : ["prompt_injection"];
       });
-      const executed = await apiClient.executeScannerRun(created.id, "frontend-operator");
-      const [runRecords, findingRecords, evidenceRecords, nextScoreHistory] = await Promise.all([
-        apiClient.scannerRuns(),
-        apiClient.findings(),
-        apiClient.evidence(),
-        apiClient.systemScoreHistory(selectedSystemId),
-      ]);
-      setRuns(runRecords);
-      setFindings(findingRecords);
-      setEvidence(evidenceRecords);
-      setScoreHistory(nextScoreHistory);
-      setSelectedRun(executed);
+    }
+  }
+
+  async function runAssessment() {
+    setError(null);
+    setIsRunning(true);
+    try {
+      const parsedTemplate = JSON.parse(requestTemplate) as Record<string, unknown>;
+      const run = await apiClient.createAssessmentToolRun({
+        engine,
+        target_name: targetName,
+        target_url: targetUrl,
+        method,
+        request_template: parsedTemplate,
+        response_path: responsePath,
+        auth_header_name: authHeaderName || null,
+        auth_header_value: authHeaderValue || null,
+        selected_tests: selectedTests,
+        generations,
+        timeout_seconds: timeoutSeconds,
+      });
+      setSelectedRun(run);
+      const nextRuns = await apiClient.assessmentToolRuns();
+      setRuns(nextRuns);
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Scanner execution failed");
+      setError(caught instanceof Error ? caught.message : "Assessment failed");
     } finally {
-      setIsExecuting(false);
+      setIsRunning(false);
     }
   }
 
   return (
     <AppShell>
       <PageHeader
-        title="Scanner Ecosystem"
-        description="Operational scan registry, assessment profile controls, evidence-preserving scanner execution, and normalized scanner findings."
-        actions={<Radar className="size-6 text-cyan-100" aria-hidden="true" />}
+        title="Assessment Tool"
+        description="Run garak or direct HTTP tests against an AI endpoint, watch the assessment process, and review real findings and report output."
+        actions={<ShieldAlert className="size-6 text-cyan-100" aria-hidden="true" />}
       />
 
       {error ? (
@@ -214,305 +153,253 @@ export default function ScannerEcosystemPage() {
         </div>
       ) : null}
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-        <MetricCard
-          label="Enabled scanners"
-          value={enabledScanners.length}
-          detail={`${scanners.length} registered assessment tools`}
-          tone="neutral"
-          badgeLabel="Phase 5"
-        />
-        <MetricCard
-          label="Scan controls"
-          value={scanTypes.filter((scanType) => scanType.enabled).length}
-          detail="Active scan types across governance domains"
-          tone="neutral"
-          badgeLabel="Phase 4"
-        />
-        <MetricCard
-          label="Profiles"
-          value={profiles.filter((profile) => profile.enabled).length}
-          detail="Assessment profiles available for operator selection"
-          tone="neutral"
-          badgeLabel="Phase 4"
-        />
-        <MetricCard
-          label="Completed runs"
-          value={runs.filter((run) => run.execution_status === "completed").length}
-          detail="Scanner runs with preserved output"
-          tone="good"
-          badgeLabel="Phase 4"
-        />
-        <MetricCard
-          label="Failed runs"
-          value={runs.filter((run) => run.execution_status === "failed").length}
-          detail="Visible execution failures"
-          tone="warn"
-          badgeLabel="Phase 4"
-        />
-      </div>
+      <div className="grid gap-6 xl:grid-cols-[380px_1fr_420px]">
+        <section className="rounded-lg border border-white/10 bg-white/[0.045] p-4">
+          <div className="flex items-center gap-2">
+            <TerminalSquare className="size-5 text-cyan-100" aria-hidden="true" />
+            <h2 className="text-base font-semibold text-zinc-50">Target and Tests</h2>
+          </div>
 
-      <section className="mt-6 rounded-lg border border-white/10 bg-white/[0.045] p-4">
-        <div className="grid gap-3 lg:grid-cols-[1fr_1fr_1fr_auto]">
-          <label className="block">
-            <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">System</span>
-            <select
-              value={selectedSystemId}
-              onChange={(event) => setSelectedSystemId(event.target.value)}
-              className="mt-2 h-10 w-full rounded-md border border-white/10 bg-black/30 px-3 text-sm text-zinc-100"
-            >
-              {systems.map((system) => (
-                <option key={system.id} value={system.id}>
-                  {system.system_name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="block">
-            <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">Profile</span>
-            <select
-              value={selectedProfileId}
-              onChange={(event) => setSelectedProfileId(event.target.value)}
-              className="mt-2 h-10 w-full rounded-md border border-white/10 bg-black/30 px-3 text-sm text-zinc-100"
-            >
-              {profiles.map((profile) => (
-                <option key={profile.id} value={profile.id}>
-                  {profile.profile_name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="block">
-            <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">Scan type</span>
-            <select
-              value={selectedScanTypeId}
-              onChange={(event) => setSelectedScanTypeId(event.target.value)}
-              className="mt-2 h-10 w-full rounded-md border border-white/10 bg-black/30 px-3 text-sm text-zinc-100"
-            >
-              {scanTypes.map((scanType) => (
-                <option key={scanType.id} value={scanType.id}>
-                  {scanType.display_name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button
-            type="button"
-          onClick={runScannerAssessment}
-            disabled={isExecuting || !compatibleScanners.length}
-            className="mt-6 inline-flex h-10 items-center justify-center gap-2 rounded-md border border-cyan-300/25 bg-cyan-300/10 px-4 text-sm font-medium text-cyan-50 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <Play className="size-4" aria-hidden="true" />
-            {isExecuting ? "Running" : "Run"}
-          </button>
-        </div>
-        <div className="mt-3">
-          {selectedSystem ? (
-            <div className="mb-4 grid gap-3 lg:grid-cols-4">
-              <Info label="Target type" value={labelize(selectedSystem.target_type)} />
-              <Info label="Target location" value={selectedSystem.target_location} />
-              <Info label="Authentication" value={labelize(selectedSystem.authentication_type)} />
-              <Info label="Assessment method" value={labelize(selectedSystem.assessment_method)} />
-            </div>
-          ) : null}
-          <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">Scanner</span>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {compatibleScanners.map((scanner) => (
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            {[
+              ["garak", "Garak"],
+              ["http_tester", "Live HTTP Tester"],
+            ].map(([value, label]) => (
               <button
-                key={scanner.id}
+                key={value}
                 type="button"
-                onClick={() => setSelectedScannerId(scanner.id)}
-                className={`rounded-md border px-3 py-2 text-sm ${
-                  activeScannerId === scanner.id
+                onClick={() => selectEngine(value as "garak" | "http_tester")}
+                className={`h-10 rounded-md border px-3 text-sm font-medium ${
+                  engine === value
                     ? "border-cyan-300/30 bg-cyan-300/10 text-cyan-50"
-                    : "border-white/10 bg-black/20 text-zinc-300 hover:border-cyan-300/20"
+                    : "border-white/10 bg-black/20 text-zinc-300"
                 }`}
               >
-                {scanner.display_name}
+                {label}
               </button>
             ))}
-            {!compatibleScanners.length ? (
-              <p className="text-sm text-zinc-500">
-                No enabled scanner matches this system target and scan type.
-              </p>
-            ) : null}
           </div>
-        </div>
-      </section>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
-        <section className="rounded-lg border border-white/10 bg-white/[0.045] p-4">
-          <div className="mb-4 flex items-center gap-2">
-            <ShieldCheck className="size-5 text-emerald-100" aria-hidden="true" />
-            <h2 className="text-base font-semibold text-zinc-50">Recommended Scans</h2>
+          <div className="mt-4 space-y-3">
+            <label className="block">
+              <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">Target name</span>
+              <input value={targetName} onChange={(event) => setTargetName(event.target.value)} className={fieldClass} />
+            </label>
+            <label className="block">
+              <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">Endpoint URL</span>
+              <input value={targetUrl} onChange={(event) => setTargetUrl(event.target.value)} className={fieldClass} />
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              <label className="block">
+                <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">HTTP method</span>
+                <select value={method} onChange={(event) => setMethod(event.target.value as "GET" | "POST")} className={fieldClass}>
+                  <option value="POST">POST</option>
+                  <option value="GET">GET</option>
+                </select>
+              </label>
+              <label className="block">
+                <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">Response path</span>
+                <input value={responsePath} onChange={(event) => setResponsePath(event.target.value)} className={fieldClass} />
+              </label>
+            </div>
+            <label className="block">
+              <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">JSON request template</span>
+              <textarea value={requestTemplate} onChange={(event) => setRequestTemplate(event.target.value)} className={textAreaClass} />
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              <label className="block">
+                <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">Auth header</span>
+                <input placeholder="Authorization" value={authHeaderName} onChange={(event) => setAuthHeaderName(event.target.value)} className={fieldClass} />
+              </label>
+              <label className="block">
+                <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">Header value</span>
+                <input type="password" value={authHeaderValue} onChange={(event) => setAuthHeaderValue(event.target.value)} className={fieldClass} />
+              </label>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <label className="block">
+                <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">Generations</span>
+                <input type="number" min={1} max={5} value={generations} onChange={(event) => setGenerations(Number(event.target.value))} className={fieldClass} />
+              </label>
+              <label className="block">
+                <span className="text-xs uppercase tracking-[0.08em] text-zinc-500">Timeout seconds</span>
+                <input type="number" min={5} max={300} value={timeoutSeconds} onChange={(event) => setTimeoutSeconds(Number(event.target.value))} className={fieldClass} />
+              </label>
+            </div>
           </div>
-          <div className="space-y-3">
-            {recommendedScans
-              .slice(0, 8)
-              .map((item) => (
-                <div key={item.scan_type.id} className="rounded-lg border border-white/10 bg-black/20 p-3">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="font-medium text-zinc-100">{item.scan_type.display_name}</p>
-                      <p className="mt-1 text-sm text-zinc-500">{item.reason}</p>
-                    </div>
-                    <span className="rounded-md border border-white/10 px-2 py-1 text-xs text-zinc-300">
-                      {item.required ? "Required" : "Optional"}
-                    </span>
-                  </div>
-                  <p className="mt-2 text-xs uppercase tracking-[0.08em] text-zinc-500">
-                    {labelize(item.scan_type.domain)} · {item.available_scanners.length} enabled scanner
-                  </p>
-                </div>
+
+          <div className="mt-5">
+            <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Test suites</p>
+            <div className="mt-2 grid gap-2">
+              {visibleTestOptions.map((option) => (
+                <label key={option.id} className="flex items-center gap-2 rounded-md border border-white/10 bg-black/20 px-3 py-2 text-sm text-zinc-300">
+                  <input type="checkbox" checked={selectedTests.includes(option.id)} onChange={() => toggleTest(option.id)} />
+                  {option.label}
+                </label>
               ))}
+            </div>
           </div>
+
+          <button
+            type="button"
+            onClick={runAssessment}
+            disabled={isRunning || !targetUrl || !selectedTests.length}
+            className="mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-md border border-cyan-300/25 bg-cyan-300/10 px-4 text-sm font-semibold text-cyan-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isRunning ? <RefreshCw className="size-4 animate-spin" /> : <Play className="size-4" />}
+            {isRunning ? "Running assessment" : runLabel}
+          </button>
         </section>
 
-        <section>
-          <TableShell label="Scanner runs">
-            <TableHead>
-              <tr>
-                <Th>Run</Th>
-                <Th>Status</Th>
-                <Th>Findings</Th>
-                <Th>Artifacts</Th>
-              </tr>
-            </TableHead>
-            <tbody className="divide-y divide-white/10">
-              {runs.slice(0, 8).map((run) => (
-                <tr
-                  key={run.id}
-                  className="cursor-pointer hover:bg-white/[0.03]"
-                  onClick={() => setSelectedRun(run)}
-                >
-                  <Td>
-                      <p className="font-medium text-zinc-100">{labelize(run.scanner_name)}</p>
-                    <p className="mt-1 font-mono text-xs text-zinc-500">
-                      {scanTypes.find((scanType) => scanType.id === run.scan_type_id)?.display_name ?? run.id.slice(0, 8)}
-                    </p>
-                  </Td>
-                  <Td>
-                    <span className={`rounded-md border px-2 py-1 text-xs ${toneForStatus(run.execution_status)}`}>
-                      {labelize(run.execution_status)}
-                    </span>
-                  </Td>
-                  <Td>{run.finding_count}</Td>
-                  <Td>
-                    <div className="flex items-center gap-2 text-zinc-400">
-                      <FileJson className="size-4" aria-hidden="true" />
-                      <span>{run.raw_output_path ? "Preserved" : "Pending"}</span>
-                    </div>
-                  </Td>
-                </tr>
-              ))}
-            </tbody>
-          </TableShell>
-        </section>
-      </div>
-
-      <div className="mt-6 grid gap-6 xl:grid-cols-2">
-        <section className="rounded-lg border border-white/10 bg-white/[0.045] p-4">
-          <div className="mb-4 flex items-center gap-2">
-            <Activity className="size-5 text-cyan-100" aria-hidden="true" />
-            <h2 className="text-base font-semibold text-zinc-50">Scanner Registry</h2>
-          </div>
-          <div className="grid gap-3 md:grid-cols-2">
-            {scanners.slice(0, 8).map((scanner) => (
-              <div key={scanner.id} className="rounded-lg border border-white/10 bg-black/20 p-3">
-                <div className="flex items-start justify-between gap-3">
-                  <p className="font-medium text-zinc-100">{scanner.display_name}</p>
-                  {scanner.enabled ? (
-                    <CheckCircle2 className="size-4 text-emerald-100" aria-hidden="true" />
-                  ) : (
-                    <TriangleAlert className="size-4 text-amber-100" aria-hidden="true" />
-                  )}
-                </div>
-                <p className="mt-2 text-sm text-zinc-500">{labelize(scanner.scanner_category)}</p>
-                <p className="mt-2 font-mono text-xs text-zinc-600">
-                  {scanner.execution_mode} · {scanner.adapter_name}
+        <main className="space-y-6">
+          <section className="rounded-lg border border-white/10 bg-white/[0.045] p-4">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <h2 className="text-base font-semibold text-zinc-50">Execution Process</h2>
+                <p className="mt-1 text-sm text-zinc-500">
+                  {selectedRun ? `${labelize(selectedRun.engine)} run ${selectedRun.id.slice(0, 8)}` : "No assessment run selected"}
                 </p>
               </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="rounded-lg border border-white/10 bg-white/[0.045] p-4">
-          <h2 className="text-base font-semibold text-zinc-50">Run Detail</h2>
-          {selectedRun ? (
-            <div className="mt-4 space-y-4">
-              <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-lg border border-white/10 bg-black/20 p-3">
-                  <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Status</p>
-                  <p className="mt-2 text-sm text-zinc-100">{labelize(selectedRun.execution_status)}</p>
-                </div>
-                <div className="rounded-lg border border-white/10 bg-black/20 p-3">
-                  <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Adapter</p>
-                  <p className="mt-2 text-sm text-zinc-100">{selectedRun.adapter_name}</p>
-                </div>
-                <div className="rounded-lg border border-white/10 bg-black/20 p-3">
-                  <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">System</p>
-                  <p className="mt-2 text-sm text-zinc-100">
-                    {systems.find((system) => system.id === selectedRun.system_id)?.system_name ?? selectedSystem?.system_name}
-                  </p>
-                </div>
-                <div className="rounded-lg border border-white/10 bg-black/20 p-3">
-                  <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Target</p>
-                  <p className="mt-2 break-all text-sm text-zinc-100">
-                    {systems.find((system) => system.id === selectedRun.system_id)?.target_location ?? selectedSystem?.target_location}
-                  </p>
-                </div>
-                <div className="rounded-lg border border-white/10 bg-black/20 p-3">
-                  <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Raw output</p>
-                  <p className="mt-2 break-all font-mono text-xs text-zinc-400">
-                    {selectedRun.raw_output_path ?? "pending"}
-                  </p>
-                </div>
-                <div className="rounded-lg border border-white/10 bg-black/20 p-3">
-                  <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Log</p>
-                  <p className="mt-2 break-all font-mono text-xs text-zinc-400">
-                    {selectedRun.log_path ?? selectedRun.error_message ?? "pending"}
-                  </p>
-                </div>
-              </div>
-              <div>
-                <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Normalized findings</p>
-                <div className="mt-2 space-y-2">
-                  {selectedRunFindings.slice(0, 4).map((finding) => (
-                    <div key={finding.id} className="rounded-md border border-white/10 bg-black/20 p-3">
-                      <p className="font-medium text-zinc-100">{finding.title}</p>
-                      <p className="mt-1 text-sm text-zinc-500">
-                        {labelize(finding.domain)} · {labelize(finding.severity)}
-                      </p>
-                    </div>
-                  ))}
-                  {!selectedRunFindings.length ? (
-                    <p className="text-sm text-zinc-500">No normalized findings for this run.</p>
-                  ) : null}
-                </div>
-              </div>
-              <div>
-                <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Generated evidence</p>
-                <p className="mt-2 text-sm text-zinc-300">{selectedRunEvidence.length} linked evidence records</p>
-              </div>
-              <div>
-                <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Score changes</p>
-                <p className="mt-2 text-sm text-zinc-300">{selectedRunScoreChanges.length} recalculation history entries</p>
-              </div>
+              {selectedRun ? <StatusPill value={selectedRun.status} /> : null}
             </div>
-          ) : (
-            <p className="mt-4 text-sm text-zinc-500">No scanner run selected.</p>
-          )}
-        </section>
+            <div className="mt-4 space-y-3">
+              {(selectedRun?.steps ?? []).map((step, index) => (
+                <div key={`${step.label}-${index}`} className="flex gap-3 rounded-md border border-white/10 bg-black/20 p-3">
+                  <span className={`mt-0.5 grid size-6 shrink-0 place-items-center rounded-md border text-xs ${statusTone(step.status ?? "pending")}`}>
+                    {step.status === "completed" ? <CheckCircle2 className="size-4" /> : index + 1}
+                  </span>
+                  <div>
+                    <p className="font-medium text-zinc-100">{step.label}</p>
+                    <p className="mt-1 text-sm text-zinc-500">{step.detail}</p>
+                  </div>
+                </div>
+              ))}
+              {!selectedRun?.steps?.length ? (
+                <p className="rounded-md border border-white/10 bg-black/20 p-3 text-sm text-zinc-500">
+                  Configure a target and run an assessment to see validation, probe execution, parsing, findings, and report generation.
+                </p>
+              ) : null}
+            </div>
+          </section>
+
+          <section className="rounded-lg border border-white/10 bg-white/[0.045] p-4">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="size-5 text-amber-100" aria-hidden="true" />
+              <h2 className="text-base font-semibold text-zinc-50">Findings</h2>
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {severityCounts.map(([severity, count]) => (
+                <span key={severity} className={`rounded-md border px-2 py-1 text-xs ${statusTone(severity)}`}>
+                  {count} {labelize(severity)}
+                </span>
+              ))}
+              {!severityCounts.length ? <span className="text-sm text-zinc-500">No findings yet.</span> : null}
+            </div>
+            <div className="mt-4 space-y-3">
+              {(selectedRun?.findings ?? []).map((finding) => (
+                <article key={finding.id} className="rounded-lg border border-white/10 bg-black/20 p-4">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <p className="font-medium text-zinc-100">{finding.title}</p>
+                      <p className="mt-1 text-sm text-zinc-500">{labelize(finding.test)}</p>
+                    </div>
+                    <StatusPill value={finding.severity} />
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-zinc-300">{finding.rationale}</p>
+                  <div className="mt-3 grid gap-3 lg:grid-cols-2">
+                    <EvidenceBlock label="Failed prompt or probe" value={finding.prompt} />
+                    <EvidenceBlock label="Response excerpt" value={finding.response_excerpt} />
+                  </div>
+                  <p className="mt-3 text-sm text-zinc-400">{finding.remediation}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        </main>
+
+        <aside className="space-y-6">
+          <section className="rounded-lg border border-white/10 bg-white/[0.045] p-4">
+            <div className="flex items-center gap-2">
+              <FileJson className="size-5 text-cyan-100" aria-hidden="true" />
+              <h2 className="text-base font-semibold text-zinc-50">Report</h2>
+            </div>
+            {selectedRun ? (
+              <div className="mt-4 space-y-3">
+                <Info label="Target" value={selectedRun.target_url} />
+                <Info label="Completed" value={formatDate(selectedRun.completed_at)} />
+                <Info label="Findings" value={`${selectedRun.findings.length}`} />
+                <div className="rounded-md border border-white/10 bg-black/20 p-3">
+                  <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Artifacts</p>
+                  <div className="mt-2 space-y-1">
+                    {Object.entries(selectedRun.artifacts).map(([key, value]) => (
+                      <p key={key} className="break-all font-mono text-xs text-zinc-400">
+                        {labelize(key)}: {String(value)}
+                      </p>
+                    ))}
+                    {!Object.keys(selectedRun.artifacts).length ? (
+                      <p className="text-sm text-zinc-500">No artifacts yet.</p>
+                    ) : null}
+                  </div>
+                </div>
+                <div className="rounded-md border border-white/10 bg-black/20 p-3">
+                  <p className="flex items-center gap-2 text-xs uppercase tracking-[0.08em] text-zinc-500">
+                    <Braces className="size-4" aria-hidden="true" />
+                    Raw report JSON
+                  </p>
+                  <pre className="mt-3 max-h-[420px] overflow-auto whitespace-pre-wrap rounded-md bg-black/30 p-3 text-xs leading-5 text-zinc-300">
+                    {JSON.stringify(selectedRun.report, null, 2)}
+                  </pre>
+                </div>
+              </div>
+            ) : (
+              <p className="mt-4 text-sm text-zinc-500">Run an assessment to generate a report.</p>
+            )}
+          </section>
+
+          <section className="rounded-lg border border-white/10 bg-white/[0.045] p-4">
+            <h2 className="text-base font-semibold text-zinc-50">Recent Runs</h2>
+            <div className="mt-3 space-y-2">
+              {runs.slice(0, 6).map((run) => (
+                <button
+                  key={run.id}
+                  type="button"
+                  onClick={() => setSelectedRun(run)}
+                  className={`w-full rounded-md border p-3 text-left ${
+                    selectedRun?.id === run.id ? "border-cyan-300/25 bg-cyan-300/10" : "border-white/10 bg-black/20"
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-sm font-medium text-zinc-100">{run.target_name}</span>
+                    <StatusPill value={run.status} />
+                  </div>
+                  <p className="mt-2 text-xs text-zinc-500">
+                    {labelize(run.engine)} / {run.findings.length} findings / {formatDate(run.created_at)}
+                  </p>
+                </button>
+              ))}
+              {!runs.length ? <p className="text-sm text-zinc-500">No assessment runs yet.</p> : null}
+            </div>
+          </section>
+        </aside>
       </div>
     </AppShell>
   );
 }
 
-function Info({ label, value }: { label: string; value: string | undefined }) {
+function Info({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-md border border-white/10 bg-black/20 p-3">
       <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">{label}</p>
-      <p className="mt-2 break-all text-sm text-zinc-200">{value ?? "Not configured"}</p>
+      <p className="mt-2 break-all text-sm text-zinc-200">{value}</p>
+    </div>
+  );
+}
+
+function EvidenceBlock({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-md border border-white/10 bg-black/30 p-3">
+      <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">{label}</p>
+      <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-zinc-300">{value || "No evidence captured."}</p>
     </div>
   );
 }
