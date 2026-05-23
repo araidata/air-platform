@@ -6,7 +6,7 @@
 - Keep integration planning documented.
 - Build export shapes before API sync.
 
-## Phase 7
+## Phase 8
 
 - CSV export for system inventory.
 - CSV export for findings.

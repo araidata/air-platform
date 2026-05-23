@@ -128,11 +128,17 @@ Update this file whenever the repository meaningfully changes.
 
 ## Next
 
-- Begin Phase 7 governance exports and OneTrust workflow support:
-  - Add CSV exports.
-  - Add structured JSON governance exports.
-  - Add audit packet export preparation.
-  - Draft OneTrust field mapping.
+- Begin Phase 7 guided operational UI workflows:
+  - Build System Intake UI.
+  - Build Assessment Launch UX.
+  - Build Scanner Execution UX.
+  - Build Findings Review UX.
+  - Build Evidence Review UX.
+  - Build AIRB Workflow UX.
+  - Add guided operator workflow navigation.
+  - Connect the UI to the existing backend APIs.
+  - Add minimal backend API additions only when required.
+  - Verify the runtime end to end and update status docs.
 
 ## Blocked
 

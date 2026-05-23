@@ -166,8 +166,9 @@ See [Phased Build Plan](docs/roadmap/phased-build-plan.md) for details.
 - Phase 4: AI Assessment Ecosystem Foundation.
 - Phase 5: First Real Scanner Integration.
 - Phase 6: Bias and Civil Rights Assessment Maturity.
-- Phase 7: Governance Exports and OneTrust Workflow Support.
-- Phase 8: Operational Maturity.
+- Phase 7: Guided Operational UI Workflows.
+- Phase 8: Governance Exports and OneTrust Workflow Support.
+- Phase 9: Operational Maturity.
 
 ## Build Checklist
 
@@ -272,7 +273,21 @@ Intentionally deferred:
 - [x] Add human appeal path checks.
 - [x] Add fairness-oriented findings and evidence views.
 
-### Phase 7 — OneTrust and Governance Export Support
+### Phase 7 — Guided Operational UI Workflows
+
+- [ ] Build System Intake UI.
+- [ ] Build Assessment Launch UX.
+- [ ] Build Scanner Execution UX.
+- [ ] Build Findings Review UX.
+- [ ] Build Evidence Review UX.
+- [ ] Build AIRB Workflow UX.
+- [ ] Add guided operator workflow navigation.
+- [ ] Connect UI workflows to existing backend APIs.
+- [ ] Add minimal backend API additions only when required to complete the workflows.
+- [ ] Verify the runtime end to end after the workflow UX is connected.
+- [ ] Update documentation and implementation status for the workflow phase.
+
+### Phase 8 — OneTrust and Governance Export Support
 
 - [ ] Add CSV exports for inventory, findings, assessments, and risk acceptances.
 - [ ] Add structured JSON governance exports.
@@ -280,7 +295,7 @@ Intentionally deferred:
 - [ ] Draft OneTrust field mapping.
 - [ ] Support manual OneTrust upload workflow.
 
-### Phase 8 — Operational Maturity
+### Phase 9 — Operational Maturity
 
 - [ ] Add retest scheduling.
 - [ ] Add improved reporting.
@@ -301,7 +316,7 @@ Future AI agents should:
 
 ## What To Build Next
 
-The recommended next development task is Phase 7: governance exports and OneTrust workflow support. Keep exports manual and audit-packet-oriented first, then map fields for future OneTrust support without adding a live OneTrust API integration yet.
+The recommended next development task is Phase 7: guided operational UI workflows. Focus on operator-facing intake, assessment launch, scanner execution, findings review, evidence review, AIRB workflow, and API-connected navigation before adding new export surfaces.
 
 ## What Not To Build Yet
 

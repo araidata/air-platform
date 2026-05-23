@@ -11,11 +11,12 @@
 7. Scanner adapter framework.
 8. First real scanner integration.
 9. Bias and civil-rights assessment support.
-10. Governance export and OneTrust support.
+10. Guided operator workflow UX and API connection.
+11. Governance export and OneTrust support.
 
 ## Current Priority
 
-Begin Phase 6 bias and civil-rights assessment maturity now that the first real scanner integration is complete.
+Begin Phase 7 guided operational UI workflows now that the runtime, scanner ecosystem, and civil-rights workflows are in place.
 
 ## What Matters Most
 

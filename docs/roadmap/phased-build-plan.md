@@ -196,7 +196,31 @@ Do not build:
 - Claims that scanner output alone proves compliance.
 - Full statistical fairness platform before workflow needs are known.
 
-## Phase 7 — OneTrust and Governance Export Support
+## Phase 7 — Guided Operational UI Workflows
+
+Purpose:
+Turn the existing pages and APIs into guided operator workflows that make intake, assessment launch, scanner execution, findings review, evidence review, and AIRB progression usable end to end.
+
+Build:
+
+- System Intake UI.
+- Assessment Launch UX.
+- Scanner Execution UX.
+- Findings Review UX.
+- Evidence Review UX.
+- AIRB Workflow UX.
+- Guided operator workflow navigation.
+- UI connection to the existing backend APIs.
+- Minimal backend API additions only when a workflow requires them.
+- Runtime verification and documentation/status updates.
+
+Do not build:
+
+- Large frontend rewrites disconnected from the existing operations-center structure.
+- Broad new backend abstractions before workflow gaps are proven.
+- Export-heavy work before the operator workflows are connected.
+
+## Phase 8 — OneTrust and Governance Export Support
 
 Purpose:
 Add export packages for OneTrust or governance review, starting with CSV/JSON/PDF-ready packets.
@@ -214,7 +238,7 @@ Do not build:
 - OneTrust API integration first.
 - Deep bidirectional sync before field mapping is validated.
 
-## Phase 8 — Operational Maturity
+## Phase 9 — Operational Maturity
 
 Purpose:
 Add scheduling, retesting, improved reporting, optional notifications, and better operator workflow.

@@ -28,6 +28,11 @@
 
 ## Phase 7
 
+- Build AIRB workflow UX with guided operator progression.
+- Add governance-focused findings and evidence review handoff steps.
+
+## Phase 8
+
 - Export governance packets.
 - Export risk acceptances and decisions.
 

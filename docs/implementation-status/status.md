@@ -25,4 +25,4 @@ Not implemented yet:
 
 ## Next Priority
 
-Phase 6 should mature bias and civil-rights assessment support: language access scenarios, human appeal path checks, rights-impacting templates, and fairness-oriented evidence workflows.
+Phase 7 should add guided operational UI workflows for intake, assessment launch, scanner execution, findings review, evidence review, AIRB progression, operator navigation, and connection to the existing backend APIs.

@@ -27,6 +27,14 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 
 ## Frontend TODO
 
+- Build System Intake UI.
+- Build Assessment Launch UX.
+- Build Scanner Execution UX.
+- Build Findings Review UX.
+- Build Evidence Review UX.
+- Build AIRB Workflow UX.
+- Add guided operator workflow navigation across intake, assessment, scanning, findings, evidence, and AIRB views.
+- Connect frontend workflow surfaces to the existing backend APIs before adding broader new frontend pages.
 - Configure shadcn/ui.
 - Add user menu placeholder when authentication direction is known.
 - Replace simple trend visualization with Recharts if charting needs grow.
@@ -194,6 +202,7 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - [x] Add backend integration tests with test database.
 - Add frontend component tests where useful.
 - Add Playwright smoke tests after UI exists.
+- Add runtime verification for the guided operator workflow path once the UI is API-connected.
 - [x] Test seed data integrity.
 - Test workflow transitions.
 - [x] Test score calculations.
@@ -202,6 +211,14 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - [x] Test first real scanner execution, parsing, evidence preservation, failure handling, and score integration.
 - Test API pagination and filters.
 - [x] Add runtime smoke test for frontend, backend, database, migrations, seed data, and core API endpoints.
+
+## Governance Export TODO
+
+- Export system inventory CSV.
+- Export findings CSV.
+- Export risk acceptances CSV.
+- Export JSON audit packet.
+- Document OneTrust field mapping.
 
 ## Operational Maturity TODO
 
@@ -221,7 +238,6 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 
 - Create integration mapping model.
 - Create integration status model.
-- Document OneTrust field mapping.
 - Plan Jira ticket mapping.
 - Plan ServiceNow ticket mapping.
 - Plan Teams notification templates.

@@ -90,7 +90,7 @@ Development bootstrap now explicitly runs Phase 2, Phase 4, and Phase 6 seed pha
 
 ## Highest-Value Next Step
 
-Begin Phase 7 governance exports and OneTrust workflow support. Keep exports manual, evidence-backed, and simple before considering any live external integration.
+Begin Phase 7 guided operational UI workflows. Prioritize operator-facing system intake, assessment launch, scanner execution, findings review, evidence review, AIRB workflow guidance, and connection to the existing backend APIs before expanding exports or new backend surface area.
 
 ## Agent Reminder
 

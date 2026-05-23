@@ -27,8 +27,8 @@
 
 ## Next
 
-- Begin Phase 7 governance exports and OneTrust workflow support.
-- Add pagination and filtering once UI integration needs are clearer.
+- Begin Phase 7 guided operational UI workflows, keeping backend changes minimal and driven by operator UX gaps.
+- Add pagination and filtering once the API-connected workflow surfaces make the need concrete.
 
 ## Completed In Phase 3
 
