@@ -22,9 +22,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <p className="text-xs font-medium uppercase tracking-[0.08em] text-zinc-500">
               Operating mode
             </p>
-            <p className="mt-2 text-sm text-zinc-200">Phase 6 civil-rights workflow</p>
+            <p className="mt-2 text-sm text-zinc-200">Phase 7 guided workflow</p>
             <p className="mt-1 text-xs leading-5 text-zinc-500">
-              Evidence-backed fairness, language access, and appeal-path review.
+              Intake, assessment launch, scanner execution, findings, evidence, and AIRB routing.
             </p>
           </div>
         </aside>

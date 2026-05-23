@@ -44,7 +44,7 @@ The platform should orchestrate those tools, normalize their outputs, preserve e
 
 ## Current Status
 
-The repository has completed Phase 6 - Bias and Civil Rights Assessment Support. A Next.js frontend exists under `apps/web`, and a FastAPI backend exists under `apps/api` with SQLAlchemy models, Alembic migrations, workflow services, seed data, tests for the core assurance records, an explainable scoring engine, an evidence-preserving scanner ecosystem, the first real garak CLI adapter, and public-sector civil-rights review workflows. The platform runs as a Docker Compose stack with frontend, backend, PostgreSQL, and a local scanner artifact volume.
+The repository has completed Phase 7 - Guided Operational UI Workflows. A Next.js frontend exists under `apps/web`, and a FastAPI backend exists under `apps/api` with SQLAlchemy models, Alembic migrations, workflow services, seed data, tests for the core assurance records, an explainable scoring engine, an evidence-preserving scanner ecosystem, the first real garak CLI adapter, public-sector civil-rights review workflows, and guided operator UI surfaces. The platform runs as a Docker Compose stack with frontend, backend, PostgreSQL, and a local scanner artifact volume.
 
 Completed now:
 
@@ -78,6 +78,7 @@ Completed now:
 - Native garak JSONL, hit log, HTML report, scanner configuration, stdout/stderr log, raw platform JSON, and normalized output preservation.
 - garak findings normalized into the existing findings, evidence, audit event, and scoring workflows.
 - Civil-rights assessment templates, language-access scenarios, human appeal-path checks, fairness-oriented findings, fairness evidence types, AIRB civil-rights indicators, and the Civil Rights Review frontend route.
+- Phase 7 frontend workflow UX for system intake, assessment launch, scanner execution, findings triage, evidence review, AIRB intake/decisions, guided workflow navigation, and API-backed system detail.
 
 Not built yet:
 
@@ -275,17 +276,17 @@ Intentionally deferred:
 
 ### Phase 7 — Guided Operational UI Workflows
 
-- [ ] Build System Intake UI.
-- [ ] Build Assessment Launch UX.
-- [ ] Build Scanner Execution UX.
-- [ ] Build Findings Review UX.
-- [ ] Build Evidence Review UX.
-- [ ] Build AIRB Workflow UX.
-- [ ] Add guided operator workflow navigation.
-- [ ] Connect UI workflows to existing backend APIs.
-- [ ] Add minimal backend API additions only when required to complete the workflows.
-- [ ] Verify the runtime end to end after the workflow UX is connected.
-- [ ] Update documentation and implementation status for the workflow phase.
+- [x] Build System Intake UI.
+- [x] Build Assessment Launch UX.
+- [x] Build Scanner Execution UX.
+- [x] Build Findings Review UX.
+- [x] Build Evidence Review UX.
+- [x] Build AIRB Workflow UX.
+- [x] Add guided operator workflow navigation.
+- [x] Connect UI workflows to existing backend APIs.
+- [x] Add minimal backend API additions only when required to complete the workflows.
+- [x] Verify the runtime end to end after the workflow UX is connected.
+- [x] Update documentation and implementation status for the workflow phase.
 
 ### Phase 8 — OneTrust and Governance Export Support
 
@@ -316,7 +317,7 @@ Future AI agents should:
 
 ## What To Build Next
 
-The recommended next development task is Phase 7: guided operational UI workflows. Focus on operator-facing intake, assessment launch, scanner execution, findings review, evidence review, AIRB workflow, and API-connected navigation before adding new export surfaces.
+The recommended next development task is Phase 8: governance exports and OneTrust workflow support.
 
 ## What Not To Build Yet
 

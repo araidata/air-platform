@@ -10,12 +10,14 @@ import {
   Gauge,
   Library,
   Languages,
+  ListChecks,
   Radar,
   Scale,
 } from "lucide-react";
 
 const navItems = [
   { href: "/", label: "Executive Dashboard", icon: Gauge },
+  { href: "/workflows", label: "Guided Workflow", icon: ListChecks },
   { href: "/inventory", label: "AI Inventory", icon: Database },
   { href: "/findings", label: "Findings Queue", icon: ClipboardList },
   { href: "/systems/public-benefits-chatbot", label: "System Detail", icon: FileSearch },

@@ -85,6 +85,15 @@ Update this file whenever the repository meaningfully changes.
   - Recalculates scores only when seed records changed or required scores are missing.
   - Keeps bootstrap enabled by default for `ENVIRONMENT=development` and disabled by default outside development unless `RUN_SEED=true` is set.
   - Added backend regression coverage proving the full bootstrap can be rerun without duplicating seeded operational records.
+- Completed Phase 7 Guided Operational UI Workflows:
+  - Added `/workflows` guided operator entry point for system selection, assessment profile selection, governance domain selection, recommended scan review, scanner selection/execution, assessment creation, and AIRB routing.
+  - Reworked `/inventory` into an API-backed system intake and management UI with add, edit, and archive behavior through existing system APIs.
+  - Reworked `/findings` into an API-backed triage workspace with owner assignment, due dates, remediation notes, lifecycle transition controls, risk acceptance, false-positive handling, close actions, linked evidence, score impact, and retest initiation.
+  - Reworked `/evidence` into an API-backed evidence review workspace with linked system, assessment, finding, scanner run, raw artifact references, and chain-of-evidence display.
+  - Reworked `/review-board` into an API-backed AIRB intake and decision workspace with approval, approval with exception, blocked decisions, decision notes, exception expiration, and civil-rights review indicators.
+  - Reworked `/systems/[id]` into an API-backed system detail route so newly-created systems can be inspected from the inventory table.
+  - Added API client helpers for system create/update/archive-by-status, assessment creation, finding updates/transitions/retests, owners, and AIRB create/update workflows.
+  - Added lightweight frontend route-contract coverage for Phase 7 workflow controls without adding new test dependencies.
 
 ## Verification
 
@@ -121,6 +130,19 @@ Update this file whenever the repository meaningfully changes.
 - Docker Compose backend image build installed garak 0.15.0.
 - Runtime garak scanner execution through the API: completed with one normalized finding, eight linked evidence records, raw output path, log path, scanner result normalization version `phase5_scanner_v1`, six score records, and score history entries.
 - Browser verification of `http://localhost:3010/scanners`: page loaded, no console errors, garak visible, real completed garak run visible with one finding, preserved artifacts, and score changes.
+- `npm.cmd run lint` from `apps/web` after Phase 7 UI implementation.
+- `npm.cmd test` from `apps/web` after Phase 7 UI implementation.
+- `npm.cmd run build` from `apps/web` after Phase 7 UI implementation.
+- `docker compose config --quiet` after Phase 7 UI implementation.
+- `docker compose up --build -d` with `COMPOSE_PROJECT_NAME=air_phase7_verify`, `API_HOST_PORT=8012`, `FRONTEND_HOST_PORT=3500`, and `POSTGRES_PORT=55434` after Phase 7.
+- `py scripts/runtime-smoke-test.py --backend-url http://localhost:8012 --frontend-url http://localhost:3500`.
+- `docker compose exec -T backend alembic current`: `202605220003 (head)`.
+- Browser verification of `http://localhost:3500/workflows`, `/inventory`, `/findings`, `/evidence`, `/review-board`, `/scanners`, and `/civil-rights`: key Phase 7 markers rendered and console checks had no relevant errors.
+- Browser-created system through `/inventory`; the new system appeared in the inventory table.
+- Browser-created assessment through `/workflows`; the guided workflow showed the created assessment outcome.
+- Browser-executed scanner run through `/scanners`; completed run detail showed preserved artifacts.
+- Browser-created and approved AIRB intake through `/review-board`.
+- Browser-saved finding triage through `/findings` and verified evidence chain detail through `/evidence`.
 
 ## In Progress
 
@@ -128,17 +150,12 @@ Update this file whenever the repository meaningfully changes.
 
 ## Next
 
-- Begin Phase 7 guided operational UI workflows:
-  - Build System Intake UI.
-  - Build Assessment Launch UX.
-  - Build Scanner Execution UX.
-  - Build Findings Review UX.
-  - Build Evidence Review UX.
-  - Build AIRB Workflow UX.
-  - Add guided operator workflow navigation.
-  - Connect the UI to the existing backend APIs.
-  - Add minimal backend API additions only when required.
-  - Verify the runtime end to end and update status docs.
+- Begin Phase 8 governance exports and OneTrust workflow support:
+  - Add CSV exports for inventory, findings, assessments, and risk acceptances.
+  - Add structured JSON governance exports.
+  - Add audit packet export.
+  - Draft OneTrust field mapping.
+  - Support manual OneTrust upload workflow before any API integration.
 
 ## Blocked
 
@@ -165,6 +182,7 @@ Update this file whenever the repository meaningfully changes.
 - Documentation exists in both new and earlier paths; future cleanup may consolidate older docs after implementation stabilizes.
 - Browser verification used the Node-backed Browser runtime.
 - Host ports `8000`, `3000`, and `5432` may already be allocated on the verification machine. Phase 4 runtime verification used `API_HOST_PORT=8010`, `FRONTEND_HOST_PORT=3010`, and `POSTGRES_PORT=55432`.
+- Windows excluded port ranges can block some frontend verification ports. Phase 7 verification used `FRONTEND_HOST_PORT=3500` after `3012` was refused.
 - garak 0.15.0 brings a large dependency set into the backend image. Keep it as the only real scanner dependency until a second integration is explicitly prioritized.
 - Local direct `alembic upgrade head` may hang if PostgreSQL is not running on the configured default URL. Use Docker Compose or set `DATABASE_URL` for a SQLite migration check.
 

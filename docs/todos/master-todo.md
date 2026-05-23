@@ -27,28 +27,28 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 
 ## Frontend TODO
 
-- Build System Intake UI.
-- Build Assessment Launch UX.
-- Build Scanner Execution UX.
-- Build Findings Review UX.
-- Build Evidence Review UX.
-- Build AIRB Workflow UX.
-- Add guided operator workflow navigation across intake, assessment, scanning, findings, evidence, and AIRB views.
-- Connect frontend workflow surfaces to the existing backend APIs before adding broader new frontend pages.
+- [x] Build System Intake UI.
+- [x] Build Assessment Launch UX.
+- [x] Build Scanner Execution UX.
+- [x] Build Findings Review UX.
+- [x] Build Evidence Review UX.
+- [x] Build AIRB Workflow UX.
+- [x] Add guided operator workflow navigation across intake, assessment, scanning, findings, evidence, and AIRB views.
+- [x] Connect frontend workflow surfaces to the existing backend APIs before adding broader new frontend pages.
 - Configure shadcn/ui.
 - Add user menu placeholder when authentication direction is known.
 - Replace simple trend visualization with Recharts if charting needs grow.
 - Replace native inventory table with TanStack Table if sorting and column controls become necessary.
-- Add inventory filters for department, risk tier, approval status, public-facing, rights-impacting, and data type.
+- [x] Add inventory filters for department, risk tier, approval status, public-facing, rights-impacting, and data type.
 - Add system detail tabs: overview, findings, evidence, scores, assessments, decisions, activity.
-- Add severity, status, owner, SLA, department, and domain filters.
-- Build Finding Detail page.
-- Add workflow transition dialog.
-- Add owner assignment dialog.
-- Add risk acceptance dialog.
+- [x] Add severity, status, owner, SLA, department, and domain filters.
+- [x] Build Finding Detail page.
+- [x] Add workflow transition dialog.
+- [x] Add owner assignment dialog.
+- [x] Add risk acceptance dialog.
 - [x] Build Bias and Civil Rights Dashboard.
 - Build Security Findings Dashboard.
-- Build AIRB Review Detail page.
+- [x] Build AIRB Review Detail page.
 - Build Deployment Approval page.
 - Build Governance Reports page.
 - Add empty states.
@@ -200,11 +200,11 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 
 - [x] Add backend unit tests.
 - [x] Add backend integration tests with test database.
-- Add frontend component tests where useful.
+- [x] Add frontend component tests where useful.
 - Add Playwright smoke tests after UI exists.
-- Add runtime verification for the guided operator workflow path once the UI is API-connected.
+- [x] Add runtime verification for the guided operator workflow path once the UI is API-connected.
 - [x] Test seed data integrity.
-- Test workflow transitions.
+- [x] Test workflow transitions.
 - [x] Test score calculations.
 - [x] Test evidence linking.
 - [x] Test scanner mock normalization.

@@ -1,37 +1,29 @@
 # Next Steps
 
-The next development work should begin Phase 7: Guided Operational UI Workflows.
+The next development work should begin Phase 8: Governance Exports and OneTrust Workflow Support.
 
-Phase 6 - Bias and Civil Rights Assessment Support is complete and verified. The platform now has civil-rights assessment templates, language-access scenarios, human appeal-path checks, fairness-oriented evidence, AIRB civil-rights indicators, score integration, seed data, tests, and a Civil Rights Review frontend route.
+Phase 7 - Guided Operational UI Workflows is complete and verified. Operators can now use the UI for system intake, assessment launch, scanner execution, findings triage, evidence review, AIRB intake, and AIRB decisions without relying on Swagger for normal operations.
 
 ## Recommended Next Task
 
-Implement guided operational UI workflows without broadening infrastructure:
+Implement governance exports without broadening infrastructure:
 
-1. Build System Intake UI.
-2. Build Assessment Launch UX.
-3. Build Scanner Execution UX.
-4. Build Findings Review UX.
-5. Build Evidence Review UX.
-6. Build AIRB Workflow UX.
-7. Add guided operator workflow navigation.
-8. Connect the UI to the existing backend APIs.
-9. Add minimal backend API additions only if a workflow truly needs them.
-10. Verify the runtime end to end.
-11. Update documentation and implementation status.
+1. Add CSV exports for inventory, findings, assessments, and risk acceptances.
+2. Add structured JSON governance exports.
+3. Add audit packet export.
+4. Draft OneTrust field mapping.
+5. Support a manual OneTrust upload workflow before any API integration.
 
-## Keep From Phase 6
+## Keep From Phase 7
 
-- Civil-rights workflows remain evidence-backed and explainable.
-- Language-access review remains scenario and reviewer driven.
-- Appeal-path validation remains a governance workflow, not an automated legal conclusion.
-- Scores remain deterministic explanations over findings, evidence, and workflow state.
-- Keep backend additions minimal and driven by operator workflow gaps, not architecture expansion.
+- Keep workflows API-backed and operator-facing.
+- Keep findings and evidence central.
+- Keep scanner execution evidence-preserving and adapter-based.
+- Keep AIRB decisions audit-friendly and linked to systems, assessments, findings, and evidence.
 
 ## Do Not Do Next
 
+- Do not build a OneTrust API integration before export fields and manual workflow are stable.
 - Do not integrate multiple additional scanners at once.
 - Do not add Kubernetes, distributed workers, event buses, or continuous monitoring.
 - Do not build scanner auto-scheduling or recurring assessments yet.
-- Do not build OneTrust API integration yet.
-- Do not jump ahead to export-heavy work before the operator workflows are connected and usable.

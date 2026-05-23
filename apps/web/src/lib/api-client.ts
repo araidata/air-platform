@@ -133,6 +133,36 @@ export type ApiAssessment = {
   updated_at: string;
 };
 
+export type ApiOwner = {
+  id: string;
+  display_name: string;
+  email: string;
+  department: string;
+  role: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ApiAirbReview = {
+  id: string;
+  system_id: string;
+  assessment_id: string | null;
+  review_status: string;
+  decision_notes: string | null;
+  reviewed_by: string | null;
+  reviewed_at: string | null;
+  exception_granted: boolean;
+  expiration_date: string | null;
+  civil_rights_review_status: string;
+  accessibility_review_status: string;
+  language_access_review_status: string;
+  fairness_review_status: string;
+  human_review_validated: boolean;
+  appeal_path_validated: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
 export type ApiScannerDefinition = {
   id: string;
   scanner_name: string;
@@ -260,11 +290,139 @@ export type ApiScanRecommendations = {
 export const apiClient = {
   systems: () => request<ApiSystem[]>("/systems"),
   system: (id: string) => request<ApiSystem>(`/systems/${id}`),
+  createSystem: (payload: {
+    system_name: string;
+    department_owner: string;
+    business_purpose: string;
+    public_facing: boolean;
+    rights_impacting: boolean;
+    safety_impacting: boolean;
+    uses_pii: boolean;
+    uses_phi: boolean;
+    uses_cjis: boolean;
+    model_provider?: string | null;
+    model_version?: string | null;
+    deployment_environment: string;
+    risk_tier: string;
+    approval_status: string;
+  }) =>
+    request<ApiSystem>("/systems", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+  updateSystem: (id: string, payload: Partial<Omit<ApiSystem, "id" | "created_at" | "updated_at">>) =>
+    request<ApiSystem>(`/systems/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+    }),
   findings: () => request<ApiFinding[]>("/findings"),
   finding: (id: string) => request<ApiFinding>(`/findings/${id}`),
+  updateFinding: (
+    id: string,
+    payload: Partial<
+      Pick<
+        ApiFinding,
+        | "owner_id"
+        | "due_date"
+        | "remediation"
+        | "approval_blocking"
+        | "severity"
+        | "domain"
+      >
+    > & { actor?: string; notes?: string },
+  ) =>
+    request<ApiFinding>(`/findings/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+    }),
+  transitionFinding: (
+    id: string,
+    payload: {
+      status: string;
+      actor: string;
+      notes?: string;
+      risk_acceptance_rationale?: string;
+    },
+  ) =>
+    request<ApiFinding>(`/findings/${id}/transition`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+  createRetest: (
+    findingId: string,
+    payload: {
+      initiated_by: string;
+      status?: string;
+      notes?: string;
+      result_summary?: string;
+    },
+  ) =>
+    request<{ id: string; finding_id: string; status: string }>(`/findings/${findingId}/retest`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
   evidence: () => request<ApiEvidence[]>("/evidence"),
   evidenceRecord: (id: string) => request<ApiEvidence>(`/evidence/${id}`),
   assessments: () => request<ApiAssessment[]>("/assessments"),
+  createAssessment: (payload: {
+    system_id: string;
+    assessment_type: string;
+    initiated_by: string;
+    status?: string;
+    started_at?: string;
+    summary?: string;
+    notes?: string;
+  }) =>
+    request<ApiAssessment>("/assessments", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+  owners: () => request<ApiOwner[]>("/owners"),
+  airbReviews: () => request<ApiAirbReview[]>("/airb-reviews"),
+  createAirbReview: (payload: {
+    system_id: string;
+    assessment_id?: string | null;
+    review_status?: string;
+    decision_notes?: string;
+    reviewed_by?: string;
+    exception_granted?: boolean;
+    expiration_date?: string | null;
+    civil_rights_review_status?: string;
+    accessibility_review_status?: string;
+    language_access_review_status?: string;
+    fairness_review_status?: string;
+    human_review_validated?: boolean;
+    appeal_path_validated?: boolean;
+    actor?: string;
+  }) =>
+    request<ApiAirbReview>("/airb-reviews", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+  updateAirbReview: (
+    id: string,
+    payload: Partial<
+      Pick<
+        ApiAirbReview,
+        | "review_status"
+        | "decision_notes"
+        | "reviewed_by"
+        | "reviewed_at"
+        | "exception_granted"
+        | "expiration_date"
+        | "civil_rights_review_status"
+        | "accessibility_review_status"
+        | "language_access_review_status"
+        | "fairness_review_status"
+        | "human_review_validated"
+        | "appeal_path_validated"
+      >
+    > & { actor?: string },
+  ) =>
+    request<ApiAirbReview>(`/airb-reviews/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+    }),
   scores: () => request<ApiScore[]>("/scores"),
   score: (id: string) => request<ApiScore>(`/scores/${id}`),
   systemScores: (id: string) => request<ApiScore[]>(`/systems/${id}/scores`),

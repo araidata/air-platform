@@ -20,14 +20,19 @@
 - Added Phase 4 Scanner Ecosystem route for scanner registry, scan types, assessment profiles, recommendations, scanner runs, run detail, generated evidence counts, and mock execution.
 - Added frontend API client types and helpers for scanner ecosystem APIs.
 - Verified Scanner Ecosystem route in Docker Compose and Browser runtime.
+- Implemented Phase 7 guided workflow route for system selection, assessment profile selection, governance domains, recommended scans, scanner execution, assessment creation, and AIRB routing.
+- Implemented API-backed system intake, edit, and archive controls in the AI Inventory route.
+- Implemented API-backed findings triage controls for owner assignment, due dates, remediation, lifecycle transitions, retest initiation, risk acceptance, false positives, and closure.
+- Implemented API-backed evidence detail review with linked system, assessment, finding, scanner run, artifact references, raw text, and chain-of-evidence display.
+- Implemented API-backed AIRB intake and decision controls for approvals, exceptions, blocked decisions, review indicators, decision notes, and exception expiration.
+- Implemented API-backed system detail route for systems created from the UI.
+- Verified Phase 7 Docker runtime and browser workflows.
 
 ## Next
 
-- Assessment Workspace.
-- Bias & Civil Rights Dashboard.
 - Security Findings Dashboard.
 - Settings / Integrations Page.
-- Continue replacing mock-only surfaces with API-backed operational data where the backend contracts are stable.
+- Continue replacing remaining mock-only surfaces with API-backed operational data where the backend contracts are stable.
 
 ## UI Requirements
 
@@ -39,7 +44,6 @@
 
 ## Deferred
 
-- Real backend integration.
 - Authentication.
 - Notification UI.
 - Advanced reporting.
