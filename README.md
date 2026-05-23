@@ -61,7 +61,8 @@ Completed now:
 - Phase 2 seed data matching the mock county AI systems.
 - Basic backend tests for model creation, lifecycle transitions, evidence creation, retests, audit events, and API smoke flows.
 - Docker Compose runtime with `frontend`, `backend`, and `postgres` services.
-- Backend container startup flow that waits for PostgreSQL, applies Alembic migrations, loads idempotent seed data, and starts FastAPI.
+- Backend container startup flow that waits for PostgreSQL, applies Alembic migrations, loads idempotent development/demo seed data, and starts FastAPI.
+- Development bootstrap runner that explicitly executes Phase 2 workflow data, Phase 4 scanner ecosystem data, Phase 6 civil-rights data, and score recalculation when records changed.
 - Frontend container with same-origin backend proxy support through `/api/backend/*`.
 - PostgreSQL persistent named volume and service health checks.
 - Runtime smoke test covering frontend load, backend health, DB health, seeded API endpoints, and frontend/backend proxy connectivity.
@@ -132,6 +133,26 @@ The initial deployment target is:
 - Retained raw outputs and logs as evidence.
 
 Do not introduce Kubernetes, distributed workers, multi-region infrastructure, or microservice sprawl unless explicitly requested later.
+
+## Development Bootstrap And Seed Behavior
+
+In development mode, Docker Compose starts a fully usable demo platform automatically:
+
+1. The backend waits for PostgreSQL.
+2. Alembic migrations run to the latest schema.
+3. The development/demo bootstrap runs Phase 2, Phase 4, and Phase 6 seed phases.
+4. Scores are recalculated only when seed data changed or required scores are missing.
+5. FastAPI starts after the operational dataset is ready.
+
+The seed runner is idempotent and safe to rerun with:
+
+```powershell
+docker compose exec backend python -m app.seed.run_seed
+```
+
+Startup logs show each seed phase, records created, and existing records skipped. The seeded dataset includes AI systems, assessments, findings, evidence, audit events, score records, AIRB examples, scanner definitions, scan types, assessment profiles, scanner runs/results, language-access scenarios, appeal-path checks, and civil-rights review examples.
+
+Production-safe behavior is conservative by default. If `RUN_SEED` is unset, seed bootstrap runs only when `ENVIRONMENT=development`. Set `RUN_SEED=true` to intentionally load demo data in another environment, or `RUN_SEED=false` to disable bootstrap in development.
 
 ## Phase Plan
 

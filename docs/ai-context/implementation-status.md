@@ -79,11 +79,28 @@ Update this file whenever the repository meaningfully changes.
   - Added seeded civil-rights findings, evidence, score impacts, language scenarios, appeal checks, AIRB records, and remediation recommendations.
   - Added Civil Rights Review frontend route.
   - Added civil-rights tests for templates, scenarios, invalid language pairs, appeal evidence validation, evidence relationships, score recalculation, and API responses.
+- Repaired development bootstrap seed initialization:
+  - Explicitly runs Phase 2 workflow seed data, Phase 4 scanner ecosystem seed data, and Phase 6 civil-rights seed data during development startup.
+  - Logs seed phase execution, records created, and existing records skipped.
+  - Recalculates scores only when seed records changed or required scores are missing.
+  - Keeps bootstrap enabled by default for `ENVIRONMENT=development` and disabled by default outside development unless `RUN_SEED=true` is set.
+  - Added backend regression coverage proving the full bootstrap can be rerun without duplicating seeded operational records.
 
 ## Verification
 
 - `py -m pytest` from `apps/api`: 24 passed.
 - `py -m pytest` from `apps/api`: 30 passed after Phase 6.
+- `py -m pytest` from `apps/api`: 31 passed after bootstrap seed initialization repair.
+- `py -m compileall app` from `apps/api`.
+- `docker compose config --quiet`.
+- `docker compose up --build -d` with `COMPOSE_PROJECT_NAME=air_bootstrap_verify`, `API_HOST_PORT=8011`, `FRONTEND_HOST_PORT=3011`, and `POSTGRES_PORT=55433`.
+- Backend startup logs showed Phase 2, Phase 4, Phase 6, and score recalculation execution with created and skipped-existing record counts.
+- `docker compose exec -T backend alembic current`: `202605220003 (head)`.
+- Runtime API counts after startup: 5 systems, 5 assessments, 17 findings, 31 evidence records, 178 audit events, 30 score records, 14 scanner definitions, 2 scanner adapters, 40 scan types, 11 assessment profiles, and 6 scanner runs.
+- Runtime civil-rights summary after startup: 7 templates, 3 language-access scenarios, 4 appeal-path checks, 7 fairness findings, and 10 fairness evidence records.
+- Runtime seed rerun in the backend container created 0 records and skipped existing records without changing key API counts.
+- `py scripts/runtime-smoke-test.py --backend-url http://localhost:8011 --frontend-url http://localhost:3011`.
+- Browser verification of `http://localhost:3011`: dashboard, Scanner Ecosystem, Civil Rights Review, Findings Queue, and Evidence & Audit pages loaded with meaningful data and no relevant console errors.
 - `py -m compileall app` from `apps/api`.
 - SQLite Alembic upgrade to `202605220002`.
 - SQLite Alembic upgrade to `202605220003`.

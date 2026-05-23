@@ -63,6 +63,7 @@
 - [x] Added human appeal-path check workflow records.
 - [x] Extended AIRB review records with civil-rights workflow indicators.
 - [x] Added Phase 6 seed data and backend tests.
+- [x] Repaired startup bootstrap so development mode explicitly runs Phase 2, Phase 4, and Phase 6 seed phases with created/skipped logging and idempotency coverage.
 
 ## Deferred
 

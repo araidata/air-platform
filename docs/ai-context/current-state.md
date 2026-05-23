@@ -31,6 +31,8 @@ Phase 5 - First Real Scanner Integration is implemented and verified with garak.
 
 Phase 6 - Bias and Civil Rights Assessment Support is implemented and verified.
 
+Development bootstrap now explicitly runs Phase 2, Phase 4, and Phase 6 seed phases during development startup, logs created and skipped record counts, and remains disabled by default outside development unless `RUN_SEED=true` is set.
+
 ## Exists Now
 
 - AI assistant operating files.
@@ -55,7 +57,8 @@ Phase 6 - Bias and Civil Rights Assessment Support is implemented and verified.
 - Backend tests covering model creation, valid and invalid finding transitions, evidence creation, audit events, retests, scoring, scanner execution, scanner APIs, raw output persistence, normalization failures, and API smoke flows.
 - Lightweight frontend API client layer in `apps/web/src/lib/api-client.ts`.
 - Docker Compose runtime with `postgres`, `backend`, and `frontend` services plus `scanner_data` storage.
-- Backend container startup script that validates PostgreSQL, runs Alembic migrations, optionally loads seed data, and starts FastAPI.
+- Backend container startup script that validates PostgreSQL, runs Alembic migrations, runs development/demo bootstrap by default in development mode, and starts FastAPI.
+- Explicit bootstrap runner for Phase 2 workflow data, Phase 4 scanner ecosystem data, Phase 6 civil-rights data, and score recalculation when seed records changed.
 - Frontend container and Next.js rewrite proxy from `/api/backend/*` to the backend service.
 - `.env.example` with backend, frontend, PostgreSQL, and scanner storage configuration.
 - PostgreSQL named volume for persistent runtime data.

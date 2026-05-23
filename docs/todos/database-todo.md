@@ -52,6 +52,7 @@
 - [x] Add AIRB civil-rights workflow indicator columns.
 - [x] Verify the Phase 6 civil-rights migration in Docker Compose.
 - [x] Add seeded civil-rights templates, scenarios, appeal checks, fairness findings, and evidence.
+- [x] Verify full development bootstrap creates Phase 2, Phase 4, and Phase 6 operational data automatically and reruns without duplicating records.
 
 ## Deferred Candidate Tables
 

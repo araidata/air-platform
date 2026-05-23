@@ -71,10 +71,10 @@ Backend startup:
 
 1. Waits for PostgreSQL.
 2. Runs `alembic upgrade head`.
-3. Runs `python -m app.seed.run_seed` when `RUN_SEED=true`.
+3. Runs `python -m app.seed.run_seed` when `RUN_SEED=true`, or when `RUN_SEED` is unset and `ENVIRONMENT=development`.
 4. Starts Uvicorn.
 
-The seed flow is idempotent and preserves existing data when the seed systems are already present.
+The seed flow explicitly runs Phase 2 workflow data, Phase 4 scanner ecosystem data, and Phase 6 civil-rights data. It logs created and skipped existing record counts for each phase, recalculates scores only when seed records changed or required scores are missing, and is skipped by default outside development unless `RUN_SEED=true` is set intentionally.
 
 ## What Not To Add In Phase 2.5
 

@@ -25,8 +25,20 @@ PY
 
 alembic upgrade head
 
-if [ "${RUN_SEED:-true}" = "true" ]; then
+SHOULD_RUN_SEED="${RUN_SEED:-}"
+if [ -z "${SHOULD_RUN_SEED}" ]; then
+  if [ "${ENVIRONMENT:-development}" = "development" ]; then
+    SHOULD_RUN_SEED="true"
+  else
+    SHOULD_RUN_SEED="false"
+  fi
+fi
+
+if [ "${SHOULD_RUN_SEED}" = "true" ]; then
+  echo "Development/demo bootstrap enabled; running seed phases."
   python -m app.seed.run_seed
+else
+  echo "Development/demo bootstrap disabled; skipping seed phases."
 fi
 
 UVICORN_ARGS=""

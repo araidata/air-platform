@@ -52,10 +52,10 @@ The backend container runs `apps/api/scripts/start.sh`:
 
 1. Validate PostgreSQL connectivity.
 2. Run `alembic upgrade head`.
-3. Run seed data when `RUN_SEED=true`.
+3. Run the development/demo bootstrap when `RUN_SEED=true`, or when `RUN_SEED` is unset and `ENVIRONMENT=development`.
 4. Start FastAPI with Uvicorn.
 
-The seed script is idempotent for the Phase 2 mock systems, findings, assessments, evidence, and review records.
+The seed script is idempotent across Phase 2 workflow data, Phase 4 scanner ecosystem data, Phase 6 civil-rights data, and score recalculation. Startup logs identify each phase, records created, and existing records skipped. If `RUN_SEED` is unset and `ENVIRONMENT` is not `development`, the bootstrap is skipped by default.
 
 ## Migration Workflow
 
@@ -76,7 +76,7 @@ Then verify the migration inside Docker before marking runtime work complete.
 
 ## Seed Workflow
 
-Seed data loads automatically on backend startup when `RUN_SEED=true`.
+Seed data loads automatically on backend startup in development mode. The bootstrap populates systems, assessments, findings, evidence, audit events, scores, AIRB examples, scanner definitions, scan types, assessment profiles, scanner runs/results, language-access scenarios, appeal-path checks, and civil-rights examples.
 
 Run it manually:
 
@@ -88,6 +88,14 @@ Disable automatic seed loading:
 
 ```powershell
 $env:RUN_SEED="false"
+docker compose up
+```
+
+Intentionally seed outside development:
+
+```powershell
+$env:ENVIRONMENT="production"
+$env:RUN_SEED="true"
 docker compose up
 ```
 
