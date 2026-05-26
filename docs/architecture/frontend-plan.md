@@ -1,56 +1,35 @@
-# Frontend Implementation Plan
+# Frontend Plan
 
-## Stack
+The frontend is a Next.js + TypeScript operational interface.
 
-- Next.js.
-- React.
-- TypeScript.
-- TailwindCSS.
-- shadcn/ui.
-- Recharts.
-- TanStack Table.
+## Primary Pages
 
-## App Sections
+- Executive dashboard.
+- Assessment intake.
+- Risk profile.
+- Scanner runs.
+- Findings queue.
+- Evidence review.
+- Human review workflow.
+- Reports and exports.
+- Settings for scanner and platform configuration.
 
-- Dashboard.
-- Inventory.
-- Findings.
-- System detail.
-- Bias and Civil Rights.
-- Security Findings.
-- AIRB Reviews.
-- Evidence and Audit.
-- Deployment Approvals.
-- Governance Reports.
+## UI Rules
 
-## Component Groups
+- Use API-backed records.
+- Show honest empty states.
+- Avoid phase labels in UI copy.
+- Avoid demo terminology in operational screens.
+- Keep evidence links and status visible.
+- Prefer dense, readable tables and panels over marketing layouts.
 
-- Layout shell.
-- Navigation.
-- Score cards.
-- Risk heatmap.
-- Trend charts.
-- Operational tables.
-- Filter bars.
-- Detail headers.
-- Evidence list.
-- Audit timeline.
-- Workflow transition dialogs.
-- Report panels.
+## Reporting Direction
 
-## First Implementation Order
+Executive reporting should expose:
 
-1. App shell and navigation.
-2. Dashboard with seeded metrics.
-3. Inventory table.
-4. System detail.
-5. Findings queue.
-6. Finding detail.
-7. Evidence page.
-8. AIRB queue.
-9. Deployment approval page.
-10. Reports page.
-
-## Frontend Data Strategy
-
-Use API calls even for seeded data once the backend exists. Before the backend exists, temporary fixtures are acceptable but must be easy to replace.
+- Overall risk posture.
+- High-risk systems.
+- Findings by severity and status.
+- Residual risk trends.
+- Evidence completeness.
+- OpenControl export readiness.

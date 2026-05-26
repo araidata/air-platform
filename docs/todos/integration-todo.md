@@ -1,29 +1,27 @@
 # Integration TODO
 
-## Near Term
+## Scanner Integrations
 
-- No real external integrations until core workflows exist.
-- Keep integration planning documented.
-- Build export shapes before API sync.
+- [x] garak adapter.
+- [x] Live HTTP assessment tester.
+- [ ] Giskard adapter.
+- [ ] PyRIT adapter.
+- [ ] Langfuse trace/evidence integration.
 
-## Phase 8
+## Reporting Integrations
 
-- CSV export for system inventory.
-- CSV export for findings.
-- CSV export for risk acceptances.
-- JSON audit packet export.
-- OneTrust field mapping draft.
+- [ ] OpenControl export.
+- [ ] Compliance Masonry-compatible output.
+- [ ] PDF executive report generation.
 
-## Future
+## Later Operational Integrations
 
-- OneTrust API integration.
-- Ticketing integration.
-- Notification integration.
-- Observability integration.
+- [ ] Notification hooks if needed.
+- [ ] Ticketing integration if remediation workflow requires it.
+- [ ] External dashboard export if leadership reporting requires it.
 
-## Deferred
+## Guardrails
 
-- Bidirectional sync.
-- Complex conflict resolution.
-- Integration marketplace.
-- Real-time external dependency.
+- Integrations must preserve source evidence.
+- Integrations must not become the source of truth for core records.
+- Integrations must use stable APIs or adapters.

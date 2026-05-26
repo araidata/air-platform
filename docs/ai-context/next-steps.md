@@ -1,29 +1,34 @@
 # Next Steps
 
-The next development work should begin Phase 8: Governance Exports and OneTrust Workflow Support.
-
-Phase 7 - Guided Operational UI Workflows is complete and verified. Operators can now use the UI for system intake, assessment launch, scanner execution, findings triage, evidence review, AIRB intake, and AIRB decisions without relying on Swagger for normal operations.
+The next implementation focus should be Giskard integration.
 
 ## Recommended Next Task
 
-Implement governance exports without broadening infrastructure:
+Implement the first Giskard adapter slice through the existing scanner orchestration framework.
 
-1. Add CSV exports for inventory, findings, assessments, and risk acceptances.
-2. Add structured JSON governance exports.
-3. Add audit packet export.
-4. Draft OneTrust field mapping.
-5. Support a manual OneTrust upload workflow before any API integration.
+Target scope:
 
-## Keep From Phase 7
+1. Add `giskard_adapter` configuration and target validation.
+2. Support hallucination and prompt-injection checks first.
+3. Execute through a local CLI/container-friendly path.
+4. Preserve raw output, logs, configuration, and reports as evidence.
+5. Normalize Giskard results into Findings.
+6. Map findings to NIST AI RMF, OWASP LLM Top 10, and OpenControl-ready controls where available.
+7. Add fixture coverage for success, no-finding, invalid-target, and parser-failure paths.
 
-- Keep workflows API-backed and operator-facing.
-- Keep findings and evidence central.
-- Keep scanner execution evidence-preserving and adapter-based.
-- Keep AIRB decisions audit-friendly and linked to systems, assessments, findings, and evidence.
+## Keep
+
+- Assessment-first workflow.
+- Raw evidence preservation.
+- Existing scanner adapter contract.
+- Existing Finding and Evidence models.
+- Synchronous local execution until operational need proves otherwise.
+- Clear separation between development metadata and operational records.
 
 ## Do Not Do Next
 
-- Do not build a OneTrust API integration before export fields and manual workflow are stable.
-- Do not integrate multiple additional scanners at once.
-- Do not add Kubernetes, distributed workers, event buses, or continuous monitoring.
-- Do not build scanner auto-scheduling or recurring assessments yet.
+- Do not add PyRIT before Giskard has a stable adapter path.
+- Do not add Langfuse before scanner evidence capture remains stable.
+- Do not create scanner microservices.
+- Do not add Kubernetes or distributed queues.
+- Do not create fabricated scanner runs, findings, evidence, or scores for demos.

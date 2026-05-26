@@ -1,54 +1,49 @@
 # Architecture Summary
 
-This platform should be a modular monolith deployed on one Linux VM with Docker Compose.
+AI Assessment Scanner is a modular monolith deployed with Docker Compose on one Linux VM.
 
-## Planned Runtime Shape
+## Runtime Shape
 
-- Frontend: Next.js.
-- Backend: API-first service, likely FastAPI.
+- Frontend: Next.js + TypeScript.
+- Backend: FastAPI.
 - Database: PostgreSQL.
-- Jobs/cache: Redis only when needed.
-- Scanner execution: Dockerized CLI/container adapters.
-- Evidence storage: local mounted storage first; object storage later if needed.
+- Scanner execution: adapter-driven CLI/container execution.
+- Evidence storage: local mounted storage first.
+- Reporting: API-backed dashboards, PDF/export pipeline later.
 
 ## Core Modules
 
-- AI systems inventory.
-- Assessments.
+- Assessment intake.
+- Risk profiles.
 - Scanner runs.
 - Findings.
 - Evidence.
 - Scoring.
-- AI Review Board workflow.
-- Reports.
-- Integrations.
-- Audit events.
+- Review workflows.
+- Executive reports.
+- Control exports.
 
 ## Platform Responsibility
 
 The platform owns:
 
-- Governance records.
-- Assessment workflow.
+- Assessment records.
+- Risk profile inputs and scores.
+- Scanner run metadata.
 - Normalized findings.
-- Evidence references.
-- Audit packets.
-- Risk scores.
-- Review decisions.
-- Reporting.
+- Evidence references and custody metadata.
+- Human review decisions.
+- Executive reporting.
+- OpenControl-ready export data.
 
 ## External Tool Responsibility
 
 External tools own:
 
-- Attack execution.
-- Model testing.
-- Fairness calculations.
+- Model and prompt testing.
+- Adversarial probing.
+- Bias/fairness evaluation.
 - RAG evaluation.
-- Model file scanning.
+- Trace and observability capture.
 
-The platform should orchestrate scanners and normalize results; it should not recreate scanner logic.
-
-## Key Architectural Rule
-
-Scanners are external tools. Integrate them through adapters that execute, collect output, preserve evidence, normalize findings, map frameworks, and calculate score impact.
+Integrate external tools through adapters. Do not copy scanner source code or couple to unstable internals.

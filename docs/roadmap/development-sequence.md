@@ -1,90 +1,26 @@
 # Development Sequence
 
-This sequence turns the phase plan into a practical build order for future agents.
+Use this sequence when choosing the next implementation task.
 
-## 1. Establish Frontend Shell
+## Current Order
 
-- Create the app scaffold.
-- Add navigation for initial pages.
-- Add example metadata and API-backed empty states.
-- Build layout and design tokens.
-- Render executive dashboard first.
-
-## 2. Build Mock Operational Pages
-
-- AI Inventory.
-- Findings Queue.
-- System Detail Page.
-- Evidence & Audit Page.
-- AI Review Board Queue.
-- Reports Page.
-- Settings / Integrations Page.
-
-Each page should render realistic county data and expose the fields future APIs must provide.
-
-## 3. Define Backend API Contracts
-
-- Systems API.
-- Assessments API.
-- Findings API.
-- Evidence API.
-- Scanner Runs API.
-- Reviews API.
-- Reports API.
-
-Start from the UI data needs. Avoid backend-first guessing.
-
-## 4. Add Persistence
-
-- PostgreSQL schema.
-- Seed data.
-- Basic CRUD APIs.
-- Status transitions.
-- Audit events.
-
-## 5. Stabilize Runtime
-
-- Docker Compose startup.
-- Frontend container.
-- Backend API container.
-- PostgreSQL container and named volume.
-- Container migration and seed startup flow.
-- Runtime smoke tests.
-
-## 6. Add Scoring
-
-- Domain score inputs.
-- Finding severity and confidence impact.
-- Governance evidence completeness.
-- Score history.
-- Explanation text.
-
-## 7. Add Adapter Framework
-
-- Adapter interface.
-- Mock adapter.
-- Scanner run directory structure.
-- Evidence capture.
-- Normalization path.
-
-## 8. Add One Real Scanner
-
-Status: complete. garak is integrated through Docker/CLI execution, native artifacts are preserved, findings normalize, and scores recalculate.
-
-## 9. Mature Bias And Civil Rights Workflow
-
-- Add rights-impacting assessment templates.
-- Add language access scenarios.
-- Add human appeal path checks.
-- Add fairness-oriented evidence expectations.
-
-## 10. Add Governance Exports
-
-- CSV first.
-- JSON second.
-- Audit packet packaging.
-- OneTrust field mapping.
+1. Keep the Docker Compose runtime stable.
+2. Maintain core assessment, finding, evidence, and scanner run APIs.
+3. Add Giskard through the existing scanner adapter contract.
+4. Add PyRIT after Giskard is stable.
+5. Add Langfuse trace/evidence ingestion.
+6. Improve human review workflow only where assessment decisions require it.
+7. Build executive reporting, PDF output, and OpenControl export.
+8. Add production readiness features.
 
 ## Sequencing Rule
 
-If two tasks compete, choose the task that improves findings, evidence, assessment workflow, or auditability.
+If two tasks compete, choose the one that improves assessment execution, evidence quality, finding normalization, or executive reporting from real records.
+
+## Do Not Prioritize
+
+- Distributed infrastructure.
+- Scanner microservices.
+- Broad integrations before Giskard, PyRIT, and Langfuse.
+- Demo-only dashboards.
+- Workflow features that do not improve assessment decisions or reporting.

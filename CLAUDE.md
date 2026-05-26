@@ -1,8 +1,8 @@
 # Claude Code Operating Guide
 
-This repository is the County AI Assurance Operations Center: an operational AI governance and assurance platform for county government.
+This repository is AI Assessment Scanner: an internal county platform for AI risk profiling, automated testing, evidence collection, human review workflows, and executive reporting.
 
-Claude Code sessions must treat this repo as a long-term AI-assisted development project. The main job is to preserve project memory, avoid overengineering, and build the application in realistic phases.
+Claude Code sessions must preserve project memory, avoid overengineering, and keep the documentation and implementation aligned with the assessment-first direction.
 
 ## Required Reading Before Changes
 
@@ -31,13 +31,13 @@ For scanner work, also read:
 
 Preserve these principles:
 
-- Operational simplicity.
-- Governance-first design.
-- Findings and evidence as the priority.
+- Assessment-first.
+- Testing-first.
+- Evidence-first.
+- Findings remain central.
 - One or two operators.
 - One Linux VM.
 - Docker Compose first.
-- Mock-first development.
 - API-first platform.
 - CLI/container-first scanner execution.
 
@@ -48,19 +48,20 @@ Do not add:
 - Kubernetes.
 - Microservices.
 - Distributed workers.
-- Enterprise auth.
+- Enterprise auth before production readiness work.
 - Multi-tenant SaaS assumptions.
-- Real scanner integrations before the adapter contract exists.
-- OneTrust implementation before export planning and core workflows exist.
+- Scanner integrations outside the adapter model.
+- Reporting integrations before export formats are stable.
 
-Do not rewrite external scanners such as garak, AgentSeal, PyRIT, Fairlearn, Aequitas, Giskard, ModelScan, Ragas, DeepEval, or Promptfoo.
+Do not rewrite external scanners such as garak, Giskard, PyRIT, Langfuse, Fairlearn, Aequitas, ModelScan, Ragas, DeepEval, or Promptfoo.
 
 ## How To Build
 
-- Start with mock systems, mock findings, mock evidence, and mock scan results.
 - Keep changes narrow and tied to the roadmap.
 - Prefer explicit schemas, clear API boundaries, and audit-friendly records.
-- Preserve raw scanner output as evidence when scanner work begins.
+- Preserve raw scanner output as evidence.
+- Use demo metadata only for local development setup.
+- Do not seed fake operational findings, evidence, scanner runs, or scores.
 - Update documentation when decisions or status change.
 
 ## Status Maintenance
@@ -69,19 +70,11 @@ After meaningful changes, update:
 
 - `docs/ai-context/implementation-status.md`
 - Relevant file in `docs/todos/`
-- `docs/ai-context/current-state.md` if the project phase or architecture changed
+- `docs/ai-context/current-state.md` if project capability or architecture changed
 - `docs/decisions/` if a durable architecture decision was made
 
-When completing a task listed in the README Build Checklist, tick the README checkbox in the same commit as the completed work. Only tick a box after implementation, verification, and status/todo documentation updates are complete. Do not add automatic README-ticking hooks or GitHub Actions unless the user explicitly requests that later.
+When completing a task listed in the README checklist, tick the README checkbox in the same commit as the completed work. Only tick a box after implementation, verification, and status/todo updates are complete.
 
 ## Claude Commands
 
-Claude command templates live in `.claude/commands/`:
-
-- `/next-task`
-- `/review-architecture`
-- `/update-status`
-- `/build-ui-page`
-- `/create-adapter`
-
-These are prompts, not dangerous hooks. They should not auto-commit, delete files, install packages, or run privileged commands.
+Claude command templates live in `.claude/commands/`. They are prompts, not hooks. They should not auto-commit, delete files, install packages, or run privileged commands.

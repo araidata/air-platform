@@ -1,74 +1,31 @@
 # Backend TODO
 
-## Completed In Phase 2
+## Implemented
 
-- [x] Create FastAPI backend service under `apps/api`.
-- [x] Add environment-driven database connection.
-- [x] Implement systems API.
-- [x] Implement findings API.
-- [x] Implement evidence API.
-- [x] Implement assessment API.
-- [x] Implement AIRB review API.
-- [x] Implement owners API.
-- [x] Implement retest API.
-- [x] Add audit event recording.
-- [x] Add workflow services for findings, assessments, evidence, retests, and audit events.
-- [x] Add seed command and backend tests.
-
-## Completed In Phase 2.5
-
-- [x] Add backend API container.
-- [x] Add backend startup script.
-- [x] Validate database connectivity before startup.
-- [x] Run Alembic migrations during container startup.
-- [x] Run idempotent seed data during container startup.
-- [x] Add `/health/db` database health endpoint.
-- [x] Add CORS environment configuration for local frontend access.
+- [x] FastAPI service under `apps/api`.
+- [x] Environment-driven database connection.
+- [x] Health and database health endpoints.
+- [x] SQLAlchemy models and Alembic migrations.
+- [x] APIs for systems, assessments, findings, evidence, owners, retests, review records, scores, scanner metadata, scanner runs, and assessment-tool runs.
+- [x] Service-layer workflows for assessments, findings, evidence, retests, audit events, scoring, and scanner execution.
+- [x] Container startup with migration and development metadata seed.
+- [x] garak adapter execution.
+- [x] Live HTTP tester execution.
 
 ## Next
 
-- Begin Phase 7 guided operational UI workflows, keeping backend changes minimal and driven by operator UX gaps.
-- Add pagination and filtering once the API-connected workflow surfaces make the need concrete.
+- [ ] Add Giskard adapter configuration and validation.
+- [ ] Add Giskard execution path.
+- [ ] Preserve Giskard raw output and reports as evidence.
+- [ ] Normalize Giskard findings.
+- [ ] Add Giskard parser and API tests.
 
-## Completed In Phase 3
+## Later
 
-- [x] Added deterministic scoring engine and domain calculators.
-- [x] Added score APIs and recalculation endpoints.
-- [x] Added service-layer score recalculation hooks for workflow changes.
-- [x] Added backend scoring tests.
-
-## Completed In Phase 4
-
-- [x] Added scanner registry, scan type, assessment profile, scanner run, and scanner result models.
-- [x] Added scanner ecosystem Alembic migration.
-- [x] Added scanner adapter contract and retired runtime mock adapter behavior.
-- [x] Added scanner execution service and normalization layer.
-- [x] Added scanner APIs and recommendation endpoints.
-- [x] Added raw output and log preservation as evidence.
-- [x] Added score recalculation through scanner-created findings.
-- [x] Added scanner tests.
-
-## Completed In Phase 5
-
-- [x] Added garak CLI adapter as the first real scanner integration.
-- [x] Added backend Docker scanner dependency installation.
-- [x] Preserved native garak artifacts and normalized output as evidence.
-- [x] Normalized garak output into findings and score recalculation.
-- [x] Added real scanner execution, parser, malformed output, failure, evidence, and scoring tests.
-
-## Completed In Phase 6
-
-- [x] Added civil-rights assessment APIs.
-- [x] Added language-access scenario workflow records.
-- [x] Added human appeal-path check workflow records.
-- [x] Extended AIRB review records with civil-rights workflow indicators.
-- [x] Added Phase 6 seed data and backend tests.
-- [x] Repaired startup bootstrap so development mode explicitly runs Phase 2, Phase 4, and Phase 6 seed phases with created/skipped logging and idempotency coverage.
-
-## Deferred
-
-- Enterprise auth.
-- Complex permissions.
-- Distributed jobs.
-- Additional real scanner execution beyond garak.
-- OneTrust API calls.
+- [ ] PyRIT adapter.
+- [ ] Langfuse trace/evidence integration.
+- [ ] OpenControl export APIs.
+- [ ] PDF report generation.
+- [ ] RBAC foundation.
+- [ ] Structured logging and monitoring.
+- [ ] Backup/restore support.

@@ -2,47 +2,42 @@
 
 ## Product Priority Order
 
-1. Findings and evidence workflow.
-2. AI system inventory.
-3. Assessment workspace.
-4. Executive and analyst dashboards.
-5. Scoring engine.
-6. AI Review Board workflow.
-7. Scanner adapter framework.
-8. First real scanner integration.
-9. Bias and civil-rights assessment support.
-10. Guided operator workflow UX and API connection.
-11. Governance export and OneTrust support.
+1. Core platform foundation.
+2. AI risk profiling.
+3. Scanner orchestration.
+4. Giskard integration.
+5. PyRIT integration.
+6. Langfuse evidence pipeline.
+7. Human review workflows.
+8. Executive reporting and OpenControl export.
+9. Production readiness.
 
 ## Current Priority
 
-Begin Phase 7 guided operational UI workflows now that the runtime, scanner ecosystem, and civil-rights workflows are in place.
+Begin Giskard integration using the existing scanner adapter and evidence model.
 
 ## What Matters Most
 
-- Can an operator see what AI systems exist?
-- Can an operator see what findings are open?
-- Can each finding point to evidence?
-- Can reviewers understand risk and status?
-- Can the system produce audit-ready records?
-- Can real scanner output flow into normalized findings?
-- Can rights-impacting reviews preserve language access, appeal path, and fairness evidence?
+- Can an operator create an assessment?
+- Can automated tests run safely against a declared target?
+- Does each finding point to preserved evidence?
+- Can reviewers understand risk, remediation state, and residual risk?
+- Can leadership see an accurate executive risk picture?
+- Can exports be produced from real records rather than hand-written summaries?
 
 ## What Matters Later
 
-- Real scanner breadth.
-- Scheduling.
-- Notifications.
-- OneTrust API integration.
-- Advanced analytics.
-- Role-based access control.
-- Deployment hardening.
+- PyRIT after Giskard.
+- Langfuse after scanner evidence flow is stable.
+- PDF reports and OpenControl export.
+- RBAC.
+- Backup/restore automation.
+- Production hardening.
 
 ## What To Reject For Now
 
 - Infrastructure-first work.
-- Large-team process features.
-- Multi-tenant billing or account hierarchy.
-- Complex auth.
-- Distributed scanner farms.
+- Distributed scanner execution.
+- Broad enterprise workflow suites.
 - Chatbot-centric UX.
+- Scanner-specific shortcuts that bypass Findings and Evidence.

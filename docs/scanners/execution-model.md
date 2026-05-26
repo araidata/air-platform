@@ -1,85 +1,58 @@
 # Scanner Execution Model
 
-The scanner execution model should be simple, inspectable, and safe enough for one Linux VM.
+Scanner execution should be simple, inspectable, and evidence-preserving.
 
 ## Preferred Execution
 
-Use:
-
-- Dockerized scanner containers.
 - CLI wrappers.
-- Isolated execution directories.
-- Structured JSON output where possible.
-- Retained raw logs as evidence.
+- Dockerized scanner containers where practical.
+- Isolated per-run directories.
+- Explicit target configuration.
+- Timeouts and resource limits where available.
+- Structured output when the scanner supports it.
 
-## Execution Directory
+## Run Directory
 
-Each scanner run should get its own directory:
+Each scanner run should write artifacts under the configured scanner storage root.
 
 ```text
 scanner-runs/
-  scan_2026_001/
+  <scanner-run-id>/
     input/
     output/
     logs/
+    raw-output.json
+    normalized-output.json
     evidence-manifest.json
     run-metadata.json
 ```
-
-Phase 4 stores scanner artifacts in the configured `SCANNER_STORAGE_ROOT`. Docker Compose sets this to `/data/scanner-runs` and mounts the `scanner_data` volume at `/data`. Local non-Docker tests can override the storage root in `ScannerExecutionService`.
-
-Phase 5 uses the same directory model for garak. A garak run stores the native garak artifacts under the scanner run directory and the platform also writes `raw-output.json`, `execution.log`, and `normalized-output.json`.
 
 ## Captured Artifacts
 
 Capture:
 
-- Command arguments, with secrets redacted.
+- Scanner configuration with secrets redacted.
 - Scanner version.
-- Container image digest if available.
+- Command or execution plan with secrets redacted.
 - Start and end timestamps.
-- stdout.
-- stderr.
-- JSON report.
-- HTML or text report if generated.
-- Prompt and output samples when relevant.
-
-For garak, preserve:
-
-- Native `*.report.jsonl`.
-- Native `*.hitlog.jsonl`.
-- Native `*.report.html`.
-- Scanner configuration JSON.
-- Platform raw output JSON.
-- Platform normalized output JSON.
-- Execution log with stdout and stderr.
-
-## Isolation
-
-Initial isolation should use:
-
-- Per-run directories.
-- Container execution.
-- Timeouts.
-- Resource limits where practical.
-- Explicit allowlisted targets.
-
-Do not build distributed orchestration until one-VM execution is insufficient.
+- stdout and stderr.
+- Native JSON, JSONL, HTML, text, or report files.
+- Prompt and response samples when relevant.
+- Trace references when supplied by Langfuse or similar tools.
 
 ## Failure Behavior
 
-If a scan fails:
+If execution fails:
 
-- Preserve logs.
-- Preserve raw output when execution produced any structured output before parsing or normalization failed.
-- Mark run status clearly.
-- Do not create unsupported findings.
+- Preserve logs and partial output.
+- Mark the run status clearly.
 - Show operator-readable failure reason.
-- Allow rerun after configuration fix.
+- Do not create unsupported findings.
+- Allow rerun after configuration correction.
 
 ## Security Notes
 
-- Redact secrets from logs.
-- Do not allow arbitrary shell commands from user input.
-- Keep scanner configuration explicit.
-- Treat scanner outputs as untrusted input.
+- Redact secrets from logs and persisted config.
+- Never pass raw user input into a shell command.
+- Treat scanner output as untrusted input.
+- Keep scanner targets allowlisted or explicitly declared.

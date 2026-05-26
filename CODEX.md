@@ -1,6 +1,6 @@
 # Codex Workflow Guide
 
-Codex should work in this repository as a senior engineering collaborator with a strong bias toward small, useful, verifiable changes.
+Codex should work in this repository as a senior engineering collaborator with a bias toward small, useful, verifiable changes.
 
 ## Before Editing
 
@@ -20,61 +20,60 @@ Use repository patterns before inventing new ones.
 
 Prefer:
 
-- Mock-first implementation.
-- Clear local data structures.
+- Assessment-first implementation.
 - API-first boundaries.
+- Clear local data structures.
 - Small modules.
 - Direct workflows.
 - Explicit evidence references.
 - Testable functions.
-- Documentation updates with each phase.
+- Documentation updates with each capability.
 
 Avoid:
 
 - Enterprise abstractions.
 - Distributed orchestration.
-- Generic plugin systems before one real adapter exists.
+- Scanner integrations outside adapters.
 - Deep scanner rewrites.
 - Chatbot-first UX.
-- Decorative AI gimmicks.
+- Decorative AI features.
 
 ## Frontend Guidance
 
-The UI should feel like a county security and governance operations center:
+The UI should feel like a county assessment and security operations tool:
 
 - Authoritative.
 - Calm.
 - Trustworthy.
-- Audit-friendly.
-- Security-focused.
-- Government-grade.
+- Evidence-focused.
+- Work-oriented.
 
-Use dense but readable dashboards, findings tables, risk heatmaps, evidence views, executive scorecards, and analyst drill-downs. Avoid neon AI styling, vague AI magic language, and toy dashboards.
+Use dense but readable dashboards, assessment intake, scanner execution controls, findings tables, evidence views, risk heatmaps, executive scorecards, and analyst drill-downs. Avoid vague AI language and toy dashboards.
 
 ## Backend Guidance
 
-The backend should eventually expose stable APIs for:
+The backend should expose stable APIs for:
 
 - Systems.
 - Assessments.
+- Scanner runs.
 - Findings.
 - Evidence.
-- Scanner runs.
-- Scoring.
-- AI Review Board reviews.
+- Risk profiles.
+- Review workflows.
 - Reports.
 - Integrations.
 
-Do not build backend complexity until Phase 2 unless the current task explicitly requires it.
+Do not build backend complexity until a workflow or integration requires it.
 
 ## Verification
 
-For code changes, run the smallest meaningful verification available. If no tests or app code exist yet, verify file structure and documentation links.
+For code changes, run the smallest meaningful verification available. For documentation-only changes, verify the edited docs for terminology consistency and broken roadmap references.
 
-## README Build Checklist
+## README Checklist
 
-When Codex completes a task listed in the README Build Checklist, update the checkbox in the same commit as the completed work. Only tick a box after implementation, verification, and status/todo documentation updates are done. Do not add automation that edits the README checklist unless the user explicitly requests it later.
+When Codex completes a task listed in the README checklist, update the checkbox in the same commit as the completed work. Only tick a box after implementation, verification, and status/todo documentation updates are done.
 
 ## Workflow Playbooks
 
-Detailed Codex playbooks for next-task selection, mock UI work, status updates, scanner adapters, architecture review, and commit/push behavior live in `docs/ai-context/codex-workflows.md`.
+Detailed Codex playbooks live in `docs/ai-context/codex-workflows.md`.

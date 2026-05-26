@@ -1,113 +1,75 @@
 # Scanner Adapter Contract
 
-This contract defines what every scanner adapter should provide. The base contract lives in `apps/api/app/scanners/adapters/base.py`, and the current real executable adapter is `apps/api/app/scanners/adapters/garak_adapter.py`.
+Every scanner integration must use the platform adapter contract. The platform owns assessment records, scanner runs, findings, evidence, scoring, and reporting. External tools own test execution.
 
-## Phase 4 Implemented Contract
+## Required Adapter Capabilities
 
-The implemented adapter protocol supports:
+Adapters must:
 
-- `get_name()`
-- `get_version()`
-- `validate_configuration()`
-- `execute()`
-- `parse_output()`
-- `normalize_findings()`
-- `generate_evidence()`
+- Declare name, version, supported targets, and supported test categories.
+- Validate target configuration and scope.
+- Execute the external scanner or tester.
+- Collect raw output, logs, reports, prompts, responses, and configuration.
+- Preserve artifacts before parsing.
+- Parse scanner-specific output.
+- Normalize findings into the platform Finding model.
+- Create or return evidence references for raw artifacts.
+- Map findings to NIST AI RMF, OWASP LLM Top 10, and OpenControl-ready controls where available.
+- Return explainable score impact inputs.
 
-Adapters receive a `ScannerExecutionContext` with the scanner run, system, risk tier, scan type, scan domain, and optional assessment profile. They return a `ScannerExecutionResult` containing execution status, raw structured output, execution logs, optional error message, and optional artifact metadata.
+## Execution Context
 
-The `ScannerExecutionService` owns persistence, evidence generation, audit events, finding creation, and score recalculation. Adapters do not write directly to database workflow tables.
+Adapters receive a context that includes:
 
-## Required Methods
+- Assessment.
+- Target system.
+- Scanner run.
+- Risk tier.
+- Test category.
+- Configuration.
+- Storage root.
 
-### `validate_target()`
+Adapters should not write directly to workflow tables. The scanner orchestration service owns persistence.
 
-Confirms the target can be scanned safely and with enough configuration.
+## Result Shape
 
-Should check:
+Adapter results should include:
 
-- Target type.
-- Required credentials or test endpoint.
-- Allowed execution mode.
-- Scope boundaries.
-- Safety flags.
+- Status.
+- Started and completed timestamps.
+- Scanner version.
+- Exit code or execution result.
+- Raw artifact metadata.
+- Parsed output metadata.
+- Normalized finding candidates.
+- Error message when applicable.
 
-### `run_scan()`
+## Error Classes
 
-Runs the scanner through Docker, CLI, or a controlled subprocess.
+Use clear failure categories:
 
-Should produce:
-
-- Exit status.
-- Start and end timestamps.
-- Execution directory.
-- Raw output references.
-- Structured output references when available.
-
-### `collect_raw_output()`
-
-Collects stdout, stderr, generated files, logs, reports, and metadata.
-
-Raw output must be preserved even when parsing fails.
-
-### `normalize_findings()`
-
-Converts scanner-specific output into normalized platform findings.
-
-Should populate:
-
-- Scanner name and version.
-- Domain.
-- Severity.
-- Confidence.
-- Title and description.
-- Evidence summary.
-- Raw evidence references.
-- Affected component.
-- Remediation.
-
-### `store_evidence()`
-
-Creates evidence records for raw output, logs, prompts, responses, uploaded artifacts, and generated reports.
-
-### `map_to_frameworks()`
-
-Maps findings to relevant frameworks such as NIST AI RMF, OWASP LLM, county policy controls, privacy checklist, or civil-rights review checklist.
-
-### `calculate_score_impact()`
-
-Returns explainable score impact by domain.
-
-## Adapter Result Shape
-
-```json
-{
-  "scanner_run_id": "scan_001",
-  "scanner_name": "garak",
-  "scanner_version": "example",
-  "status": "completed",
-  "raw_evidence_refs": ["evidence_raw_log_001"],
-  "normalized_finding_ids": ["finding_001"],
-  "score_impact": {
-    "security": -8,
-    "governance": -2
-  }
-}
-```
-
-## Error Handling
-
-Adapters should distinguish:
-
-- Target validation failure.
-- Scanner execution failure.
+- Invalid target.
+- Invalid configuration.
+- Execution failed.
 - Timeout.
-- Parser failure.
-- Evidence storage failure.
-- Normalization failure.
+- Parser failed.
+- Evidence storage failed.
+- No findings.
+- Partial results.
 
-Whenever possible, preserve evidence before returning failure.
+Whenever possible, preserve raw evidence before returning failure.
 
-## Phase 5 Implementation
+## Target Integrations
 
-The first real scanner adapter is `garak_cli_adapter`. It adds only garak-specific CLI execution and JSONL parser logic. Persistence, evidence creation, finding creation, audit events, and score recalculation remain owned by `ScannerExecutionService` and the existing workflow services.
+- `garak_cli_adapter`: implemented.
+- `giskard_adapter`: next target.
+- `pyrit_adapter`: planned after Giskard.
+- `langfuse_trace_adapter`: planned for trace/evidence references.
+
+## Prohibited Patterns
+
+- Do not copy scanner source code into the platform.
+- Do not reimplement scanner logic.
+- Do not create scanner-specific finding tables unless a durable reporting need is proven.
+- Do not bypass raw evidence preservation.
+- Do not create scanner microservices for the initial deployment model.

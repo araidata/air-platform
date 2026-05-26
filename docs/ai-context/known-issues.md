@@ -2,29 +2,29 @@
 
 ## Current Issues
 
-- Historical docs may still reference retired mock-first runtime behavior and should continue being cleaned up when touched.
-- Backend tests use SQLite for fast workflow coverage; Docker smoke tests cover live PostgreSQL runtime behavior.
-- garak is the only real scanner integration; additional scanners are intentionally deferred.
-- No OneTrust integration exists yet.
+- garak is the only real external scanner adapter.
+- Giskard, PyRIT, and Langfuse are not yet implemented.
+- Backend tests use SQLite for fast workflow coverage; Docker smoke tests cover live PostgreSQL behavior.
 - No production backup or restore automation exists yet.
-- Host port conflicts can require `API_HOST_PORT` or `FRONTEND_HOST_PORT` overrides on developer machines.
+- Host port conflicts can require `API_HOST_PORT`, `FRONTEND_HOST_PORT`, or `POSTGRES_PORT` overrides.
+- PDF reporting and OpenControl export are not implemented.
 
 ## Documentation Issues
 
-- Some older documentation paths overlap with the new requested file structure.
-- Future agents may consolidate or cross-link older docs after implementation begins.
-- Status docs must be manually maintained until tooling exists.
+- Historical phase-specific docs have been consolidated into the current roadmap and status docs.
+- Status docs are manually maintained.
+- Docs outside the assessment/scanner/deployment planning set may still need future terminology cleanup when they are touched.
 
 ## Product Risks
 
-- Broadening into multiple real scanner integrations too early could distract from the governance workflow.
-- Overbuilding infrastructure could make the project harder for one or two operators to run.
-- A chatbot-first UI would misrepresent the product as a conversational tool rather than an assurance operations center.
+- Adding many scanners before Giskard and PyRIT are stable would weaken evidence quality.
+- Overbuilding infrastructure would make the platform harder for a small county team to operate.
+- Demo data that looks operational would reduce trust in reports.
 
 ## Mitigations
 
-- Follow the phase plan.
-- Prefer honest empty states over fabricated operational activity.
-- Keep findings and evidence central.
-- Update status docs after changes.
-- Use adapters for scanners.
+- Follow the README phase checklist.
+- Preserve raw evidence for every scanner run.
+- Keep scanner integrations adapter-based.
+- Keep demo metadata separate from operational records.
+- Update status docs after implementation changes.

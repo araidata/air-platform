@@ -1,33 +1,23 @@
-# Technical Debt Tracking
-
-This file tracks known and expected technical debt. It should be updated as implementation begins.
+# Technical Debt
 
 ## Current Debt
 
-- Historical note: frontend pages previously used centralized mock data as their source of truth. Runtime pages are now API-backed or empty-state driven.
-- Backend automated tests use SQLite; live PostgreSQL is covered by Docker runtime smoke testing instead of a full test suite.
-- Evidence artifact storage is metadata/text only; local artifact volume workflow is deferred until file upload is implemented.
-- No production backup or restore scripts exist yet.
+- [ ] Production backup and restore workflow is not documented or automated.
+- [ ] Production logging and monitoring need a defined baseline.
+- [ ] RBAC is not implemented.
+- [ ] Giskard, PyRIT, and Langfuse are not implemented.
+- [ ] PDF reporting and OpenControl export are not implemented.
+- [ ] Risk heatmaps and residual risk trends need stronger report views.
 
-## Expected Early Debt
+## Watch Items
 
-- Example metadata may live in fixtures or seed scripts, but fabricated operational findings, evidence, and scanner runs should not return.
-- Initial scoring weights may be hard-coded before admin configuration exists.
-- Initial evidence storage may use local volumes before object storage is evaluated.
-- Initial auth may be simple before role-based access is mature.
+- Keep scanner-specific fields in metadata.
+- Avoid fabricated operational records in development seed.
+- Avoid infrastructure expansion before production need is clear.
+- Keep docs aligned with the README phase checklist.
 
-## Debt Guardrails
+## Retired Debt
 
-- Mock data debt is acceptable only if it is replaced by seed scripts.
-- Hard-coded scoring weights are acceptable only if explanations are clear.
-- Local evidence storage is acceptable only if hashes and metadata are preserved.
-- Simple auth is acceptable only if deployment exposure is controlled.
-
-## Debt That Should Not Be Accepted
-
-- Scanner-specific core finding tables.
-- Scores calculated only in frontend code.
-- Workflow transitions without audit events.
-- Evidence files without metadata or hash.
-- Real scanner outputs discarded after normalization.
-- OneTrust or Jira treated as source of truth for platform findings.
+- Runtime pages no longer depend on fabricated operational data.
+- Scanner testing no longer depends on a placeholder adapter at runtime.
+- Long implementation-history planning docs have been consolidated.

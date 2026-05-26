@@ -1,65 +1,42 @@
 # Open Source Tooling Strategy
 
-The platform should use strong open source tools where they already exist. It should not recreate them.
+Use mature open source tools where they already solve assessment problems. Do not recreate them inside the platform.
 
-## Security / Red Teaming
+## Priority Tools
 
-Planned support:
+### Giskard
 
-- AgentSeal.
-- garak.
-- PyRIT.
-- ModelScan.
+Use for hallucination testing, bias/fairness checks, prompt injection testing, RAG faithfulness, and business-rule validation.
 
-Use these tools for attack simulation, prompt injection testing, red-team probes, and model artifact scanning.
+### PyRIT
 
-## Bias / Fairness
+Use for adversarial testing, jailbreaks, prompt injection attacks, unsafe content checks, data exfiltration scenarios, and multi-turn red-team workflows.
 
-Planned support:
+### Langfuse
 
-- Fairlearn.
-- Aequitas.
-- IBM AI Fairness 360.
-- Giskard.
+Use for trace references, prompt/output evidence, latency/cost metadata, and observability support.
 
-Use these tools to support fairness calculations, bias testing, dataset checks, and civil-rights-oriented assessment evidence.
+### garak
 
-## LLM / RAG Evaluation
+Keep as the existing prompt-injection-oriented scanner adapter.
 
-Planned support:
+### OpenControl / Compliance Masonry
 
-- Ragas.
-- DeepEval.
-- Promptfoo.
-
-Use these tools for RAG quality checks, regression tests, prompt evaluations, hallucination checks, and answer quality testing.
-
-## Observability / Future
-
-Future support:
-
-- Langfuse.
-- OpenTelemetry.
-- MLflow.
-
-Use these later for traces, evaluation history, model run metadata, and operational telemetry.
+Use as the export path for control-oriented reporting.
 
 ## Integration Pattern
 
-Tools should eventually integrate through:
-
-- Scanner adapters.
-- Docker execution.
-- CLI wrappers.
-- Result parsers.
+- Adapter.
+- Safe execution plan.
+- Raw artifact preservation.
+- Parser.
 - Normalized findings.
-- Evidence storage.
+- Evidence linkage.
+- Framework/control mappings.
 
 ## Do Not Do
 
-- Do not copy scanner source into the platform.
+- Do not copy tool source into the platform.
 - Do not rewrite scanner internals.
-- Do not make each scanner a microservice early.
-- Do not let scanner-specific fields distort the core findings model.
-
-The platform is the governance layer. The tools perform specialized testing.
+- Do not make each scanner a service.
+- Do not let scanner-specific output distort the core Finding model.

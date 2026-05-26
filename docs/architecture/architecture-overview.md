@@ -1,157 +1,94 @@
 # Architecture Overview
 
-The architecture is a modular monolith with clean internal boundaries and adapter-based scanner orchestration. It should remain easy to operate on one Linux VM while still being structured enough to evolve.
+AI Assessment Scanner is a modular monolith with adapter-based scanner orchestration. It is designed to run on one Linux VM with Docker Compose.
 
-## High-Level Components
+## System Architecture
 
 ```mermaid
 flowchart LR
-    User["Operators, Executives, AIRB Reviewers"] --> UI["Next.js Operational UI"]
-    UI --> API["FastAPI API"]
-    API --> DB["PostgreSQL"]
-    API --> Cache["Redis"]
-    API --> Evidence["Evidence Storage Volume"]
-    API --> Queue["Local Job Queue"]
-    Queue --> Runner["Scanner Orchestrator"]
-    Runner --> Adapters["Scanner Adapters"]
-    Adapters --> Containers["Dockerized Scanner Tools"]
-    Containers --> Results["Raw Results"]
-    Results --> Normalizer["Normalization Pipeline"]
-    Normalizer --> DB
-    Normalizer --> Evidence
+  User["Operators and reviewers"] --> UI["Next.js + TypeScript UI"]
+  UI --> API["FastAPI Backend"]
+  API --> DB["PostgreSQL"]
+  API --> Storage["Evidence / Scanner Storage"]
+  API --> Orchestrator["Scanner Orchestration Service"]
+  Orchestrator --> Adapter["Scanner Adapter"]
+  Adapter --> Tool["External Scanner or Tester"]
+  Tool --> Raw["Raw Output and Logs"]
+  Raw --> Storage
+  Orchestrator --> Findings["Normalized Findings"]
+  Findings --> DB
+  DB --> Reports["Dashboards, PDF Reports, OpenControl Export"]
 ```
 
-## Recommended Repository Layout
+## Frontend
 
-Future implementation should use this shape:
-
-```text
-/
-  apps/
-    web/                 # Next.js, React, TailwindCSS, shadcn/ui
-    api/                 # FastAPI app
-  packages/
-    schemas/             # Shared JSON Schema / OpenAPI fragments if useful
-  scanner-adapters/
-    base/                # Adapter interfaces and test fixtures
-    garak/
-    pyrit/
-    fairlearn/
-    promptfoo/
-  infra/
-    docker/
-    compose/
-  scripts/
-  seed/
-  docs/
-```
-
-This documentation repository does not yet create application code. It establishes the foundational blueprint that future implementation should follow.
-
-## Backend Architecture
-
-The FastAPI backend should be organized around domain modules:
-
-- `systems`: AI inventory and system ownership.
-- `assessments`: assessment plans, runs, status, scanner executions.
-- `findings`: normalized findings, triage, remediation.
-- `evidence`: artifacts, metadata, hashes, custody.
-- `scoring`: score calculation and score explanations.
-- `governance`: review workflows, approvals, exceptions.
-- `reports`: executive and operational reporting.
-- `integrations`: future external workflow integrations.
-- `scanner_orchestration`: adapter execution and result normalization.
-
-## Frontend Architecture
-
-The Next.js frontend should use:
-
-- App Router.
+- Next.js App Router.
 - TypeScript.
-- TailwindCSS.
-- shadcn/ui primitives.
-- Recharts for charts.
-- TanStack Table for dense operational tables.
-- Route groups for dashboard, inventory, findings, evidence, AIRB, approvals, and reports.
+- Operational pages for assessment intake, scanner runs, findings, evidence, review workflows, and executive reporting.
+- API-backed data or honest empty states only.
 
-The UI should behave like an operational security console, not a marketing site.
+## Backend
 
-## Data Architecture
+- FastAPI service.
+- SQLAlchemy models and Alembic migrations.
+- Domain services for assessments, scanner runs, findings, evidence, scoring, review workflow, and reporting.
+- OpenAPI documentation exposed by FastAPI.
 
-PostgreSQL is the source of truth for:
+## Database
+
+PostgreSQL stores:
 
 - Systems.
-- Departments.
-- Owners.
 - Assessments.
-- Scanner runs.
+- Risk profile inputs and scores.
+- Scanner runs and results.
 - Findings.
 - Evidence metadata.
-- Workflow state.
-- Decisions.
-- Exceptions.
-- Scores.
+- Review workflow state.
 - Framework mappings.
-- Reports.
+- Reports and export metadata.
+- Audit events.
 
-Phase 3 scoring uses the existing modular monolith and database:
+## Scanner Orchestration Flow
 
-- Deterministic domain calculators live under `apps/api/app/scoring/domain_calculators`.
-- Central scoring weights and severity/status rules live in `apps/api/app/scoring/scoring_rules.py`.
-- `ScoringEngine` writes current scores, history, snapshots, explanations, and audit events in the same transaction as workflow changes.
-- Recalculation is service-layer work, not a distributed event system.
+1. Operator selects an assessment target and scanner configuration.
+2. Backend validates target scope and adapter configuration.
+3. Scanner run record is created.
+4. Adapter executes an external scanner or tester.
+5. Raw output, logs, reports, prompts, and responses are written to storage.
+6. Parser normalizes scanner-specific results.
+7. Findings and evidence links are created.
+8. Risk profile and score records update.
 
-Redis is used initially for:
+## Evidence Flow
 
-- Job coordination.
-- Short-lived cache.
-- Lightweight background processing state.
+Evidence artifacts are immutable by default. The database stores metadata, references, hashes where available, sensitivity labels, and links to assessments, scanner runs, and findings.
 
-Redis should not become an unbounded event store in the first implementation.
+Evidence sources include scanner output, logs, prompts, responses, uploaded files, trace references, review notes, and generated reports.
 
-## Scanner Architecture
+## Reporting Flow
 
-Scanners are external tools. The platform integrates them through adapters that:
+Reports should be generated from real records:
 
-- Declare supported capabilities.
-- Validate inputs.
-- Construct CLI or container execution commands.
-- Capture raw outputs.
-- Normalize results into platform schemas.
-- Attach evidence.
-- Report execution metadata.
+- Systems and assessments.
+- Risk profiles and score history.
+- Findings and remediation status.
+- Evidence references.
+- Review decisions and conditions.
+- Framework/control mappings.
 
-Adapters must not import or depend on scanner internals unless the scanner explicitly provides a stable API.
+Supported reporting targets are dashboards first, then PDF reports and OpenControl / Compliance Masonry exports.
 
-## Evidence Architecture
+## Deployment Model
 
-Evidence should be stored as immutable artifacts with metadata:
+Initial production deployment:
 
-- Raw scanner outputs.
-- Prompts.
-- Model outputs.
-- Screenshots.
-- Configuration snapshots.
-- Approval records.
-- Review notes.
-- Generated reports.
+- One Linux VM.
+- Docker Compose.
+- Frontend container.
+- Backend container.
+- PostgreSQL container or managed PostgreSQL.
+- Mounted evidence/scanner storage.
+- Optional reverse proxy and TLS.
 
-The database stores metadata, references, hashes, and custody events. Artifact files can start on a local Docker volume and later move to object storage if required.
-
-## Deployment Architecture
-
-Initial deployment is Docker Compose on one Linux VM:
-
-- `web`.
-- `api`.
-- `postgres`.
-
-Phase 2.5 runtime includes only:
-
-- `frontend`.
-- `backend`.
-- `postgres`.
-
-Later deployment hardening may add an optional reverse proxy. Redis and scanner runners remain deferred until real workflow need exists.
-
-No Kubernetes, service mesh, distributed worker fleet, or cloud-native event pipeline should be introduced before operational workflows prove the need.
+Do not add Kubernetes, service mesh, distributed workers, or scanner microservices unless production requirements justify them.

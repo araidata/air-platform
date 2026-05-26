@@ -1,78 +1,57 @@
 # Scanner Adapter Architecture
 
-Scanner adapters are the boundary between the platform and external security, fairness, model scanning, and evaluation tools.
+Scanners are external assessment tools. The platform integrates them through adapters so scanner-specific behavior does not leak into core assessment, finding, evidence, or reporting models.
 
-## Purpose
+## Plugin Model
 
-Adapters allow the platform to run or ingest scanner output without becoming the scanner.
+Each adapter declares:
 
-The platform should:
+- Adapter name and version.
+- Supported target types.
+- Supported test categories.
+- Required configuration.
+- Execution mode.
+- Output parser.
+- Evidence artifact types.
+- Finding normalization behavior.
 
-- Validate scan targets.
-- Start scanner execution.
-- Capture raw output.
-- Preserve logs.
+Adapters are loaded by the scanner orchestration service. They do not write directly to workflow tables.
+
+## Adapter Responsibilities
+
+- Validate target and configuration.
+- Build a safe execution plan.
+- Run the scanner through CLI, container, or stable library API.
+- Capture stdout, stderr, generated files, reports, prompts, and responses.
+- Preserve raw artifacts.
+- Parse structured output.
 - Normalize findings.
-- Store evidence references.
-- Map findings to frameworks.
-- Calculate score impact.
+- Return scanner run metadata.
 
-The platform should not:
+## Adapter Must Not
 
-- Rewrite scanner logic.
-- Copy scanner source code.
-- Depend on private scanner internals.
-- Turn every scanner into a separate API service too early.
+- Reimplement scanner logic.
+- Depend on unstable scanner internals.
+- Bypass evidence storage.
+- Bypass normalized Finding records.
+- Run as a separate microservice in the initial architecture.
 
-## Adapter Lifecycle
+## Target Integrations
 
-1. Receive scan request.
-2. Validate target and configuration.
-3. Create isolated execution directory.
-4. Execute Docker container or CLI subprocess.
-5. Collect raw output and logs.
-6. Parse structured output when available.
-7. Normalize findings.
-8. Store evidence records.
-9. Map to frameworks.
-10. Return scanner run summary and score impact.
+- Giskard for hallucination, bias/fairness, prompt injection, RAG faithfulness, and business-rule validation.
+- PyRIT for jailbreak, prompt injection, unsafe content, data exfiltration, and multi-turn adversarial testing.
+- Langfuse for trace and prompt/output evidence references.
+- garak for prompt-injection-oriented testing already implemented.
 
-## Adapter Interface
+## Failure Handling
 
-Adapters should support:
+Failures should be visible and evidence-preserving:
 
-- `run_scan()`
-- `validate_target()`
-- `collect_raw_output()`
-- `normalize_findings()`
-- `store_evidence()`
-- `map_to_frameworks()`
-- `calculate_score_impact()`
+- Invalid target.
+- Execution failed.
+- Timed out.
+- Parser failed.
+- No findings.
+- Partial results.
 
-Phase 4 implements the practical adapter contract as:
-
-- `get_name()`
-- `get_version()`
-- `validate_configuration()`
-- `execute()`
-- `parse_output()`
-- `normalize_findings()`
-- `generate_evidence()`
-
-The scanner execution service owns database persistence, evidence creation, audit events, finding creation, and score recalculation.
-
-## Adapter Types
-
-- Mock adapter for Phase 4.
-- CLI adapter for scanners with command-line runners.
-- Docker adapter for scanner containers.
-- Import adapter for manually uploaded scanner output.
-- API adapter later only when the external tool has a stable API and operational need.
-
-## Evidence Rule
-
-Every scanner run must preserve raw output and logs even when parsing fails. A failed scan can still produce useful evidence.
-
-## Phase 4 Runtime
-
-The Docker Compose runtime mounts `scanner_data` at `/data`; `SCANNER_STORAGE_ROOT` defaults to `/data/scanner-runs` in Compose. Each run writes `raw-output.json` and `execution.log` under its run ID directory.
+Failed runs should not create risk findings unless the failure itself represents an assessment issue.

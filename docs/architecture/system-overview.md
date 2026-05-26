@@ -1,63 +1,32 @@
 # System Overview
 
-County AI Assurance Operations Center is a governance and assurance platform for public-sector AI systems.
+AI Assessment Scanner helps a county assess AI systems, run automated tests, preserve evidence, manage findings, route human review, and produce executive reports.
 
 ## System Role
 
-The platform is the operational layer that tracks:
+The platform tracks:
 
-- Which AI systems exist.
-- Who owns them.
-- What assessments have been run.
-- What findings exist.
-- What evidence supports decisions.
-- What risks have been accepted.
-- What reviews are pending.
-- What must be retested.
+- Which AI systems are being assessed.
+- What risk profile applies.
+- Which automated tests have run.
+- What findings were produced.
+- What evidence supports each finding.
+- What remediation or review action is pending.
+- What residual risk remains.
+- What should appear in executive reporting or OpenControl export.
 
-## High-Level Architecture
+## Core Flow
 
-```mermaid
-flowchart LR
-  Operator["Operator"] --> UI["Next.js Operations UI"]
-  Reviewer["AI Review Board"] --> UI
-  UI --> API["API-First Backend"]
-  API --> DB["PostgreSQL"]
-  API --> Evidence["Evidence Storage"]
-  API --> Jobs["Local Job Runner / Redis if needed"]
-  Jobs --> Adapter["Scanner Adapter"]
-  Adapter --> Scanner["External Scanner CLI/Container"]
-  Scanner --> Raw["Raw Output and Logs"]
-  Raw --> Evidence
-  Adapter --> Findings["Normalized Findings"]
-  Findings --> DB
-```
-
-## Planned Components
-
-- Operations UI.
-- API backend.
-- PostgreSQL database.
-- Evidence storage.
-- Scanner adapter runner.
-- Scoring engine.
-- Export/reporting subsystem.
-
-## Deployment Assumption
-
-Initial production should run on one Linux VM with Docker Compose. This is deliberate. The project should remain easy to inspect, back up, patch, and operate.
-
-## Data Flow
-
-1. A system is added to inventory.
-2. An assessment is created.
-3. Mock findings or scanner results are attached.
-4. Findings normalize into a common schema.
-5. Evidence records preserve raw material.
-6. Scores update.
-7. Reviewers approve, block, request remediation, or accept risk.
-8. Reports and audit packets are produced.
+1. Create or update an AI system record.
+2. Complete assessment intake.
+3. Calculate a risk profile.
+4. Launch a scanner run or collect manual evidence.
+5. Preserve raw artifacts.
+6. Normalize findings.
+7. Link evidence to findings and assessments.
+8. Route human review and remediation.
+9. Produce executive reporting.
 
 ## Boundary
 
-The platform does not perform scanner logic internally. It orchestrates external tools and turns their results into governance records.
+The platform does not implement scanner logic internally. It orchestrates external tools and converts their outputs into assessment records, evidence, and findings.

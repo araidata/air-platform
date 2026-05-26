@@ -1,87 +1,28 @@
 # API-First Platform Strategy
 
-The platform should be API-first even when early UI work starts before all backend workflows exist.
+The backend API is the contract between the UI, scanner orchestration, reporting, and future integrations.
 
-## Meaning Of API-First
+## API Domains
 
-Core platform actions should map to stable API operations:
+- Systems.
+- Assessments.
+- Risk profiles.
+- Scanner runs.
+- Findings.
+- Evidence.
+- Review workflow.
+- Reports.
+- Exports.
+- Framework mappings.
 
-- Create and update AI systems.
-- Start assessments.
-- Record findings.
-- Attach evidence.
-- Update status and owner.
-- Record review decisions.
-- Generate reports.
-- Export governance packets.
+## Rules
 
-The UI should be a client of these concepts, not the only place they exist.
+- Keep workflows available through APIs before relying on UI-only behavior.
+- Preserve raw evidence references in API responses where relevant.
+- Keep scanner execution state explicit.
+- Avoid scanner-specific response shapes in shared endpoints.
+- Prefer additive changes to existing contracts.
 
-## Why API-First
+## Future Integrations
 
-- Makes scanner adapters easier to integrate.
-- Supports future CLI tools.
-- Makes exports and automation cleaner.
-- Keeps workflows testable.
-- Avoids burying governance logic in UI components.
-
-## Initial API Domains
-
-- `/systems`
-- `/assessments`
-- `/findings`
-- `/evidence`
-- `/scanner-runs`
-- `/scores`
-- `/reviews`
-- `/reports`
-- `/integrations`
-
-## Scanner Boundary
-
-External scanners should initially be CLI/container-first. The platform API should orchestrate scan requests and persist results, not require scanners to become first-class web services.
-
-## Do Not Overbuild
-
-API-first does not mean enterprise API gateway, distributed services, or complex service mesh. It means clean backend contracts inside a simple deployable system.
-
-## Phase 3 Score APIs
-
-Phase 3 adds deterministic score APIs:
-
-- `GET /scores`
-- `GET /scores/{id}`
-- `GET /scores/{id}/explanations`
-- `GET /systems/{id}/scores`
-- `GET /systems/{id}/score-history`
-- `POST /systems/{id}/recalculate-scores`
-- `POST /assessments/{id}/recalculate-scores`
-
-The recalculation endpoints run synchronously in the FastAPI service layer and reuse the existing database and audit-event architecture.
-
-## Phase 4 Scanner Ecosystem APIs
-
-Phase 4 adds scanner ecosystem APIs:
-
-- `GET /scanner-definitions`
-- `GET /scanner-definitions/{id}`
-- `POST /scanner-definitions`
-- `PATCH /scanner-definitions/{id}`
-- `GET /scan-types`
-- `GET /scan-types/{id}`
-- `POST /scan-types`
-- `PATCH /scan-types/{id}`
-- `GET /assessment-profiles`
-- `GET /assessment-profiles/{id}`
-- `POST /assessment-profiles`
-- `PATCH /assessment-profiles/{id}`
-- `GET /scanner-runs`
-- `GET /scanner-runs/{id}`
-- `POST /scanner-runs`
-- `POST /scanner-runs/{id}/execute`
-- `GET /scanner-results/{id}`
-- `GET /scanner-adapters`
-- `GET /systems/{id}/recommended-scans`
-- `GET /systems/{id}/scanner-runs`
-
-Scanner execution remains synchronous and local in Phase 4. The API starts real adapter execution when available, preserves artifacts, creates evidence, normalizes findings, and recalculates scores through the existing service layer. If no executable adapter exists, the run fails gracefully without fabricating findings.
+Future integrations should consume stable assessment, finding, evidence, score, and report/export APIs. They should not become the source of truth for platform records.

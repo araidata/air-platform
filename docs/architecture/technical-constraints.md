@@ -1,47 +1,35 @@
 # Technical Constraints
 
-These constraints protect the platform from growing in the wrong direction before it has operational value.
+## Runtime
 
-## Must Keep
+- One Linux VM.
+- Docker Compose.
+- PostgreSQL.
+- Local mounted evidence/scanner storage.
+- Optional reverse proxy and TLS for production.
 
-- Single Linux VM deployment for the initial platform.
-- Docker Compose deployment.
-- API-first backend.
-- Normalized finding and evidence schemas.
-- Scanner adapters with loose coupling.
-- Seed only example metadata before additional real scanner integrations.
-- Clear domain boundaries in backend modules.
-- Dense, operational frontend design.
-
-## Must Avoid Initially
+## Do Not Add Early
 
 - Kubernetes.
-- Distributed scanner microservices.
-- Enterprise SSO as a blocker.
-- Advanced CI/CD gates as a blocker.
-- Complex observability stacks.
-- Real-time telemetry pipelines.
-- Autonomous remediation.
-- Autonomous deployment approval.
-- Tight dependency on scanner internals.
-- Rewriting open-source scanner logic.
+- Helm.
+- Service mesh.
+- Distributed worker fleet.
+- Scanner microservices.
+- Multi-tenant SaaS architecture.
+- Enterprise workflow platform assumptions.
 
-## Acceptable Early Simplifications
+## Data Constraints
 
-- Local username/password or simple admin bootstrap auth in development.
-- Local evidence volume.
-- Manual scanner execution records.
-- Real empty states until executable scanners or operator evidence exist.
-- Simple Redis-backed jobs.
-- Manual AIRB participant assignment.
-- CSV or PDF export planning before full reporting automation.
+- Preserve raw evidence.
+- Keep operational records separate from development metadata.
+- Do not fabricate assessments, findings, evidence, scanner runs, or scores.
+- Store scanner output references and metadata in PostgreSQL.
+- Treat scanner output as untrusted input.
 
-## Non-Negotiable Architecture Requirements
+## Integration Constraints
 
-- Findings must map to affected systems.
-- Findings must support evidence.
-- Evidence must support immutable artifact references and custody events.
-- Scores must be explainable.
-- AIRB decisions must be auditable.
-- Deployment approvals must preserve reviewer rationale.
-- Scanner outputs must normalize before entering the findings workflow.
+- Scanners integrate through adapters.
+- Prefer CLI/container execution first.
+- Use stable APIs only when the tool provides them.
+- Do not copy scanner source into the platform.
+- Do not let scanner-specific output reshape the core Finding model.

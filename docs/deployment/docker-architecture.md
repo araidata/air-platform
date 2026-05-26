@@ -1,14 +1,14 @@
 # Docker Architecture
 
-The Phase 2.5 runtime target is a single Linux VM using Docker Compose. It is deliberately small and operationally boring.
+AI Assessment Scanner runs locally and on a small production host with Docker Compose.
 
 ## Services
 
-- `frontend`: Next.js operational UI.
+- `frontend`: Next.js + TypeScript UI.
 - `backend`: FastAPI API service.
-- `postgres`: PostgreSQL runtime database.
+- `postgres`: PostgreSQL database.
 
-Redis, scanner runners, reverse proxies, and background workers are intentionally deferred.
+Scanner artifacts are written to the configured scanner/evidence storage path, mounted into the backend container.
 
 ## Runtime Flow
 
@@ -20,15 +20,16 @@ Browser
   -> postgres:5432
 ```
 
-The frontend defaults `NEXT_PUBLIC_API_URL` to `/api/backend`, and Next.js rewrites that path to `NEXT_INTERNAL_API_URL`, which defaults to `http://backend:8000` inside Compose.
+The frontend defaults `NEXT_PUBLIC_API_URL` to `/api/backend`. Next.js rewrites that path to `NEXT_INTERNAL_API_URL`, which defaults to `http://backend:8000` inside Compose.
 
 ## Volumes
 
 - `postgres_data`: PostgreSQL data directory.
+- `scanner_data`: scanner and evidence artifacts.
 - `web_node_modules`: frontend dependency volume for bind-mounted development.
-- `web_next`: frontend `.next` runtime/cache volume.
+- `web_next`: frontend build/cache volume.
 
-The PostgreSQL volume is the persistence boundary for Phase 2.5. `docker compose down` preserves it; `docker compose down -v` deletes it.
+`docker compose down` preserves named volumes. `docker compose down -v` deletes them.
 
 ## Environment Variables
 
@@ -42,6 +43,7 @@ Backend:
 - `ENVIRONMENT`
 - `RUN_SEED`
 - `ALLOWED_ORIGINS`
+- `SCANNER_STORAGE_ROOT`
 
 Frontend:
 
@@ -57,31 +59,27 @@ PostgreSQL:
 - `POSTGRES_PASSWORD`
 - `POSTGRES_PORT`
 
-## Health Checks
-
-- PostgreSQL uses `pg_isready`.
-- Backend checks `GET /health`.
-- Frontend checks the Next.js root route.
-
-The backend also exposes `GET /health/db` for direct database connectivity validation.
-
-## Migration And Seed Runtime
+## Startup
 
 Backend startup:
 
-1. Waits for PostgreSQL.
-2. Runs `alembic upgrade head`.
-3. Runs `python -m app.seed.run_seed` when `RUN_SEED=true`, or when `RUN_SEED` is unset and `ENVIRONMENT=development`.
-4. Starts Uvicorn.
+1. Wait for PostgreSQL.
+2. Run `alembic upgrade head`.
+3. Run development metadata seed when configured.
+4. Start FastAPI with Uvicorn.
 
-The seed flow explicitly runs Phase 2 workflow data, Phase 4 scanner ecosystem data, and Phase 6 civil-rights data. It logs created and skipped existing record counts for each phase, recalculates scores only when seed records changed or required scores are missing, and is skipped by default outside development unless `RUN_SEED=true` is set intentionally.
+Development seed may create example systems and configuration metadata. It must not fabricate operational assessments, findings, evidence, scanner runs, or scores.
 
-## What Not To Add In Phase 2.5
+## Health Checks
 
-- Kubernetes manifests.
-- Helm charts.
-- Service mesh.
-- RabbitMQ, Kafka, or distributed workers.
-- Scanner execution containers.
-- Production observability stacks.
-- Cloud-specific infrastructure modules.
+- PostgreSQL uses `pg_isready`.
+- Backend exposes `GET /health` and `GET /health/db`.
+- Frontend health is checked through the root route.
+
+## Production Notes
+
+- Set non-default database credentials.
+- Protect evidence and scanner artifact storage.
+- Configure backups for PostgreSQL and artifacts.
+- Add TLS through a reverse proxy or hosting platform.
+- Keep scanner execution local and adapter-controlled unless operational load proves otherwise.

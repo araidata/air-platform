@@ -1,57 +1,40 @@
 # Scanner Integration TODO
 
-## Phase 4
+## Implemented
 
-- [x] Implement adapter interface.
-- [x] Remove mock adapter from runtime execution.
-- [x] Create scanner registry records.
-- [x] Create scan type records.
-- [x] Create assessment profile records.
-- [x] Create scanner run records.
-- [x] Create scanner result records.
-- [x] Create isolated execution directory structure.
-- [x] Capture raw output and logs as evidence.
-- [x] Normalize only real scanner findings.
-- [x] Trigger score recalculation from scanner findings.
-- [x] Add scanner recommendation APIs and Scanner Ecosystem UI.
-- [x] Filter scanner launch workflows by system target configuration and compatible scanner tags.
-- [x] Add direct garak and live HTTP assessment workbench without mock scanner choices.
+- [x] Adapter interface.
+- [x] Scanner registry records.
+- [x] Scan type records.
+- [x] Assessment profile records.
+- [x] Scanner run records.
+- [x] Scanner result records.
+- [x] Isolated execution directory structure.
+- [x] Raw output and log capture.
+- [x] Finding normalization.
+- [x] Evidence linkage.
+- [x] Score recalculation from scanner findings.
+- [x] garak adapter.
+- [x] Live HTTP assessment tester.
 
-## Phase 5
+## Next: Giskard
 
-- [x] Select first real scanner, likely garak or AgentSeal.
-- [x] Add Docker/CLI execution wrapper.
-- [x] Parse structured output.
-- [x] Preserve raw logs and raw output.
-- [x] Normalize findings.
-- [x] Add parser fixtures for success, empty, failed, malformed, and partial outputs.
-- [x] Add score impact.
+- [ ] Add Giskard adapter.
+- [ ] Validate target configuration.
+- [ ] Support hallucination testing.
+- [ ] Support prompt injection testing.
+- [ ] Preserve Giskard artifacts.
+- [ ] Normalize Giskard findings.
+- [ ] Add framework/control mappings.
+- [ ] Add tests for success, no findings, invalid target, execution failure, and parser failure.
 
-## Phase 6
+## Later
 
-- [x] Add bias and civil-rights assessment templates.
-- [x] Add language access scenario workflows.
-- [x] Add human appeal path checks.
-- [x] Add fairness-oriented evidence expectations.
-- [x] Defer additional real scanner integrations until one Phase 6 workflow needs them.
+- [ ] PyRIT adapter.
+- [ ] Langfuse trace/evidence adapter.
+- [ ] Additional scanner adapters only when a concrete assessment workflow requires them.
 
-## Planned Scanner Families
+## Do Not Do
 
-- AgentSeal.
-- garak.
-- PyRIT.
-- ModelScan.
-- Fairlearn.
-- Aequitas.
-- IBM AI Fairness 360.
-- Giskard.
-- Ragas.
-- DeepEval.
-- Promptfoo.
-
-## Do Not Do Yet
-
-- Build multiple real adapters at once.
-- Create scanner microservices.
-- Rewrite scanner logic.
-- Add distributed execution.
+- [ ] Do not build scanner microservices.
+- [ ] Do not bypass the adapter contract.
+- [ ] Do not seed fake scanner runs or findings.

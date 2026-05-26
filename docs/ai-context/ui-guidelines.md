@@ -1,69 +1,49 @@
 # UI Guidelines
 
-The UI must feel like an operational AI assurance center for county government.
+The interface should feel like a county assessment and security operations tool.
 
-## Desired Feel
+## Tone
 
-- Authoritative.
+- Clear.
 - Operational.
+- Evidence-focused.
 - Calm.
-- Trustworthy.
-- Security-focused.
-- Audit-friendly.
-- Government-grade.
+- Professional.
 
-The closest references are CrowdStrike, Wiz, Microsoft Defender, Splunk, and ServiceNow rather than consumer AI chat products.
+Avoid marketing language, toy AI styling, and exaggerated claims.
 
-## Avoid
+## Primary Workflows
 
-- Neon AI styling.
-- Chatbot-first design.
-- Toy-like dashboards.
-- Flashy gimmicks.
-- Vague AI magic language.
-- Marketing hero sections.
-- Low-density executive fluff.
+- Assessment intake.
+- Risk profile review.
+- Scanner run launch and status review.
+- Findings triage.
+- Evidence review.
+- Human review and approval decisions.
+- Executive reporting.
 
-## Use
+## Terminology
 
-- Dark professional dashboard.
-- Clear cards for summary metrics.
-- Risk heatmaps.
-- Findings tables.
-- Evidence views.
-- Executive scorecards.
-- Analyst drill-downs.
-- Clean typography.
-- Restrained colors.
-- Readable density.
+Use:
 
-## First Pages
+- Assessment.
+- Scanner Run.
+- Finding.
+- Evidence.
+- Risk Profile.
+- Assessment Workflow.
+- Review Workflow.
+- Executive Report.
 
-- Executive Dashboard.
-- AI Inventory.
-- Assessment Workspace.
-- Findings Queue.
-- System Detail Page.
-- Bias & Civil Rights Dashboard.
-- Security Findings Dashboard.
-- Evidence & Audit Page.
-- AI Review Board Queue.
-- Reports Page.
-- Settings / Integrations Page.
+Avoid:
 
-## Copy Tone
+- Scanner ecosystem.
+- Governance theater.
+- Phase labels in UI copy.
+- Demo language in operational screens.
 
-Use direct operational language:
+## Data States
 
-- "Open findings"
-- "Evidence missing"
-- "Risk accepted"
-- "Retest required"
-- "Approval blocked"
+Use honest empty states when no operational records exist. Do not display fabricated findings, evidence, scanner runs, assessments, or scores.
 
-Avoid vague phrases:
-
-- "AI magic"
-- "Supercharge governance"
-- "Intelligent insights"
-- "Ask your data"
+Development metadata may help local users create assessments, but operational pages should clearly reflect real records only.
