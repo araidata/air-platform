@@ -17,7 +17,7 @@ def finding_payload(system, assessment, owner):
     return FindingCreate(
         system_id=system.id,
         assessment_id=assessment.id,
-        scanner_name="mock-adapter",
+        scanner_name="manual-review",
         scanner_version="0.1.0",
         domain="security",
         severity="high",

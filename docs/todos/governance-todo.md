@@ -2,7 +2,7 @@
 
 ## Phase 1
 
-- [x] Show AI Review Board queue with mock data.
+- [x] Show AI Review Board queue with API-backed data and empty states.
 - [x] Show approval status on system detail.
 - [x] Show governance evidence gaps.
 
@@ -15,7 +15,7 @@
 
 ## Phase 3
 
-- [x] Integrate score context into AIRB and governance report views in the mock-first frontend.
+- [x] Integrate score context into AIRB and governance report views without fabricated operational records.
 - [x] Recalculate scores when AIRB reviews are created or decision state changes.
 - [x] Verify score views in Docker Compose.
 

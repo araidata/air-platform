@@ -19,10 +19,10 @@ Do not build:
 - Real scanner integrations.
 - OneTrust integration.
 
-## Phase 1 — Operational UI and Mock Data
+## Phase 1 — Operational UI Foundation
 
 Purpose:
-Build dashboard, inventory, findings queue, and system detail pages using mock data.
+Build dashboard, inventory, findings queue, and system detail pages. Historical scaffolding used mock data, but runtime mock operational behavior is now retired.
 
 Build:
 
@@ -32,7 +32,7 @@ Build:
 - System Detail Page.
 - Evidence & Audit Page.
 - AI Review Board Queue starter view.
-- Centralized mock systems, findings, evidence, assessments, and reviews.
+- Initial page shells that later bind to real APIs or explicit empty states.
 
 Do not build:
 
@@ -134,7 +134,7 @@ Built:
 
 - Adapter contract.
 - Base scanner adapter abstraction.
-- Mock scanner adapter.
+- Real adapter framework with graceful unsupported-adapter handling.
 - Scanner registry.
 - Scan type framework.
 - Assessment profiles.
@@ -256,3 +256,4 @@ Do not build:
 - Enterprise workflow suites.
 - Distributed scanner farms unless real load requires it.
 - Multi-tenant SaaS layers.
+

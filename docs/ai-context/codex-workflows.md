@@ -28,7 +28,7 @@ Use when the user asks what to do next or asks Codex to continue.
 
 1. Read current state, implementation status, priorities, and next steps.
 2. Choose the smallest task that advances the current phase.
-3. Prefer Phase 1 mock UI work until the user explicitly changes priorities.
+3. Prefer API-backed UI work with honest empty states unless the user explicitly asks for exploratory scaffolding.
 4. Name affected files before editing.
 5. Implement the task.
 6. Verify with the smallest meaningful check.
@@ -36,14 +36,14 @@ Use when the user asks what to do next or asks Codex to continue.
 
 Default next task:
 
-- Build the operational UI scaffold and mock-data pages for Phase 1.
+- Build operational UI pages against real APIs or honest empty states.
 
-## Build Mock UI Page Workflow
+## Build UI Page Workflow
 
 Use when building a dashboard, queue, table, detail page, or settings page.
 
 1. Read the UI guidance and page map.
-2. Use mock data unless backend persistence already exists.
+2. Use backend persistence when it exists; otherwise show explicit empty states instead of fabricated operational records.
 3. Keep the page operational, dense, and audit-friendly.
 4. Show findings, evidence, approval state, and risk clearly.
 5. Avoid chatbot-first layout, neon AI styling, and marketing copy.
@@ -69,7 +69,7 @@ Keep status factual. Do not turn status docs into a changelog of every small edi
 Use only when the project reaches Phase 4 or the user explicitly asks for adapter work.
 
 1. Read the scanner adapter contract and execution model.
-2. Start with a mock adapter unless a real scanner was explicitly requested.
+2. Start with the real adapter framework and return a clear unsupported-adapter state when no executable scanner is available.
 3. Treat scanners as external tools.
 4. Prefer Docker or CLI execution.
 5. Use isolated execution directories.

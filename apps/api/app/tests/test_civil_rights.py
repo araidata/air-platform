@@ -1,28 +1,19 @@
 from app.models.assessment_profile import AssessmentProfile
-from app.models.evidence import Evidence
 from app.models.finding import Finding
 from app.models.human_appeal_path_check import HumanAppealPathCheck
 from app.models.language_access_scenario import LanguageAccessScenario
 from app.models.score import DomainScore
-from app.scoring.scoring_engine import ScoringEngine
 from app.seed.phase6_seed import seed_phase6
 from app.services.evidence_service import EvidenceService
 from app.schemas.evidence import EvidenceCreate
 from app.tests.factories import create_assessment, create_system
 
 
-def test_phase6_seed_adds_templates_scenarios_findings_and_airb_indicators(db_session):
+def test_phase6_seed_adds_templates_scenarios_and_empty_operational_state(db_session):
     system = create_system(db_session)
-    assessment = create_assessment(db_session, system)
     db_session.flush()
 
     seed_phase6(db_session)
-    ScoringEngine(db_session).recalculate_system_scores(
-        system.id,
-        assessment.id,
-        triggered_by="pytest",
-        change_reason="phase 6 seed test",
-    )
     db_session.commit()
 
     template_names = {
@@ -32,11 +23,7 @@ def test_phase6_seed_adds_templates_scenarios_findings_and_airb_indicators(db_se
     assert "Accessibility and Language Access Review" in template_names
     assert db_session.query(LanguageAccessScenario).count() >= 1
     assert db_session.query(HumanAppealPathCheck).count() >= 1
-    assert db_session.query(Finding).filter_by(domain="bias_civil_rights").count() >= 1
-    assert db_session.query(Evidence).filter(
-        Evidence.evidence_type.in_(["translated_response", "accessibility_evidence"])
-    ).count() >= 1
-    assert db_session.query(DomainScore).filter_by(system_id=system.id).count() >= 6
+    assert db_session.query(Finding).count() == 0
 
 
 def test_language_access_scenario_api_rejects_unsupported_language_pair(client):

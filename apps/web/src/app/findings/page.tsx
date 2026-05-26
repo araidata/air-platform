@@ -296,6 +296,13 @@ export default function FindingsPage() {
                 <Td>{evidence.filter((record) => record.finding_id === finding.id).length}</Td>
               </tr>
             ))}
+            {!visibleFindings.length ? (
+              <tr>
+                <td colSpan={7} className="px-4 py-3">
+                  <p className="py-6 text-center text-sm text-zinc-500">No findings generated.</p>
+                </td>
+              </tr>
+            ) : null}
           </tbody>
         </TableShell>
 
@@ -404,7 +411,7 @@ export default function FindingsPage() {
               </div>
             </div>
           ) : (
-            <p className="mt-4 text-sm text-zinc-500">Select a finding to triage.</p>
+            <p className="mt-4 text-sm text-zinc-500">No finding selected. No findings generated.</p>
           )}
         </aside>
       </div>

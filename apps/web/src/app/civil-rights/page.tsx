@@ -65,7 +65,7 @@ export default function CivilRightsPage() {
   const biasScores = scores.filter((score) => score.score_domain === "bias_civil_rights");
   const averageBiasScore = biasScores.length
     ? Math.round(biasScores.reduce((sum, score) => sum + score.score_value, 0) / biasScores.length)
-    : 0;
+    : null;
   const systemById = useMemo(
     () => new Map(systems.map((system) => [system.id, system.system_name])),
     [systems],
@@ -120,9 +120,9 @@ export default function CivilRightsPage() {
         />
         <MetricCard
           label="Bias score"
-          value={averageBiasScore}
-          detail="Average current Bias & Civil Rights score"
-          tone={averageBiasScore >= 75 ? "good" : "warn"}
+          value={averageBiasScore ?? "No scores"}
+          detail={averageBiasScore === null ? "No real score calculation available" : "Average current Bias & Civil Rights score"}
+          tone={averageBiasScore !== null && averageBiasScore >= 75 ? "good" : "neutral"}
           badgeLabel="Scoring"
         />
       </div>
@@ -247,6 +247,11 @@ export default function CivilRightsPage() {
                 ) : null}
               </div>
             ))}
+            {!(summary?.fairness_evidence ?? []).length ? (
+              <p className="rounded-lg border border-white/10 bg-black/20 p-4 text-sm text-zinc-500">
+                No evidence collected.
+              </p>
+            ) : null}
           </div>
         </section>
       </div>
@@ -292,6 +297,13 @@ export default function CivilRightsPage() {
                 </Td>
               </tr>
             ))}
+            {!activeFindings.length ? (
+              <tr>
+                <td colSpan={5} className="px-4 py-3">
+                  <p className="py-6 text-center text-sm text-zinc-500">No findings generated.</p>
+                </td>
+              </tr>
+            ) : null}
           </tbody>
         </TableShell>
       </section>

@@ -1,6 +1,6 @@
 # Seed Data Plan
 
-Seed data should make the platform useful immediately for demos, workflow testing, and development.
+Seed data should make the platform useful immediately for inventory, template review, workflow configuration, and development without fabricating operational activity.
 
 ## Seed AI Systems
 

@@ -57,22 +57,24 @@ def test_development_seed_bootstrap_runs_all_phases_and_is_idempotent(
     db_session.commit()
     first_counts = _counts(db_session)
 
-    assert [result.name for result in first_results][:3] == [
+    assert [result.name for result in first_results][:4] == [
+        "Seeded/mock operational cleanup",
         "Phase 2 workflow seed data",
         "Phase 4 scanner ecosystem seed data",
         "Phase 6 civil-rights seed data",
     ]
     assert first_counts["ai_systems"] == 5
-    assert first_counts["scanner_definitions"] >= 14
+    assert first_counts["scanner_definitions"] >= 11
     assert first_counts["scan_types"] >= 35
     assert first_counts["assessment_profiles"] >= 7
-    assert first_counts["scanner_runs"] >= 6
-    assert first_counts["scanner_results"] >= 5
+    assert first_counts["scanner_runs"] == 0
+    assert first_counts["scanner_results"] == 0
     assert first_counts["language_access_scenarios"] >= 3
     assert first_counts["human_appeal_path_checks"] >= 4
-    assert first_counts["findings"] >= 15
-    assert first_counts["evidence"] >= 15
-    assert first_counts["domain_scores"] >= first_counts["ai_systems"] * 6
+    assert first_counts["findings"] == 0
+    assert first_counts["evidence"] == 0
+    assert first_counts["domain_scores"] == 0
+    assert first_counts["score_history"] == 0
 
     second_results = seed_database(db_session)
     db_session.commit()

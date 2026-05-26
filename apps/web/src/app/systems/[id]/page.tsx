@@ -62,6 +62,7 @@ export default function SystemDetailPage() {
     [scores],
   );
   const overallScore = Math.round(scoreByDomain.get("overall_governance") ?? 0);
+  const hasScores = scores.length > 0;
   const activeFindings = findings.filter((finding) => !["closed", "false_positive"].includes(finding.status));
   const latestReview = reviews[0];
 
@@ -105,7 +106,11 @@ export default function SystemDetailPage() {
               </div>
               <div className="mt-5 grid gap-4 md:grid-cols-[240px_1fr]">
                 <div className="rounded-lg border border-white/10 bg-black/20 p-4">
-                  <ScoreRing score={overallScore} />
+                  {hasScores ? (
+                    <ScoreRing score={overallScore} />
+                  ) : (
+                    <p className="text-sm text-zinc-500">No governance scores available.</p>
+                  )}
                   <div className="mt-4 flex flex-wrap gap-2">
                     {system.public_facing ? <StatusPill value="public_facing" /> : null}
                     {system.rights_impacting ? <StatusPill value="rights_impacting" /> : null}
@@ -118,7 +123,7 @@ export default function SystemDetailPage() {
                 <div className="rounded-lg border border-white/10 bg-black/20 p-4">
                   <h2 className="text-base font-semibold text-zinc-50">Domain Scores</h2>
                   <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                    {["security", "privacy", "bias_civil_rights", "explainability", "governance_evidence"].map(
+                    {hasScores ? ["security", "privacy", "bias_civil_rights", "explainability", "governance_evidence"].map(
                       (domain) => {
                         const value = Math.round(scoreByDomain.get(domain) ?? 0);
                         return (
@@ -133,7 +138,7 @@ export default function SystemDetailPage() {
                           </div>
                         );
                       },
-                    )}
+                    ) : <p className="text-sm text-zinc-500">No real assessment has produced score records for this system.</p>}
                   </div>
                 </div>
               </div>
@@ -196,6 +201,13 @@ export default function SystemDetailPage() {
                       <Td>{labelize(finding.domain)}</Td>
                     </tr>
                   ))}
+                  {!findings.length ? (
+                    <tr>
+                      <td colSpan={4} className="px-4 py-3">
+                        <p className="py-6 text-center text-sm text-zinc-500">No findings generated.</p>
+                      </td>
+                    </tr>
+                  ) : null}
                 </tbody>
               </TableShell>
             </section>
@@ -221,6 +233,13 @@ export default function SystemDetailPage() {
                       <Td>{record.created_by}</Td>
                     </tr>
                   ))}
+                  {!evidence.length ? (
+                    <tr>
+                      <td colSpan={3} className="px-4 py-3">
+                        <p className="py-6 text-center text-sm text-zinc-500">No evidence collected.</p>
+                      </td>
+                    </tr>
+                  ) : null}
                 </tbody>
               </TableShell>
             </section>
@@ -245,6 +264,7 @@ export default function SystemDetailPage() {
                     </p>
                   </div>
                 ))}
+                {!assessments.length ? <p className="rounded-lg border border-white/10 bg-black/20 p-4 text-sm text-zinc-500">No assessments executed.</p> : null}
               </div>
             </section>
 
@@ -268,6 +288,7 @@ export default function SystemDetailPage() {
                     </p>
                   </div>
                 ))}
+                {!runs.length ? <p className="rounded-lg border border-white/10 bg-black/20 p-4 text-sm text-zinc-500">No scanner runs available.</p> : null}
               </div>
             </section>
           </div>

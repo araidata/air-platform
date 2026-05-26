@@ -1,12 +1,9 @@
-import type {
-  ApprovalStatus,
-  AssessmentStatus,
-  EvidenceRecord,
-  FindingSeverity,
-  FindingStatus,
-  ReviewStatus,
-  RiskTier,
-} from "@/lib/mock-data";
+type ApprovalStatus = "Approved" | "Approved with exception" | "Awaiting review" | "Conditional" | "Blocked";
+type AssessmentStatus = "Current" | "In progress" | "Retest required" | "Evidence missing" | "Not started";
+type FindingSeverity = "Critical" | "High" | "Medium" | "Low";
+type FindingStatus = "New" | "Triage" | "Assigned" | "Remediation" | "Risk acceptance" | "Retest required" | "Closed";
+type ReviewStatus = "Ready for review" | "Security review required" | "Bias review required" | "Privacy review required" | "Approved" | "Approved with exception" | "Blocked";
+type RiskTier = "Critical" | "High" | "Medium" | "Low";
 
 type BadgeTone = "red" | "amber" | "green" | "blue" | "slate" | "violet";
 
@@ -103,7 +100,7 @@ export function ReviewStatusBadge({ status }: { status: ReviewStatus }) {
   return <Badge tone={tone[status]}>{status}</Badge>;
 }
 
-export function EvidenceBadge({ record }: { record: EvidenceRecord }) {
+export function EvidenceBadge({ record }: { record: { auditPacket: boolean } }) {
   return (
     <Badge tone={record.auditPacket ? "green" : "slate"}>
       {record.auditPacket ? "Audit packet" : "Held separately"}

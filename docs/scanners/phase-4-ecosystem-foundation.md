@@ -10,7 +10,7 @@ Phase 4 establishes the operational assessment ecosystem around scanners, scan c
 - Scanner run persistence through `ScannerRun`.
 - Scanner result persistence through `ScannerResult`.
 - Adapter contract under `apps/api/app/scanners/adapters/base.py`.
-- Deterministic mock adapter under `apps/api/app/scanners/adapters/mock_adapter.py`.
+- Historical note: the former mock adapter has been removed from runtime execution.
 - Normalization layer under `apps/api/app/scanners/normalization/finding_normalizer.py`.
 - Scanner execution service under `apps/api/app/scanners/services/scanner_execution_service.py`.
 - Scanner Ecosystem frontend route under `apps/web/src/app/scanners/page.tsx`.
@@ -38,7 +38,7 @@ Phase 4 seeds:
 - Future-ready records for garak, AgentSeal, PyRIT, ModelScan, Fairlearn, Aequitas, IBM AI Fairness 360, Giskard, Ragas, DeepEval, and Promptfoo.
 - Scan types across security, privacy, bias/civil-rights, explainability, governance, RAG integrity, agent safety, supply chain, and model integrity.
 - Assessment profiles for public-facing chatbots, rights-impacting AI, law enforcement/CJIS AI, HR/employment AI, RAG applications, agentic/tool-using AI, and low-risk internal AI.
-- Completed and failed mock scanner runs for seeded county systems.
+- Scanner runs are no longer seeded. Operators see empty states until a real run executes.
 
 ## API Surface
 

@@ -53,31 +53,31 @@ Completed now:
 - Architecture and scanner strategy docs.
 - Findings, evidence, governance, integration, UI, todo, and ADR documentation.
 - Claude Code command templates for future sessions.
-- Next.js frontend scaffold and mock operations-center pages.
+- Next.js frontend with API-backed operational pages and honest empty states.
 - FastAPI backend scaffold under `apps/api`.
 - SQLAlchemy models and Alembic migration for systems, assessments, findings, evidence, owners, retests, AIRB reviews, framework mappings, risk acceptances, and audit events.
 - REST endpoints for systems, assessments, findings, evidence, audit events, retests, AIRB reviews, and owners.
 - Workflow services enforcing finding and assessment transitions with audit logging.
-- Phase 2 seed data matching the mock county AI systems.
+- Phase 2 seed data for example AI systems and owner metadata only.
 - Basic backend tests for model creation, lifecycle transitions, evidence creation, retests, audit events, and API smoke flows.
 - Docker Compose runtime with `frontend`, `backend`, and `postgres` services.
-- Backend container startup flow that waits for PostgreSQL, applies Alembic migrations, loads idempotent development/demo seed data, and starts FastAPI.
-- Development bootstrap runner that explicitly executes Phase 2 workflow data, Phase 4 scanner ecosystem data, Phase 6 civil-rights data, and score recalculation when records changed.
+- Backend container startup flow that waits for PostgreSQL, applies Alembic migrations, loads idempotent development bootstrap metadata, and starts FastAPI.
+- Development bootstrap runner that executes allowed Phase 2 inventory metadata, Phase 4 scanner registry/templates, and Phase 6 civil-rights templates/scenarios without generating findings, evidence, scanner runs, or scores.
 - Frontend container with same-origin backend proxy support through `/api/backend/*`.
 - PostgreSQL persistent named volume and service health checks.
-- Runtime smoke test covering frontend load, backend health, DB health, seeded API endpoints, and frontend/backend proxy connectivity.
-- Phase 3 scoring models, Alembic migration, deterministic domain scoring engine, score history, score explanations, score snapshots, score APIs, recalculation workflows, seed-time score generation, and scoring tests.
+- Runtime smoke test covering frontend load, backend health, DB health, seeded inventory/registry endpoints, empty operational datasets, and frontend/backend proxy connectivity.
+- Phase 3 scoring models, Alembic migration, deterministic domain scoring engine, score history, score explanations, score snapshots, score APIs, recalculation workflows, and scoring tests.
 - Frontend score integrations for the executive dashboard, system detail, findings queue, AI Review Board queue, and governance reports route.
 - Phase 4 scanner ecosystem models for scanner definitions, scan types, assessment profiles, scanner runs, and scanner results.
-- Scanner adapter contract, deterministic mock scanner adapter, finding normalization layer, scanner execution service, and synchronous mock execution APIs.
+- Scanner adapter contract, finding normalization layer, scanner execution service, and real adapter execution path.
 - Raw scanner JSON and execution log preservation under the scanner artifact volume, with evidence records linked to systems and assessments.
 - Scanner-created normalized findings that reuse the existing findings workflow, evidence architecture, audit events, and score recalculation hooks.
-- Seeded scanner registry, scan types, assessment profiles, completed and failed mock scanner runs, generated evidence, and score recalculations.
+- Seeded scanner registry, scan types, and assessment profiles. Bootstrap intentionally does not seed scanner runs, findings, evidence, remediation records, or score impacts.
 - Assessment Tool frontend route for direct garak and live HTTP endpoint testing with execution steps, findings, evidence excerpts, artifacts, and JSON report output.
 - garak CLI scanner adapter for prompt-injection-oriented Phase 5 runtime validation.
 - Native garak JSONL, hit log, HTML report, scanner configuration, stdout/stderr log, raw platform JSON, and normalized output preservation.
 - garak findings normalized into the existing findings, evidence, audit event, and scoring workflows.
-- Civil-rights assessment templates, language-access scenarios, human appeal-path checks, fairness-oriented findings, fairness evidence types, AIRB civil-rights indicators, and the Civil Rights Review frontend route.
+- Civil-rights assessment templates, language-access scenarios, human appeal-path checks, fairness evidence types, AIRB civil-rights indicators, and the Civil Rights Review frontend route.
 - Phase 7 frontend workflow UX for system intake, assessment launch, scanner execution, findings triage, evidence review, AIRB intake/decisions, guided workflow navigation, and API-backed system detail.
 - Assessment target configuration on system records: target type, target location, authentication type/reference, assessment method, compatible scanner tags, manual-review-only flag, and uploaded-artifact support.
 - Direct assessment-tool APIs under `/assessment-tool/runs` so operators can run garak or live HTTP tests without pre-creating inventory records or knowing garak command-line syntax.
@@ -87,11 +87,11 @@ Not built yet:
 - Multiple real scanner integrations.
 - OneTrust integration.
 
-## Why Mock-First
+## Runtime Data Behavior
 
-The platform must prove that it can receive, explain, route, score, and preserve findings before real scanners are integrated. Mock systems, mock findings, mock evidence, and mock scan results allow the operating workflow to stabilize first.
+The platform now prefers honest empty states over fabricated operational activity. Bootstrap may create example inventory and governance metadata, but it must not create fake assessments, findings, evidence, scanner runs, remediation records, or score impacts.
 
-Start with seeded data for:
+Seeded example systems:
 
 - Public Benefits Chatbot.
 - Sheriff Incident Summary Assistant.
@@ -99,17 +99,7 @@ Start with seeded data for:
 - HR Resume Screening AI.
 - Citizen Services RAG Chatbot.
 
-Start with mock findings such as:
-
-- Prompt injection vulnerability.
-- Spanish-language explanation disparity.
-- Missing human appeal path.
-- Excessive MCP/tool permissions.
-- Incomplete audit logging.
-- Possible sensitive data leakage.
-- Weak governance evidence.
-- Missing risk acceptance.
-- Missing retest documentation.
+Operational pages show "No assessments executed", "No findings generated", "No scanner runs available", and "No evidence collected" until real workflow activity exists.
 
 ## Tech Stack Direction
 
@@ -139,13 +129,13 @@ Do not introduce Kubernetes, distributed workers, multi-region infrastructure, o
 
 ## Development Bootstrap And Seed Behavior
 
-In development mode, Docker Compose starts a fully usable demo platform automatically:
+In development mode, Docker Compose starts a usable platform automatically:
 
 1. The backend waits for PostgreSQL.
 2. Alembic migrations run to the latest schema.
-3. The development/demo bootstrap runs Phase 2, Phase 4, and Phase 6 seed phases.
-4. Scores are recalculated only when seed data changed or required scores are missing.
-5. FastAPI starts after the operational dataset is ready.
+3. Bootstrap removes known seeded/mock operational records from older development volumes.
+4. Bootstrap runs Phase 2, Phase 4, and Phase 6 metadata seed phases.
+5. FastAPI starts after inventory, scanner registry, assessment templates, language scenarios, and appeal-path checks are ready.
 
 The seed runner is idempotent and safe to rerun with:
 
@@ -153,16 +143,16 @@ The seed runner is idempotent and safe to rerun with:
 docker compose exec backend python -m app.seed.run_seed
 ```
 
-Startup logs show each seed phase, records created, and existing records skipped. The seeded dataset includes AI systems, assessments, findings, evidence, audit events, score records, AIRB examples, scanner definitions, scan types, assessment profiles, scanner runs/results, language-access scenarios, appeal-path checks, and civil-rights review examples.
+Startup logs show cleanup, each seed phase, records created, and existing records skipped. The seeded dataset includes AI systems, owners, audit events, scanner definitions, scan types, assessment profiles, language-access scenarios, and appeal-path checks.
 
-Production-safe behavior is conservative by default. If `RUN_SEED` is unset, seed bootstrap runs only when `ENVIRONMENT=development`. Set `RUN_SEED=true` to intentionally load demo data in another environment, or `RUN_SEED=false` to disable bootstrap in development.
+Production-safe behavior is conservative by default. If `RUN_SEED` is unset, seed bootstrap runs only when `ENVIRONMENT=development`. Set `RUN_SEED=true` to intentionally load metadata in another environment, or `RUN_SEED=false` to disable bootstrap in development.
 
 ## Phase Plan
 
 See [Phased Build Plan](docs/roadmap/phased-build-plan.md) for details.
 
 - Phase 0: Repository and AI Context Foundation.
-- Phase 1: Operational UI and Mock Data.
+- Phase 1: Operational UI.
 - Phase 2: Findings, Evidence, and Assessment Workflow.
 - Phase 2.5 — Runtime Stabilization.
 - Phase 3: Scoring Engine.
@@ -193,10 +183,10 @@ AI completion rule:
 - [x] Document roadmap, architecture, scanner strategy, findings, evidence, governance, integrations, UI guidance, todos, and ADRs.
 - [x] Add README AI-updated build checklist.
 
-### Phase 1 — Operational UI and Mock Data
+### Phase 1 — Operational UI
 
 - [x] Create the frontend application scaffold.
-- [x] Add centralized mock data for systems, assessments, findings, evidence, scores, and reviews.
+- [x] Retire centralized mock operational data from runtime pages.
 - [x] Build the Executive Dashboard.
 - [x] Build the AI Inventory page.
 - [x] Build the Findings Queue.
@@ -254,10 +244,9 @@ Intentionally deferred:
 ### Phase 4 — AI Assessment Ecosystem Foundation
 
 - [x] Implement scanner adapter interface.
-- [x] Implement mock scanner adapter.
 - [x] Create scanner run records.
 - [x] Capture raw output and logs as evidence.
-- [x] Normalize mock scanner output into findings.
+- [x] Normalize real scanner output into findings.
 - [x] Add scanner registry, scan types, assessment profiles, and scan recommendation APIs.
 - [x] Add direct Assessment Tool frontend route for garak and live HTTP testing with findings, artifacts, and report output.
 
@@ -274,7 +263,7 @@ Intentionally deferred:
 - [x] Add bias and civil-rights assessment templates.
 - [x] Add language access scenarios.
 - [x] Add human appeal path checks.
-- [x] Add fairness-oriented findings and evidence views.
+- [x] Add civil-rights templates, language scenarios, appeal checks, and empty-state evidence/finding views.
 
 ### Phase 7 — Guided Operational UI Workflows
 
@@ -312,10 +301,10 @@ Future AI agents should:
 
 1. Read `CLAUDE.md`, `AGENTS.md`, `CODEX.md`, and `docs/ai-context/current-state.md`.
 2. Check `docs/ai-context/implementation-status.md` and `docs/ai-context/next-steps.md`.
-3. Preserve the small-operator, single-VM, mock-first philosophy.
+3. Preserve the small-operator, single-VM, workflow-first philosophy.
 4. Implement one narrow workflow at a time.
 5. Update implementation status, todos, and README checklist boxes after completed verified work.
-6. Avoid building real scanner integrations until the adapter framework and mock workflow are stable.
+6. Avoid building additional real scanner integrations until the adapter framework and garak workflow remain stable.
 
 ## What To Build Next
 

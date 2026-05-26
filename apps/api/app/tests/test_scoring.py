@@ -21,7 +21,7 @@ def create_scored_finding(db, *, severity="critical", domain="security") -> Find
         FindingCreate(
             system_id=system.id,
             assessment_id=assessment.id,
-            scanner_name="mock-adapter",
+            scanner_name="manual-review",
             scanner_version="0.1.0",
             domain=domain,
             severity=severity,

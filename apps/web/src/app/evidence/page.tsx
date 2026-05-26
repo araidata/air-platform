@@ -182,6 +182,13 @@ export default function EvidencePage() {
                 </Td>
               </tr>
             ))}
+            {!visibleEvidence.length ? (
+              <tr>
+                <td colSpan={6} className="px-4 py-3">
+                  <p className="py-6 text-center text-sm text-zinc-500">No evidence collected.</p>
+                </td>
+              </tr>
+            ) : null}
           </tbody>
         </TableShell>
 
@@ -246,7 +253,7 @@ export default function EvidencePage() {
               ) : null}
             </div>
           ) : (
-            <p className="mt-4 text-sm text-zinc-500">Select evidence to review.</p>
+            <p className="mt-4 text-sm text-zinc-500">No evidence collected.</p>
           )}
         </aside>
       </div>

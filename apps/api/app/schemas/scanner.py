@@ -13,7 +13,7 @@ class ScannerDefinitionCreate(StrictApiModel):
     scanner_category: str
     adapter_name: str
     scanner_version: str = "0.1.0"
-    execution_mode: str = "mock"
+    execution_mode: str = "cli"
     supported_domains: List[str] = Field(default_factory=list)
     supported_scan_types: List[str] = Field(default_factory=list)
     enabled: bool = True

@@ -2,7 +2,7 @@
 
 ## Current Issues
 
-- Frontend pages still use mock data as the primary rendered source.
+- Historical docs may still reference retired mock-first runtime behavior and should continue being cleaned up when touched.
 - Backend tests use SQLite for fast workflow coverage; Docker smoke tests cover live PostgreSQL runtime behavior.
 - garak is the only real scanner integration; additional scanners are intentionally deferred.
 - No OneTrust integration exists yet.
@@ -24,7 +24,7 @@
 ## Mitigations
 
 - Follow the phase plan.
-- Build mock-first.
+- Prefer honest empty states over fabricated operational activity.
 - Keep findings and evidence central.
 - Update status docs after changes.
 - Use adapters for scanners.

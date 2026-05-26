@@ -12,7 +12,7 @@ Real scanners are useful only after those workflows can receive and explain resu
 
 ## Decision
 
-Development will start with mock systems, mock findings, mock evidence, and mock scan results.
+Development started with mock systems and mock operational records during early scaffolding. Runtime mock findings, evidence, and scan results have since been retired in favor of real execution paths and honest empty states.
 
 ## Consequences
 

@@ -50,7 +50,7 @@ Then read the AI context files below.
 - [Execution Model](scanners/execution-model.md)
 - [Scanner Adapter Architecture](scanners/scanner-adapter-architecture.md)
 - [Scanner Integration Roadmap](scanners/scanner-integration-roadmap.md)
-- [Mock-First Rationale](scanners/mock-first-rationale.md)
+- [Mock-First Rationale (Historical)](scanners/mock-first-rationale.md)
 
 ## Findings And Evidence
 
@@ -114,6 +114,6 @@ Then read the AI context files below.
 
 - [0001: Single VM And Docker Compose](decisions/0001-single-vm-docker-compose.md)
 - [0002: Adapter-Based Scanner Architecture](decisions/0002-adapter-based-scanner-architecture.md)
-- [0003: Mock-First Development](decisions/0003-mock-first-development.md)
+- [0003: Mock-First Development (Historical)](decisions/0003-mock-first-development.md)
 - [0004: API-First Platform, CLI-First Scanners](decisions/0004-api-first-platform-cli-first-scanners.md)
 - [0001: Docs-First Operational Platform](decisions/0001-docs-first-operational-platform.md)

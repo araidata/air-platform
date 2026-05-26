@@ -25,7 +25,6 @@ from app.schemas.finding import FindingCreate
 from app.schemas.scanner import ScannerRunCreate
 from app.scanners.adapters.base import ScannerExecutionContext
 from app.scanners.adapters.garak_adapter import GarakCliAdapter
-from app.scanners.adapters.mock_adapter import MockScannerAdapter
 from app.scanners.normalization.finding_normalizer import (
     NORMALIZATION_VERSION,
     normalize_scanner_findings,
@@ -95,8 +94,6 @@ class ScannerExecutionService:
         scanner_definition = self._require_scanner_definition(run.scanner_definition_id)
         scan_type = self._require_scan_type(run.scan_type_id)
         profile = self.db.get(AssessmentProfile, run.assessment_profile_id) if run.assessment_profile_id else None
-        adapter = self._adapter_for(scanner_definition.adapter_name)
-
         run.execution_status = ScannerExecutionStatus.running.value
         run.started_at = datetime.utcnow()
         run.initiated_by = initiated_by
@@ -129,6 +126,7 @@ class ScannerExecutionService:
         )
 
         try:
+            adapter = self._adapter_for(scanner_definition.adapter_name)
             execution_result = adapter.execute(context)
             run_dir = self.storage_root / run.id
             raw_path = self._write_json(run_dir / "raw-output.json", execution_result.raw_output)
@@ -509,11 +507,12 @@ class ScannerExecutionService:
             )
 
     def _adapter_for(self, adapter_name: str):
-        if adapter_name == "mock_adapter":
-            return MockScannerAdapter()
         if adapter_name == "garak_cli_adapter":
             return GarakCliAdapter()
-        raise HTTPException(status_code=400, detail=f"Adapter is not implemented: {adapter_name}")
+        raise HTTPException(
+            status_code=400,
+            detail=f"No executable scanner adapter is available for: {adapter_name}",
+        )
 
     def _write_json(self, path: Path, payload: dict) -> Path:
         path.parent.mkdir(parents=True, exist_ok=True)

@@ -4,7 +4,7 @@
 
 - Created Next.js frontend scaffold under `apps/web`.
 - Added application shell and navigation.
-- Added centralized mock data module.
+- Removed centralized mock data module from runtime pages.
 - Built Executive Dashboard.
 - Built AI Inventory.
 - Built Findings Queue.
@@ -17,7 +17,7 @@
 - Added Phase 3 score integrations for dashboard, system detail, findings queue, AI Review Board queue, and governance reports.
 - Added frontend API client types and helpers for score APIs.
 - Verified score views in Docker Compose.
-- Added Phase 4 Scanner Ecosystem route for scanner registry, scan types, assessment profiles, recommendations, scanner runs, run detail, generated evidence counts, and mock execution.
+- Added Phase 4 Scanner Ecosystem route and later replaced runtime mock execution with real/empty-state behavior.
 - Added frontend API client types and helpers for scanner ecosystem APIs.
 - Verified Scanner Ecosystem route in Docker Compose and Browser runtime.
 - Implemented Phase 7 guided workflow route for system selection, assessment profile selection, governance domains, recommended scans, scanner execution, assessment creation, and AIRB routing.

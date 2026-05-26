@@ -4,14 +4,14 @@ This file tracks known and expected technical debt. It should be updated as impl
 
 ## Current Debt
 
-- Frontend pages still use centralized mock data as their source of truth.
+- Historical note: frontend pages previously used centralized mock data as their source of truth. Runtime pages are now API-backed or empty-state driven.
 - Backend automated tests use SQLite; live PostgreSQL is covered by Docker runtime smoke testing instead of a full test suite.
 - Evidence artifact storage is metadata/text only; local artifact volume workflow is deferred until file upload is implemented.
 - No production backup or restore scripts exist yet.
 
 ## Expected Early Debt
 
-- Initial mock data may live in fixtures before database seed scripts are finalized.
+- Example metadata may live in fixtures or seed scripts, but fabricated operational findings, evidence, and scanner runs should not return.
 - Initial scoring weights may be hard-coded before admin configuration exists.
 - Initial evidence storage may use local volumes before object storage is evaluated.
 - Initial auth may be simple before role-based access is mature.

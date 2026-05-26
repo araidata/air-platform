@@ -12,7 +12,7 @@ Table of AI systems with department, owner, purpose, risk tier, approval status,
 
 ## 3. Assessment Workspace
 
-Workspace for creating and reviewing assessments, mock scan results, checklist results, notes, and evidence.
+Workspace for creating and reviewing assessments, scanner results, checklist results, notes, and evidence.
 
 ## 4. Findings Queue
 

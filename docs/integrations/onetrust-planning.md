@@ -76,7 +76,7 @@ AI assessment packets may map to OneTrust assessments:
 ## What Not To Implement Initially
 
 - Real-time bidirectional sync.
-- Automatic OneTrust record creation during mock phase.
+- Automatic OneTrust record creation during a future export automation phase.
 - Sensitive artifact push before access controls are defined.
 - OneTrust as the only source of workflow truth.
 

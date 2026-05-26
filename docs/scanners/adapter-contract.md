@@ -1,6 +1,6 @@
 # Scanner Adapter Contract
 
-This contract defines what every scanner adapter should provide. Phase 4 implements the first concrete version in `apps/api/app/scanners/adapters/base.py` and `apps/api/app/scanners/adapters/mock_adapter.py`.
+This contract defines what every scanner adapter should provide. The base contract lives in `apps/api/app/scanners/adapters/base.py`, and the current real executable adapter is `apps/api/app/scanners/adapters/garak_adapter.py`.
 
 ## Phase 4 Implemented Contract
 

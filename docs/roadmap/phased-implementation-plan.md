@@ -117,7 +117,7 @@ Inventory is the foundation of governance. No assurance workflow can work withou
 - Build normalized findings model.
 - Build Findings Queue.
 - Build finding detail and workflow transitions.
-- Seed mock findings.
+- Historical note: seeded mock findings were used during early scaffolding and are now removed from runtime bootstrap.
 - Add remediation ownership and SLA fields.
 - Add framework mapping fields.
 
@@ -140,11 +140,11 @@ Findings are the operational center of the platform. Scanner integrations are no
 - Remediation text fields.
 - SLA due dates.
 - Retest history shell.
-- Mock findings for security, bias, privacy, and governance.
+- Historical note: mock findings for security, bias, privacy, and governance were used only during early scaffolding.
 
 ### Operational Outcomes
 
-- Operators can run realistic governance drills using mock data.
+- Operators can review realistic inventory/templates and then run real governance workflows when assessments and scanners execute.
 - Departments can understand assigned remediation work.
 
 ### Implementation Risks
@@ -175,7 +175,7 @@ Findings are the operational center of the platform. Scanner integrations are no
 
 ### Rationale
 
-The workflow backend and mock frontend need to run as one platform before scoring, scanner adapters, or export workflows are added.
+The workflow backend and frontend need to run as one platform before scoring, scanner adapters, or export workflows are added.
 
 ### Dependencies
 
@@ -281,7 +281,7 @@ County leadership needs defensible scores and preserved evidence, not opaque AI 
 - Build Dockerized scanner execution model.
 - Build raw result storage.
 - Build normalization pipeline.
-- Build mock adapter fixtures.
+- Historical note: mock adapter fixtures were part of early scaffolding and are now retired from runtime execution.
 
 ### Rationale
 

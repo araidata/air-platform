@@ -7,9 +7,9 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - Created Next.js app under `apps/web`.
 - Configured TypeScript and TailwindCSS through the Next.js scaffold.
 - Created operational app shell with left navigation and top header.
-- Added centralized mock data for systems, assessments, findings, evidence, scores, and AI Review Board reviews.
+- Added and later retired centralized mock operational data in favor of API-backed pages and empty states.
 - Built Executive Dashboard, AI Inventory, Findings Queue, System Detail, Evidence and Audit, and AIRB Review Queue starter routes.
-- Added score cards, risk heatmap, trend visualization, inventory table, findings queue table, evidence list, and governance review cards using mock data.
+- Added score cards, inventory, findings, evidence, and governance views that now use API data or empty states.
 
 ## Completed In Phase 2.5
 
@@ -119,8 +119,8 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - Define live alerts query.
 - Define risk trend calculation.
 - Define risk heatmap query by department and domain.
-- Build dashboard mock state.
-- Replace mock state with API data.
+- Build dashboard empty state and API-backed state.
+- Replace any remaining fabricated runtime state with API data.
 - [x] Add score explanation drill-downs.
 
 ## Governance Workflow TODO
@@ -181,11 +181,11 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - [x] Create scanner registry.
 - [x] Create scan type framework.
 - [x] Create assessment profiles.
-- [x] Create mock scanner adapter.
+- [x] Remove runtime mock scanner adapter.
 - [x] Create scanner run model.
 - [x] Create scanner result model.
 - [x] Create scanner workspace volume.
-- [x] Capture mock raw output, logs, and artifacts.
+- [x] Capture only real scanner raw output, logs, and artifacts.
 - [x] Preserve raw output as evidence.
 - [x] Implement normalization pipeline.
 - [x] Add fixture and API tests.
@@ -207,7 +207,7 @@ This backlog is intentionally detailed and realistic for a single Linux VM, Dock
 - [x] Test workflow transitions.
 - [x] Test score calculations.
 - [x] Test evidence linking.
-- [x] Test scanner mock normalization.
+- [x] Test real scanner normalization and unsupported-adapter failure handling.
 - [x] Test first real scanner execution, parsing, evidence preservation, failure handling, and score integration.
 - Test API pagination and filters.
 - [x] Add runtime smoke test for frontend, backend, database, migrations, seed data, and core API endpoints.

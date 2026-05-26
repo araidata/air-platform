@@ -44,7 +44,7 @@
 - Retest service.
 - Scoring engine and deterministic domain calculators.
 - Seed service.
-- Scanner execution service, mock adapter, and finding normalizer.
+- Scanner execution service, real adapter integrations, and finding normalizer.
 
 ## Migration And Seed Commands
 

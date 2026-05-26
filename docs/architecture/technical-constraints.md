@@ -9,7 +9,7 @@ These constraints protect the platform from growing in the wrong direction befor
 - API-first backend.
 - Normalized finding and evidence schemas.
 - Scanner adapters with loose coupling.
-- Seed data and mock findings before real scanner integrations.
+- Seed only example metadata before additional real scanner integrations.
 - Clear domain boundaries in backend modules.
 - Dense, operational frontend design.
 
@@ -31,7 +31,7 @@ These constraints protect the platform from growing in the wrong direction befor
 - Local username/password or simple admin bootstrap auth in development.
 - Local evidence volume.
 - Manual scanner execution records.
-- Mock scanner output fixtures.
+- Real empty states until executable scanners or operator evidence exist.
 - Simple Redis-backed jobs.
 - Manual AIRB participant assignment.
 - CSV or PDF export planning before full reporting automation.

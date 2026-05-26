@@ -19,13 +19,11 @@ These guidelines apply once application code begins.
 - Avoid distributed job infrastructure until a real operational need appears.
 - Prefer boring, inspectable execution over invisible automation.
 
-## Mock-First Rules
+## Bootstrap And Empty-State Rules
 
-- Use mock systems before real inventory ingestion.
-- Use mock findings before real scanners.
-- Use mock evidence before file storage.
-- Use mock scan results before adapter execution.
-- Keep mock data realistic and aligned with county use cases.
+- Use example systems only for inventory/bootstrap metadata.
+- Use honest empty states until real findings, evidence, and scanner results exist.
+- Keep bootstrap metadata realistic and aligned with county use cases.
 
 ## Scanner Code Rules
 

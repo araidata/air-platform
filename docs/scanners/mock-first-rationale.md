@@ -1,6 +1,6 @@
-# Mock-First Rationale
+# Mock-First Rationale (Historical)
 
-The platform must start with mock findings, mock scan results, and seeded AI systems. This is an architectural decision, not a shortcut.
+This document describes an earlier scaffolding phase. Runtime mock findings, mock scan results, and fabricated scanner evidence have now been removed in favor of real scanner execution or honest empty states.
 
 ## Why Mock First
 

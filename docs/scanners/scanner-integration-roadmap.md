@@ -6,7 +6,7 @@ Scanner integrations should begin after workflows, evidence, and scoring exist.
 
 ### Step 1 - Mock Adapter
 
-- Produces deterministic mock scanner output.
+- Produces real scanner output or a clear unsupported-adapter failure.
 - Exercises raw evidence capture.
 - Exercises normalization pipeline.
 - Creates findings from fixtures.

@@ -41,7 +41,7 @@
 
 - [x] Added scanner registry, scan type, assessment profile, scanner run, and scanner result models.
 - [x] Added scanner ecosystem Alembic migration.
-- [x] Added scanner adapter contract and deterministic mock adapter.
+- [x] Added scanner adapter contract and retired runtime mock adapter behavior.
 - [x] Added scanner execution service and normalization layer.
 - [x] Added scanner APIs and recommendation endpoints.
 - [x] Added raw output and log preservation as evidence.

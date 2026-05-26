@@ -35,7 +35,7 @@ def create_api_finding(client):
         json={
             "system_id": system["id"],
             "assessment_id": assessment["id"],
-            "scanner_name": "mock-adapter",
+            "scanner_name": "manual-review",
             "scanner_version": "0.1.0",
             "domain": "security",
             "severity": "high",

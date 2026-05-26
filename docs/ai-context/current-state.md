@@ -1,6 +1,6 @@
 # Current State
 
-County AI Assurance Operations Center has moved from mock UI and durable backend workflow implementation into a runnable Docker Compose platform with an explainable scoring engine, Phase 4 scanner ecosystem foundation, Phase 5 first real scanner integration, Phase 6 bias/civil-rights assessment support, and Phase 7 guided operational workflow UX. The project still preserves durable operating context for future AI-assisted development, and now has a working frontend, FastAPI backend, PostgreSQL runtime, migrations, seed data, operational smoke checks, score workflows, scanner registry, scan types, assessment profiles, mock scanner execution, real garak CLI execution, raw output preservation, evidence generation, normalized findings, score recalculation from scanner-created findings, civil-rights templates, language-access scenarios, appeal-path checks, AIRB civil-rights indicators, fairness evidence views, and guided operator surfaces for system intake, assessment launch, scanner execution, findings triage, evidence review, and AIRB decisions.
+County AI Assurance Operations Center is a runnable Docker Compose platform with an explainable scoring engine, scanner ecosystem foundation, first real scanner integration through garak, bias/civil-rights assessment support, and guided operational workflow UX. Runtime behavior now distinguishes real operational records from placeholder metadata: bootstrap seeds example AI systems, scanner definitions, scan types, assessment profiles, language-access scenarios, and appeal-path checks, but does not seed fake findings, fake evidence, fake scanner runs, fake remediation records, or fake score impacts.
 
 ## Product Definition
 
@@ -33,7 +33,7 @@ Phase 6 - Bias and Civil Rights Assessment Support is implemented and verified.
 
 Phase 7 - Guided Operational UI Workflows is implemented and verified.
 
-Development bootstrap now explicitly runs Phase 2, Phase 4, and Phase 6 seed phases during development startup, logs created and skipped record counts, and remains disabled by default outside development unless `RUN_SEED=true` is set.
+Development bootstrap now runs a cleanup for known seeded/mock operational records, then runs Phase 2, Phase 4, and Phase 6 metadata seed phases. It logs created and skipped record counts and remains disabled by default outside development unless `RUN_SEED=true` is set.
 
 ## Exists Now
 
@@ -47,20 +47,19 @@ Development bootstrap now explicitly runs Phase 2, Phase 4, and Phase 6 seed pha
 - Roadmap and todo files.
 - ADRs for core architectural constraints.
 - Next.js frontend under `apps/web`.
-- Centralized mock data for systems, assessments, findings, evidence, scores, and reviews.
-- Mock-data-driven pages for executive dashboard, inventory, findings queue, system detail, evidence, and AI Review Board queue.
+- API-backed operational pages with empty states for missing assessments, findings, evidence, scanner runs, and scores.
 - FastAPI backend under `apps/api`.
 - SQLAlchemy 2.x models for systems, assessments, findings, evidence, owners, retests, AIRB reviews, framework mappings, risk acceptances, audit events, and scores.
 - Alembic migrations for Phase 2 workflow tables, Phase 3 scoring tables, and Phase 4 scanner ecosystem tables.
 - REST endpoints for systems, assessments, findings, evidence, audit events, retests, AIRB reviews, owners, scores, scanner definitions, scan types, assessment profiles, scanner runs, scanner results, scanner adapters, system scan recommendations, and system scanner runs.
 - Workflow services for finding transitions, assessment transitions, evidence creation, retest tracking, audit event creation, scoring, and scanner execution.
-- Phase 2 seed data for the five mock county AI systems and realistic findings/evidence.
-- Phase 4 seed data for scanner definitions, scan types, assessment profiles, completed and failed scanner runs, scanner evidence, normalized findings, and recalculated scores.
+- Phase 2 seed data for five example county AI systems and owner metadata only.
+- Phase 4 seed data for scanner definitions, scan types, and assessment profiles only.
 - Backend tests covering model creation, valid and invalid finding transitions, evidence creation, audit events, retests, scoring, scanner execution, scanner APIs, raw output persistence, normalization failures, and API smoke flows.
 - Lightweight frontend API client layer in `apps/web/src/lib/api-client.ts`.
 - Docker Compose runtime with `postgres`, `backend`, and `frontend` services plus `scanner_data` storage.
-- Backend container startup script that validates PostgreSQL, runs Alembic migrations, runs development/demo bootstrap by default in development mode, and starts FastAPI.
-- Explicit bootstrap runner for Phase 2 workflow data, Phase 4 scanner ecosystem data, Phase 6 civil-rights data, and score recalculation when seed records changed.
+- Backend container startup script that validates PostgreSQL, runs Alembic migrations, runs development bootstrap by default in development mode, and starts FastAPI.
+- Explicit bootstrap runner for allowed metadata plus cleanup of older seeded/mock operational records.
 - Frontend container and Next.js rewrite proxy from `/api/backend/*` to the backend service.
 - `.env.example` with backend, frontend, PostgreSQL, and scanner storage configuration.
 - PostgreSQL named volume for persistent runtime data.

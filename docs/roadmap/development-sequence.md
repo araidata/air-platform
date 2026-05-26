@@ -6,7 +6,7 @@ This sequence turns the phase plan into a practical build order for future agent
 
 - Create the app scaffold.
 - Add navigation for initial pages.
-- Add mock data.
+- Add example metadata and API-backed empty states.
 - Build layout and design tokens.
 - Render executive dashboard first.
 

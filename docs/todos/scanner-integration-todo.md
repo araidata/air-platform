@@ -3,7 +3,7 @@
 ## Phase 4
 
 - [x] Implement adapter interface.
-- [x] Implement mock adapter.
+- [x] Remove mock adapter from runtime execution.
 - [x] Create scanner registry records.
 - [x] Create scan type records.
 - [x] Create assessment profile records.
@@ -11,7 +11,7 @@
 - [x] Create scanner result records.
 - [x] Create isolated execution directory structure.
 - [x] Capture raw output and logs as evidence.
-- [x] Normalize mock scanner findings.
+- [x] Normalize only real scanner findings.
 - [x] Trigger score recalculation from scanner findings.
 - [x] Add scanner recommendation APIs and Scanner Ecosystem UI.
 - [x] Filter scanner launch workflows by system target configuration and compatible scanner tags.

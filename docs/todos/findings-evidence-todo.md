@@ -2,8 +2,7 @@
 
 ## Phase 1
 
-- [x] Model mock findings in frontend data.
-- [x] Model mock evidence records.
+- [x] Retired frontend mock findings and evidence runtime data.
 - [x] Link findings to evidence.
 - [x] Show finding status, owner, severity, confidence, domain, and score impact.
 
@@ -22,12 +21,12 @@
 
 - [x] Connect findings to scoring through deterministic impact calculations and recalculation hooks.
 - [x] Persist score impact explanations in the backend.
-- [x] Render score impact explanations in the mock-first frontend.
+- [x] Render score impact explanations in API-backed or empty-state frontend views.
 
 ## Phase 4
 
 - [x] Generate evidence records from scanner raw output and execution logs.
-- [x] Generate finding-level evidence records from mock scanner output.
+- [x] Generate finding-level evidence records only from real scanner output.
 - [x] Normalize scanner findings into the existing finding workflow.
 - [x] Preserve scanner run metadata in evidence metadata.
 - [x] Recalculate scores when scanner-created findings and evidence are created.

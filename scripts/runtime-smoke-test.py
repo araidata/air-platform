@@ -23,11 +23,11 @@ def fetch_text(url: str) -> str:
         return response.read().decode("utf-8", errors="replace")
 
 
-def check_list(url: str, label: str) -> int:
+def check_list(url: str, label: str, *, require_records: bool = True) -> int:
     data = fetch_json(url)
     if not isinstance(data, list):
         raise RuntimeError(f"{label} did not return a JSON list")
-    if not data:
+    if require_records and not data:
         raise RuntimeError(f"{label} returned no seeded records")
     print(f"ok - {label}: {len(data)} records")
     return len(data)
@@ -64,9 +64,10 @@ def main() -> int:
         print("ok - database health")
 
         check_list(f"{args.backend_url}/systems", "systems endpoint")
-        check_list(f"{args.backend_url}/findings", "findings endpoint")
-        check_list(f"{args.backend_url}/evidence", "evidence endpoint")
-        check_list(f"{args.backend_url}/assessments", "assessments endpoint")
+        check_list(f"{args.backend_url}/findings", "findings endpoint", require_records=False)
+        check_list(f"{args.backend_url}/evidence", "evidence endpoint", require_records=False)
+        check_list(f"{args.backend_url}/assessments", "assessments endpoint", require_records=False)
+        check_list(f"{args.backend_url}/scanner-runs", "scanner runs endpoint", require_records=False)
 
         html = fetch_text(args.frontend_url)
         if "Executive Dashboard" not in html:

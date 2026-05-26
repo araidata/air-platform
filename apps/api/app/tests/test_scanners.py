@@ -14,8 +14,6 @@ from app.models.scanner_run import ScannerRun
 from app.schemas.scanner import ScannerRunCreate
 from app.scanners.adapters.base import ScannerExecutionResult
 from app.scanners.adapters.garak_adapter import GarakCliAdapter
-from app.scanners.adapters.mock_adapter import MockScannerAdapter
-from app.scanners.normalization.finding_normalizer import normalize_scanner_findings
 from app.scanners.services.scanner_execution_service import ScannerExecutionService
 from app.tests.factories import create_assessment, create_system
 
@@ -24,17 +22,17 @@ def create_scanner_setup(db):
     system = create_system(db)
     assessment = create_assessment(db, system)
     scanner = ScannerDefinition(
-        scanner_name="mock_ai_security_scanner",
-        display_name="Mock AI Security Scanner",
-        description="Mock security scanner.",
+        scanner_name="agentseal",
+        display_name="AgentSeal",
+        description="Future CLI scanner without executable adapter in this runtime.",
         scanner_category="security",
-        adapter_name="mock_adapter",
-        scanner_version="0.4.0",
-        execution_mode="mock",
+        adapter_name="agentseal_cli_adapter",
+        scanner_version="future",
+        execution_mode="cli",
         supported_domains=["security", "agent_safety"],
         supported_scan_types=["prompt_injection", "unsafe_tool_use"],
         enabled=True,
-        mock_supported=True,
+        mock_supported=False,
         requires_credentials=False,
     )
     scan_type = ScanType(
@@ -56,7 +54,7 @@ def create_scanner_setup(db):
         required_scan_types=["prompt_injection"],
         optional_scan_types=[],
         required_evidence_types=["raw scanner output"],
-        recommended_scanners=["mock_ai_security_scanner"],
+        recommended_scanners=["agentseal"],
         governance_expectations=["Preserve raw evidence."],
         score_domains_affected=["security"],
         enabled=True,
@@ -99,38 +97,11 @@ def create_garak_setup(db):
     return system, assessment, scanner, scan_type
 
 
-def test_mock_adapter_execution_and_normalization_are_deterministic():
-    adapter = MockScannerAdapter()
-    raw = adapter.execute(
-        context=type(
-            "Context",
-            (),
-            {
-                "run_id": "run-1",
-                "system_id": "system-1",
-                "system_name": "Public Benefits Chatbot",
-                "risk_tier": "high",
-                "scan_type": "prompt_injection",
-                "scan_domain": "security",
-                "profile_name": "Public-Facing Chatbot Review",
-            },
-        )()
-    )
+def test_no_mock_adapter_is_registered(client):
+    adapters = client.get("/scanner-adapters").json()
 
-    parsed = adapter.parse_output(raw.raw_output)
-    normalized = normalize_scanner_findings(
-        scanner_name="mock_ai_security_scanner",
-        scanner_version="0.4.0",
-        system_id="system-1",
-        assessment_id="assessment-1",
-        raw_findings=adapter.normalize_findings(parsed),
-        raw_evidence_path="/tmp/raw-output.json",
-    )
-
-    assert raw.status == "completed"
-    assert normalized[0]["title"] == "Prompt injection vulnerability"
-    assert normalized[0]["domain"] == "security"
-    assert normalized[0]["evidence"]
+    assert [adapter["adapter_name"] for adapter in adapters] == ["garak_cli_adapter"]
+    assert all(adapter["mock_supported"] is False for adapter in adapters)
 
 
 def test_garak_adapter_parses_and_normalizes_report_records(tmp_path):
@@ -284,7 +255,7 @@ def test_garak_failed_execution_preserves_raw_output_and_logs(db_session, tmp_pa
     assert db_session.query(Finding).filter_by(scanner_name="garak").count() == 0
 
 
-def test_scanner_execution_persists_run_artifacts_evidence_findings_and_scores(db_session, tmp_path):
+def test_unimplemented_scanner_adapter_fails_without_fake_findings(db_session, tmp_path):
     system, assessment, scanner, scan_type, profile = create_scanner_setup(db_session)
     service = ScannerExecutionService(db_session, storage_root=tmp_path)
     run = service.create_run(
@@ -302,21 +273,13 @@ def test_scanner_execution_persists_run_artifacts_evidence_findings_and_scores(d
     executed = service.execute_run(run.id, initiated_by="pytest")
     db_session.commit()
 
-    assert executed.execution_status == ScannerExecutionStatus.completed.value
-    assert Path(executed.raw_output_path).exists()
+    assert executed.execution_status == ScannerExecutionStatus.failed.value
+    assert "No executable scanner adapter" in executed.error_message
     assert Path(executed.log_path).exists()
-    raw_text = Path(executed.raw_output_path).read_text(encoding="utf-8")
-    assert "target_type" in raw_text
-    assert system.target_location in raw_text
-    assert db_session.query(ScannerResult).filter_by(scanner_run_id=run.id).one()
-    assert db_session.query(Finding).filter_by(system_id=system.id).count() == 1
-    run_evidence = [
-        item
-        for item in db_session.query(Evidence).filter_by(system_id=system.id).all()
-        if item.metadata_json.get("scanner_run_id") == run.id
-    ]
-    assert len(run_evidence) >= 3
-    assert db_session.query(DomainScore).filter_by(system_id=system.id).count() >= 6
+    assert executed.raw_output_path is None
+    assert db_session.query(ScannerResult).filter_by(scanner_run_id=run.id).count() == 0
+    assert db_session.query(Finding).filter_by(system_id=system.id).count() == 0
+    assert db_session.query(Evidence).filter_by(system_id=system.id).count() == 1
 
 
 def test_scanner_creation_rejects_manual_review_only_system(db_session, tmp_path):
@@ -435,17 +398,17 @@ def test_scanner_api_routes_create_execute_and_recommend(client, tmp_path):
     scanner = client.post(
         "/scanner-definitions",
         json={
-            "scanner_name": "mock_ai_security_scanner",
-            "display_name": "Mock AI Security Scanner",
-            "description": "Mock security scanner.",
+            "scanner_name": "unimplemented_security_scanner",
+            "display_name": "Unimplemented Security Scanner",
+            "description": "Registry entry without an executable adapter.",
             "scanner_category": "security",
-            "adapter_name": "mock_adapter",
-            "scanner_version": "0.4.0",
-            "execution_mode": "mock",
+            "adapter_name": "unimplemented_cli_adapter",
+            "scanner_version": "future",
+            "execution_mode": "cli",
             "supported_domains": ["security"],
             "supported_scan_types": ["prompt_injection"],
             "enabled": True,
-            "mock_supported": True,
+            "mock_supported": False,
             "requires_credentials": False,
         },
     ).json()
@@ -473,7 +436,7 @@ def test_scanner_api_routes_create_execute_and_recommend(client, tmp_path):
             "required_scan_types": ["prompt_injection"],
             "optional_scan_types": [],
             "required_evidence_types": ["raw scanner output"],
-            "recommended_scanners": ["mock_ai_security_scanner"],
+            "recommended_scanners": ["unimplemented_security_scanner"],
             "governance_expectations": ["Preserve raw output."],
             "score_domains_affected": ["security"],
             "enabled": True,
@@ -505,6 +468,7 @@ def test_scanner_api_routes_create_execute_and_recommend(client, tmp_path):
         json={"initiated_by": "pytest"},
     )
     assert executed.status_code == 200
-    assert executed.json()["execution_status"] == "completed"
+    assert executed.json()["execution_status"] == "failed"
+    assert client.get("/findings").json() == []
     assert client.get(f"/systems/{system['id']}/scanner-runs").json()
-    assert client.get("/scanner-adapters").json()[0]["adapter_name"] == "mock_adapter"
+    assert client.get("/scanner-adapters").json()[0]["adapter_name"] == "garak_cli_adapter"

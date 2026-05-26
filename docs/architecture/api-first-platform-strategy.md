@@ -1,6 +1,6 @@
 # API-First Platform Strategy
 
-The platform should be API-first even when the first UI uses mock data.
+The platform should be API-first even when early UI work starts before all backend workflows exist.
 
 ## Meaning Of API-First
 
@@ -84,4 +84,4 @@ Phase 4 adds scanner ecosystem APIs:
 - `GET /systems/{id}/recommended-scans`
 - `GET /systems/{id}/scanner-runs`
 
-Scanner execution remains synchronous and local in Phase 4. The API starts mock adapter execution, preserves artifacts, creates evidence, normalizes findings, and recalculates scores through the existing service layer.
+Scanner execution remains synchronous and local in Phase 4. The API starts real adapter execution when available, preserves artifacts, creates evidence, normalizes findings, and recalculates scores through the existing service layer. If no executable adapter exists, the run fails gracefully without fabricating findings.

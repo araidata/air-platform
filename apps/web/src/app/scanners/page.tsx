@@ -377,7 +377,7 @@ export default function ScannerWorkbenchPage() {
                   </p>
                 </button>
               ))}
-              {!runs.length ? <p className="text-sm text-zinc-500">No assessment runs yet.</p> : null}
+              {!runs.length ? <p className="text-sm text-zinc-500">No assessments executed.</p> : null}
             </div>
           </section>
         </aside>
