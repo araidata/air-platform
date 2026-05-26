@@ -37,9 +37,8 @@ Use:
 
 Avoid:
 
-- Scanner ecosystem.
 - Governance theater.
-- Phase labels in UI copy.
+- Roadmap labels in UI copy.
 - Demo language in operational screens.
 
 ## Data States

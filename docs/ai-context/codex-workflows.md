@@ -4,7 +4,7 @@ Use these playbooks for common repository work.
 
 ## Starting Work
 
-1. Read `CLAUDE.md`, `AGENTS.md`, `CODEX.md`, and `docs/ai-context/current-state.md`.
+1. Read `docs/ai-engineering/project-direction.md`, `CLAUDE.md`, `AGENTS.md`, `CODEX.md`, and `docs/ai-context/current-state.md`.
 2. Read `docs/ai-context/implementation-status.md` and `docs/ai-context/next-steps.md`.
 3. Read only the domain docs needed for the task.
 4. Keep changes narrow and verifiable.
@@ -15,7 +15,7 @@ When capability or direction changes:
 
 1. Update `docs/ai-context/implementation-status.md`.
 2. Update the relevant todo file in `docs/todos/`.
-3. Update the README checklist only for implemented and verified work.
+3. Update the README roadmap checklist only for implemented and verified work.
 4. Keep wording assessment-first, testing-first, and evidence-first.
 
 ## Scanner Adapter Work
@@ -33,7 +33,7 @@ Use when adding or changing external testing tools.
 
 1. Keep pages dense, readable, and workflow-oriented.
 2. Use API-backed data or honest empty states.
-3. Avoid phase labels and demo terminology in UI text.
+3. Avoid roadmap labels and demo terminology in UI text.
 4. Make evidence links and status visible.
 
 ## Commit Readiness

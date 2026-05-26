@@ -4,6 +4,7 @@ Update repository status after a meaningful change.
 
 Review and update:
 
+- `docs/ai-engineering/project-direction.md` only if project direction changed
 - `docs/ai-context/current-state.md`
 - `docs/ai-context/implementation-status.md`
 - Relevant file in `docs/todos/`

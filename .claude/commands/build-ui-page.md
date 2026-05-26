@@ -2,6 +2,7 @@
 
 Before building a UI page, read:
 
+- `docs/ai-engineering/project-direction.md`
 - `docs/ai-context/ui-guidelines.md`
 - `docs/ui-ux/design-system.md`
 - `docs/ui-ux/dashboard-guidance.md`
@@ -26,4 +27,4 @@ Avoid:
 - Vague AI magic copy.
 - Oversized marketing hero sections.
 
-Use mock data unless the current phase explicitly includes backend persistence.
+Use API-backed data or honest empty states. Demo fixtures are allowed only for development and must be clearly identified.

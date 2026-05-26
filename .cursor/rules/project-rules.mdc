@@ -1,28 +1,27 @@
 ---
-description: County AI Assurance Operations Center repository rules
+description: AI Assessment Scanner repository rules
 globs:
   - "**/*"
 alwaysApply: true
 ---
 
-# County AI Assurance Operations Center Rules
+# AI Assessment Scanner Rules
 
-Before making changes, read `CLAUDE.md`, `AGENTS.md`, `CODEX.md`, and `docs/ai-context/current-state.md`.
+Before making changes, read `docs/ai-engineering/project-direction.md`, `CLAUDE.md`, `AGENTS.md`, `CODEX.md`, and `docs/ai-context/current-state.md`.
 
-Preserve the project philosophy:
+Use the canonical direction doc for product purpose, terminology, priorities, and mock/demo policy.
 
-- Operational simplicity.
-- Governance-first design.
-- Findings and evidence first.
+Keep implementation practical:
+
+- Assessment-first, testing-first, and evidence-first.
+- Modular monolith.
+- API-first boundaries.
+- One Linux VM and Docker Compose.
 - One or two operators.
-- Single Linux VM.
-- Docker Compose first.
-- Mock-first development.
+- Honest empty states instead of fake operational activity.
 
-Do not add Kubernetes, microservices, distributed workers, enterprise auth, multi-tenant SaaS assumptions, or real scanner integrations unless explicitly requested.
+Scanner integrations must use adapters. The platform validates targets, executes external tools, preserves raw output, normalizes findings, links evidence, and scores risk.
 
-Scanner integrations must use adapters. The platform orchestrates scanners, normalizes results, preserves evidence, creates findings, and scores risk. It does not rewrite scanner tools.
-
-The UI should feel authoritative, calm, security-focused, audit-friendly, and government-grade. Avoid neon AI styling, chatbot-first layouts, toy dashboards, and vague AI magic language.
+Avoid broad rewrites, duplicate docs, Kubernetes, microservices, distributed workers, multi-tenant SaaS assumptions, scanner internals, governance-heavy language, roadmap labels in UI copy, and chatbot-first layouts.
 
 When implementation status changes, update `docs/ai-context/implementation-status.md` and the relevant todo file.

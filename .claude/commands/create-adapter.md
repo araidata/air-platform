@@ -2,6 +2,7 @@
 
 Before creating or modifying a scanner adapter, read:
 
+- `docs/ai-engineering/project-direction.md`
 - `docs/scanners/adapter-contract.md`
 - `docs/scanners/execution-model.md`
 - `docs/architecture/scanner-adapter-architecture.md`
@@ -18,4 +19,4 @@ Adapter work must:
 - Normalize results into platform findings.
 - Avoid copying scanner source into the platform.
 
-Start with a mock adapter unless the adapter framework already exists and the user explicitly requested a real scanner.
+Use a mock adapter only for development or test coverage. Real integrations must produce clearly identified scanner runs, evidence, and findings through the adapter contract.

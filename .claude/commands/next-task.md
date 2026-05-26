@@ -2,6 +2,7 @@
 
 Read:
 
+- `docs/ai-engineering/project-direction.md`
 - `CLAUDE.md`
 - `AGENTS.md`
 - `CODEX.md`

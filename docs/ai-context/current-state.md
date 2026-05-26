@@ -1,5 +1,7 @@
 # Current State
 
+Canonical AI engineering direction: `docs/ai-engineering/project-direction.md`.
+
 AI Assessment Scanner is a runnable Docker Compose platform for county AI risk profiling, automated testing, evidence collection, human review, and executive reporting.
 
 The product direction is assessment-first, testing-first, and evidence-first. Governance language should remain lightweight and tied to review decisions, evidence, reports, and control mappings.
@@ -59,6 +61,7 @@ Recommended first implementation slice:
 
 Before making changes, read:
 
+- `docs/ai-engineering/project-direction.md`
 - `CLAUDE.md`
 - `AGENTS.md`
 - `CODEX.md`

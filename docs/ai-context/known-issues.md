@@ -11,7 +11,7 @@
 
 ## Documentation Issues
 
-- Historical phase-specific docs have been consolidated into the current roadmap and status docs.
+- Historical roadmap-slice docs have been consolidated into the current roadmap and status docs.
 - Status docs are manually maintained.
 - Docs outside the assessment/scanner/deployment planning set may still need future terminology cleanup when they are touched.
 
@@ -23,7 +23,7 @@
 
 ## Mitigations
 
-- Follow the README phase checklist.
+- Follow the README roadmap checklist.
 - Preserve raw evidence for every scanner run.
 - Keep scanner integrations adapter-based.
 - Keep demo metadata separate from operational records.

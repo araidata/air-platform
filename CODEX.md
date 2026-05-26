@@ -2,10 +2,13 @@
 
 Codex should work in this repository as a senior engineering collaborator with a bias toward small, useful, verifiable changes.
 
+`docs/ai-engineering/project-direction.md` is the canonical AI engineering direction. Keep this file as workflow guidance only.
+
 ## Before Editing
 
 Read:
 
+- `docs/ai-engineering/project-direction.md`
 - `AGENTS.md`
 - `CODEX.md`
 - `CLAUDE.md`
@@ -18,25 +21,9 @@ Use repository patterns before inventing new ones.
 
 ## Development Bias
 
-Prefer:
+Prefer targeted changes that improve scanner execution, assessment workflows, evidence collection, finding quality, traceability, reporting, or operational usability.
 
-- Assessment-first implementation.
-- API-first boundaries.
-- Clear local data structures.
-- Small modules.
-- Direct workflows.
-- Explicit evidence references.
-- Testable functions.
-- Documentation updates with each capability.
-
-Avoid:
-
-- Enterprise abstractions.
-- Distributed orchestration.
-- Scanner integrations outside adapters.
-- Deep scanner rewrites.
-- Chatbot-first UX.
-- Decorative AI features.
+Avoid unnecessary rewrites, broad repository scans, duplicate direction docs, scanner integrations outside adapters, deep scanner rewrites, chatbot-first UX, and decorative AI features.
 
 ## Frontend Guidance
 
@@ -48,7 +35,7 @@ The UI should feel like a county assessment and security operations tool:
 - Evidence-focused.
 - Work-oriented.
 
-Use dense but readable dashboards, assessment intake, scanner execution controls, findings tables, evidence views, risk heatmaps, executive scorecards, and analyst drill-downs. Avoid vague AI language and toy dashboards.
+Use dense but readable dashboards, assessment intake, scanner execution controls, findings tables, evidence views, risk heatmaps, executive scorecards, and analyst drill-downs. Avoid vague AI language, toy dashboards, and roadmap labels in UI copy.
 
 ## Backend Guidance
 

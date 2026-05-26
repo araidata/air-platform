@@ -1,13 +1,14 @@
 # Claude Code Operating Guide
 
-This repository is AI Assessment Scanner: an internal county platform for AI risk profiling, automated testing, evidence collection, human review workflows, and executive reporting.
+This repository is AI Assessment Scanner. `docs/ai-engineering/project-direction.md` is the canonical AI engineering direction.
 
-Claude Code sessions must preserve project memory, avoid overengineering, and keep the documentation and implementation aligned with the assessment-first direction.
+Claude Code sessions must preserve project memory, avoid overengineering, and keep documentation and implementation aligned with the assessment-first, testing-first, evidence-first direction.
 
 ## Required Reading Before Changes
 
 Before making code or documentation changes, read:
 
+- `docs/ai-engineering/project-direction.md`
 - `CLAUDE.md`
 - `AGENTS.md`
 - `CODEX.md`
@@ -27,34 +28,6 @@ For scanner work, also read:
 - `docs/scanners/adapter-contract.md`
 - `docs/scanners/execution-model.md`
 
-## Project Philosophy
-
-Preserve these principles:
-
-- Assessment-first.
-- Testing-first.
-- Evidence-first.
-- Findings remain central.
-- One or two operators.
-- One Linux VM.
-- Docker Compose first.
-- API-first platform.
-- CLI/container-first scanner execution.
-
-## Hard Constraints
-
-Do not add:
-
-- Kubernetes.
-- Microservices.
-- Distributed workers.
-- Enterprise auth before production readiness work.
-- Multi-tenant SaaS assumptions.
-- Scanner integrations outside the adapter model.
-- Reporting integrations before export formats are stable.
-
-Do not rewrite external scanners such as garak, Giskard, PyRIT, Langfuse, Fairlearn, Aequitas, ModelScan, Ragas, DeepEval, or Promptfoo.
-
 ## How To Build
 
 - Keep changes narrow and tied to the roadmap.
@@ -62,6 +35,7 @@ Do not rewrite external scanners such as garak, Giskard, PyRIT, Langfuse, Fairle
 - Preserve raw scanner output as evidence.
 - Use demo metadata only for local development setup.
 - Do not seed fake operational findings, evidence, scanner runs, or scores.
+- Do not rewrite external scanners or bypass scanner adapters.
 - Update documentation when decisions or status change.
 
 ## Status Maintenance

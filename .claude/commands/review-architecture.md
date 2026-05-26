@@ -2,6 +2,7 @@
 
 Read:
 
+- `docs/ai-engineering/project-direction.md`
 - `docs/architecture/system-overview.md`
 - `docs/architecture/scanner-adapter-architecture.md`
 - `docs/architecture/normalization-strategy.md`
@@ -17,6 +18,6 @@ Focus on:
 - Whether it keeps findings and evidence central.
 - Whether it avoids premature scanner coupling.
 - Whether it is appropriate for one or two operators.
-- Whether it adds unnecessary enterprise complexity.
+- Whether it avoids unnecessary abstraction or direction drift.
 
 Return risks, recommendations, and any docs that need updates.

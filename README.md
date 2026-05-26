@@ -147,11 +147,11 @@ Optional demo/testing mode means development metadata can be seeded so the UI ha
 
 Operational expectation: production records should come from real intake, real scanner runs, uploaded evidence, or human review actions.
 
-## Project Phases
+## Roadmap Checklist
 
 This checklist is maintained manually. Mark a task complete only after implementation is verified and reflected in `docs/ai-context/implementation-status.md` plus the relevant todo file.
 
-### Phase 1 - Core Platform Foundation
+### Core Platform Foundation
 
 - [x] Docker runtime
 - [x] FastAPI backend
@@ -160,7 +160,7 @@ This checklist is maintained manually. Mark a task complete only after implement
 - [x] API documentation
 - [x] Core assessment models
 
-### Phase 2 - AI Risk Profiling
+### AI Risk Profiling
 
 - [x] Assessment intake workflow
 - [x] Deterministic risk scoring
@@ -169,7 +169,7 @@ This checklist is maintained manually. Mark a task complete only after implement
 - [ ] OpenControl mappings
 - [x] Risk tier calculation
 
-### Phase 3 - Scanner Orchestration
+### Scanner Orchestration
 
 - [x] Scanner orchestration framework
 - [x] Scanner plugin architecture
@@ -178,7 +178,7 @@ This checklist is maintained manually. Mark a task complete only after implement
 - [x] Findings normalization
 - [x] Evidence linkage
 
-### Phase 4 - Giskard Integration
+### Giskard Integration
 
 - [ ] Giskard adapter
 - [ ] Hallucination testing
@@ -187,7 +187,7 @@ This checklist is maintained manually. Mark a task complete only after implement
 - [ ] RAG faithfulness testing
 - [ ] Business rule validation
 
-### Phase 5 - PyRIT Integration
+### PyRIT Integration
 
 - [ ] PyRIT adapter
 - [ ] Jailbreak testing
@@ -196,7 +196,7 @@ This checklist is maintained manually. Mark a task complete only after implement
 - [ ] Data exfiltration testing
 - [ ] Multi-turn adversarial testing
 
-### Phase 6 - Langfuse Evidence Pipeline
+### Langfuse Evidence Pipeline
 
 - [ ] Langfuse integration
 - [ ] Trace capture
@@ -205,7 +205,7 @@ This checklist is maintained manually. Mark a task complete only after implement
 - [ ] Evidence pipeline
 - [ ] Observability support
 
-### Phase 7 - Human Review Workflows
+### Human Review Workflows
 
 - [x] Workflow states
 - [x] Reviewer assignments
@@ -214,7 +214,7 @@ This checklist is maintained manually. Mark a task complete only after implement
 - [x] Review comments
 - [x] Conditions tracking
 
-### Phase 8 - Executive Reporting
+### Executive Reporting
 
 - [x] Executive dashboard
 - [ ] Risk heatmaps
@@ -223,7 +223,7 @@ This checklist is maintained manually. Mark a task complete only after implement
 - [ ] PDF report generation
 - [ ] OpenControl export
 
-### Phase 9 - Production Readiness
+### Production Readiness
 
 - [ ] RBAC foundation
 - [x] Production deployment docs
@@ -235,12 +235,13 @@ This checklist is maintained manually. Mark a task complete only after implement
 ## Documentation Map
 
 - Current state: `docs/ai-context/current-state.md`
+- AI engineering direction: `docs/ai-engineering/project-direction.md`
 - Implementation status: `docs/ai-context/implementation-status.md`
 - Next steps: `docs/ai-context/next-steps.md`
 - Architecture: `docs/architecture/architecture-overview.md`
 - Deployment: `docs/deployment/deployment-workflow.md`
 - Scanner adapters: `docs/scanners/adapter-contract.md`
-- Roadmap: `docs/roadmap/phased-build-plan.md`
+- Roadmap: README roadmap checklist and `docs/ai-context/next-steps.md`
 
 ## Build Guardrails
 
