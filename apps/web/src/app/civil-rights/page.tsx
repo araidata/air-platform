@@ -95,7 +95,7 @@ export default function CivilRightsPage() {
           value={rightsImpactingSystems.length}
           detail={`${publicSystems.length} public-facing systems need language/access review`}
           tone="neutral"
-          badgeLabel="Phase 6"
+          badgeLabel="Review"
         />
         <MetricCard
           label="Templates"

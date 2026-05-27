@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import DateTime, ForeignKey, String, Text
+from sqlalchemy import DateTime, ForeignKey, JSON, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
@@ -40,6 +40,7 @@ class ScannerRun(IdMixin, TimestampMixin, Base):
     log_path: Mapped[Optional[str]] = mapped_column(String(500))
     finding_count: Mapped[int] = mapped_column(default=0, nullable=False)
     error_message: Mapped[Optional[str]] = mapped_column(Text)
+    execution_options: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
 
     scanner_definition: Mapped["ScannerDefinition"] = relationship()
     scan_type: Mapped["ScanType"] = relationship()

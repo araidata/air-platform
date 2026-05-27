@@ -62,9 +62,9 @@ Whenever possible, preserve raw evidence before returning failure.
 ## Target Integrations
 
 - `garak_cli_adapter`: implemented.
-- `giskard_adapter`: next target.
-- `pyrit_adapter`: planned after Giskard.
-- `langfuse_trace_adapter`: planned for trace/evidence references.
+- `giskard_adapter`: implemented; Docker installs Giskard in an isolated scanner runtime.
+- `pyrit_adapter`: implemented; Docker installs PyRIT in the backend scanner runtime.
+- Langfuse trace evidence pipeline: implemented as scanner-run evidence capture with graceful degradation when Langfuse credentials are unavailable.
 
 ## Prohibited Patterns
 

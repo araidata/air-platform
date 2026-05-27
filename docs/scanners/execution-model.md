@@ -40,6 +40,18 @@ Capture:
 - Prompt and response samples when relevant.
 - Trace references when supplied by Langfuse or similar tools.
 
+## Optional Scanner Runtimes
+
+The Docker image installs garak and PyRIT in the backend scanner runtime. Giskard is installed in an isolated Python environment because current Giskard 2.x dependencies require NumPy 1.x while garak 0.15 requires NumPy 2.x.
+
+Runtime files:
+
+- `apps/api/requirements-scanners.txt`
+- `apps/api/requirements-pyrit-langfuse.txt`
+- `apps/api/requirements-giskard.txt`
+
+Set `GISKARD_PYTHON` to the isolated runtime's Python executable when overriding the Docker default.
+
 ## Failure Behavior
 
 If execution fails:

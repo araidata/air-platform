@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { PageHeader } from "@/components/page-header";
-import { type ApiAssessmentToolRun, apiClient } from "@/lib/api-client";
+import { type ApiAssessmentToolRun, type ApiScannerAdapter, apiClient } from "@/lib/api-client";
 import { formatDate, labelize, StatusPill, statusTone } from "@/lib/format";
 
 const testOptions = [
@@ -60,14 +60,19 @@ export default function ScannerWorkbenchPage() {
     "system_prompt_leakage",
   ]);
   const [runs, setRuns] = useState<ApiAssessmentToolRun[]>([]);
+  const [adapters, setAdapters] = useState<ApiScannerAdapter[]>([]);
   const [selectedRun, setSelectedRun] = useState<ApiAssessmentToolRun | null>(null);
   const [isRunning, setIsRunning] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadRuns() {
-      const records = await apiClient.assessmentToolRuns();
+      const [records, adapterRecords] = await Promise.all([
+        apiClient.assessmentToolRuns(),
+        apiClient.scannerAdapters(),
+      ]);
       setRuns(records);
+      setAdapters(adapterRecords);
       setSelectedRun((current) => current ?? records[0] ?? null);
     }
     loadRuns().catch((caught) =>
@@ -378,6 +383,24 @@ export default function ScannerWorkbenchPage() {
                 </button>
               ))}
               {!runs.length ? <p className="text-sm text-zinc-500">No assessments executed.</p> : null}
+            </div>
+          </section>
+
+          <section className="rounded-lg border border-white/10 bg-white/[0.045] p-4">
+            <h2 className="text-base font-semibold text-zinc-50">Scanner Capabilities</h2>
+            <div className="mt-3 space-y-2">
+              {adapters.map((adapter) => (
+                <div key={adapter.adapter_name} className="rounded-md border border-white/10 bg-black/20 p-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="font-medium text-zinc-100">{labelize(adapter.scanner_name)}</p>
+                    <StatusPill value={adapter.supported_execution_modes[0] ?? "python"} />
+                  </div>
+                  <p className="mt-2 text-xs text-zinc-500">{adapter.scanner_version}</p>
+                  <p className="mt-2 text-sm leading-5 text-zinc-400">
+                    {adapter.supported_scan_types.map(labelize).join(", ")}
+                  </p>
+                </div>
+              ))}
             </div>
           </section>
         </aside>

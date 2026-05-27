@@ -239,8 +239,18 @@ export type ApiScannerRun = {
   log_path: string | null;
   finding_count: number;
   error_message: string | null;
+  execution_options: Record<string, unknown>;
   created_at: string;
   updated_at: string;
+};
+
+export type ApiScannerAdapter = {
+  adapter_name: string;
+  scanner_name: string;
+  scanner_version: string;
+  supported_execution_modes: string[];
+  supported_scan_types: string[];
+  mock_supported: boolean;
 };
 
 export type ApiLanguageAccessScenario = {
@@ -489,6 +499,7 @@ export const apiClient = {
       },
     ),
   scannerDefinitions: () => request<ApiScannerDefinition[]>("/scanner-definitions"),
+  scannerAdapters: () => request<ApiScannerAdapter[]>("/scanner-adapters"),
   scanTypes: () => request<ApiScanType[]>("/scan-types"),
   assessmentProfiles: () => request<ApiAssessmentProfile[]>("/assessment-profiles"),
   scannerRuns: () => request<ApiScannerRun[]>("/scanner-runs"),
@@ -504,6 +515,7 @@ export const apiClient = {
     scan_type_id: string;
     assessment_profile_id?: string;
     initiated_by?: string;
+    execution_options?: Record<string, unknown>;
   }) =>
     request<ApiScannerRun>("/scanner-runs", {
       method: "POST",
@@ -514,6 +526,8 @@ export const apiClient = {
       method: "POST",
       body: JSON.stringify({ initiated_by: initiatedBy }),
     }),
+  openControlAssessment: (assessmentId: string) =>
+    request<Record<string, unknown>>(`/reports/opencontrol/assessments/${assessmentId}`),
   civilRightsSummary: () => request<ApiCivilRightsSummary>("/civil-rights/summary"),
   assessmentToolRuns: () => request<ApiAssessmentToolRun[]>("/assessment-tool/runs"),
   assessmentToolRun: (id: string) => request<ApiAssessmentToolRun>(`/assessment-tool/runs/${id}`),

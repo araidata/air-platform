@@ -142,6 +142,7 @@ class ScannerRunCreate(StrictApiModel):
     scan_type_id: str
     assessment_profile_id: Optional[str] = None
     initiated_by: str = "operator"
+    execution_options: Dict[str, Any] = Field(default_factory=dict)
 
 
 class ScannerRunExecuteRequest(StrictApiModel):
@@ -166,6 +167,7 @@ class ScannerRunRead(ApiModel):
     log_path: Optional[str]
     finding_count: int
     error_message: Optional[str]
+    execution_options: Dict[str, Any]
     created_at: datetime
     updated_at: datetime
 

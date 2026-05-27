@@ -25,6 +25,8 @@ from app.schemas.finding import FindingCreate
 from app.schemas.scanner import ScannerRunCreate
 from app.scanners.adapters.base import ScannerExecutionContext
 from app.scanners.adapters.garak_adapter import GarakCliAdapter
+from app.scanners.adapters.giskard_adapter import GiskardAdapter
+from app.scanners.adapters.pyrit_adapter import PyRITAdapter
 from app.scanners.normalization.finding_normalizer import (
     NORMALIZATION_VERSION,
     normalize_scanner_findings,
@@ -32,6 +34,8 @@ from app.scanners.normalization.finding_normalizer import (
 from app.services.audit_event_service import AuditEventService
 from app.services.evidence_service import EvidenceService
 from app.services.finding_workflow_service import FindingWorkflowService
+from app.services.langfuse_evidence_service import LangfuseEvidenceService
+from app.services.opencontrol_service import OpenControlService
 
 
 class ScannerExecutionService:
@@ -69,6 +73,7 @@ class ScannerExecutionService:
             adapter_name=scanner_definition.adapter_name,
             execution_status=ScannerExecutionStatus.pending.value,
             initiated_by=payload.initiated_by,
+            execution_options=payload.execution_options,
         )
         self.db.add(run)
         self.db.flush()
@@ -119,6 +124,7 @@ class ScannerExecutionService:
             scanner_compatible=system.scanner_compatible or [],
             manual_review_only=system.manual_review_only,
             uploaded_artifact_supported=system.uploaded_artifact_supported,
+            execution_options=run.execution_options or {},
             scan_type=scan_type.name,
             scan_domain=scan_type.domain,
             profile_name=profile.profile_name if profile else None,
@@ -163,6 +169,12 @@ class ScannerExecutionService:
                 created_by=initiated_by,
             )
             self._preserve_adapter_artifacts(run, execution_result.artifacts, initiated_by)
+            trace_evidence = LangfuseEvidenceService(self.db).capture_scanner_trace(
+                run=run,
+                artifact_dir=run_dir,
+                raw_output=execution_result.raw_output,
+                created_by=initiated_by,
+            )
             if execution_result.status != ScannerExecutionStatus.completed.value:
                 raise RuntimeError(execution_result.error_message or "Scanner execution failed")
 
@@ -180,11 +192,19 @@ class ScannerExecutionService:
                 ScannerResult(
                     scanner_run_id=run.id,
                     raw_result_json=execution_result.raw_output,
-                    normalized={"findings": normalized, "raw_evidence_id": raw_evidence.id},
+                    normalized={
+                        "findings": normalized,
+                        "raw_evidence_id": raw_evidence.id,
+                        "trace_evidence_id": trace_evidence.id,
+                    },
                     normalization_version=NORMALIZATION_VERSION,
                 )
             )
-            normalized_payload = {"findings": normalized, "raw_evidence_id": raw_evidence.id}
+            normalized_payload = {
+                "findings": normalized,
+                "raw_evidence_id": raw_evidence.id,
+                "trace_evidence_id": trace_evidence.id,
+            }
             normalized_path = self._write_json(run_dir / "normalized-output.json", normalized_payload)
             self._create_run_evidence(
                 run,
@@ -363,7 +383,7 @@ class ScannerExecutionService:
             return assessment
         assessment = Assessment(
             system_id=system.id,
-            assessment_type="Scanner ecosystem assessment",
+            assessment_type="Scanner assessment",
             initiated_by=payload.initiated_by,
             status="running",
             started_at=datetime.utcnow(),
@@ -391,6 +411,7 @@ class ScannerExecutionService:
         created: list[Finding] = []
         workflow = FindingWorkflowService(self.db)
         evidence_service = EvidenceService(self.db)
+        mapping_service = OpenControlService(self.db)
         for normalized in normalized_findings:
             finding = workflow.create(
                 FindingCreate(
@@ -411,6 +432,10 @@ class ScannerExecutionService:
                 )
             )
             created.append(finding)
+            mapping_service.create_mappings_for_finding(
+                finding,
+                normalized.get("source_metadata", {}).get("framework_mappings") or [],
+            )
             for item in normalized.get("evidence", []):
                 evidence_service.create(
                     EvidenceCreate(
@@ -425,6 +450,7 @@ class ScannerExecutionService:
                             "source": "scanner_adapter",
                             "scanner_run_id": run.id,
                             "scanner_name": run.scanner_name,
+                            "adapter_name": run.adapter_name,
                             **normalized.get("source_metadata", {}),
                         },
                     )
@@ -486,6 +512,7 @@ class ScannerExecutionService:
             "report_jsonl_path": ("Native scanner report JSONL", "application/jsonl"),
             "hitlog_jsonl_path": ("Native scanner hit log JSONL", "application/jsonl"),
             "html_report_path": ("Native scanner HTML report", "text/html"),
+            "native_output_path": ("Native scanner structured output", "application/json"),
         }
         for key, (title, content_type) in artifact_specs.items():
             value = artifacts.get(key)
@@ -509,6 +536,10 @@ class ScannerExecutionService:
     def _adapter_for(self, adapter_name: str):
         if adapter_name == "garak_cli_adapter":
             return GarakCliAdapter()
+        if adapter_name == "giskard_adapter":
+            return GiskardAdapter()
+        if adapter_name == "pyrit_adapter":
+            return PyRITAdapter()
         raise HTTPException(
             status_code=400,
             detail=f"No executable scanner adapter is available for: {adapter_name}",

@@ -30,11 +30,7 @@ Status:
 - Implemented as an assessment workbench path.
 - Preserves report artifacts and redacted request metadata.
 
-## Next
-
 ### Giskard
-
-Purpose:
 
 - Hallucination testing.
 - Bias/fairness testing.
@@ -42,15 +38,12 @@ Purpose:
 - RAG faithfulness testing.
 - Business rule validation.
 
-Acceptance criteria:
+Status:
 
-- Runs through scanner orchestration.
-- Preserves raw output and reports.
-- Normalizes findings.
-- Links evidence.
+- Adapter implemented and Docker/runtime validated.
+- Preserves raw output, reports, prompt/response records, logs, and trace manifest evidence.
+- Normalizes real Giskard issues into existing Finding and Evidence workflows.
 - Maps findings to NIST AI RMF, OWASP LLM Top 10, and OpenControl-ready controls where available.
-
-## Later
 
 ### PyRIT
 
@@ -62,6 +55,12 @@ Purpose:
 - Data exfiltration testing.
 - Multi-turn adversarial testing.
 
+Status:
+
+- Adapter implemented and Docker/runtime validated.
+- Preserves attack prompts, responses, logs, execution metadata, and trace manifest evidence.
+- Normalizes only real concerning responses into existing Finding and Evidence workflows.
+
 ### Langfuse
 
 Purpose:
@@ -71,9 +70,18 @@ Purpose:
 - Latency and cost metadata.
 - Evidence references for assessment reports.
 
+Status:
+
+- Evidence pipeline implemented and Docker/runtime validated.
+- Captures local trace manifests when Langfuse is unavailable.
+- Attempts Langfuse trace/generation capture when SDK and credentials are present.
+
+## Later
+
+- Additional scanner adapters only when a concrete assessment workflow requires them.
+
 ## Not Included Early
 
 - Scanner microservices.
 - Distributed scanner scheduling.
 - Continuous production monitoring.
-- Multiple new adapters in one implementation slice.

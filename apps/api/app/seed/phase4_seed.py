@@ -22,6 +22,10 @@ SCAN_TYPES = [
     ("retention_policy_gap", "Retention Policy Gap", "privacy", "medium", ["moderate", "high", "critical"]),
     ("language_access_disparity", "Language Access Disparity", "bias_civil_rights", "high", ["high", "critical"]),
     ("protected_class_disparity", "Protected Class Disparity", "bias_civil_rights", "high", ["high", "critical"]),
+    ("hallucination", "Hallucination", "explainability", "medium", ["moderate", "high", "critical"]),
+    ("rag_faithfulness", "RAG Faithfulness", "rag_integrity", "high", ["moderate", "high", "critical"]),
+    ("business_rule_validation", "Business Rule Validation", "governance", "medium", ["moderate", "high", "critical"]),
+    ("multi_turn_adversarial", "Multi-Turn Adversarial", "security", "high", ["high", "critical"]),
     ("accessibility_disparity", "Accessibility Disparity", "bias_civil_rights", "medium", ["high", "critical"]),
     ("human_appeal_path_missing", "Human Appeal Path Missing", "governance", "high", ["high", "critical"]),
     ("adverse_decision_explanation_gap", "Adverse Decision Explanation Gap", "explainability", "high", ["high", "critical"]),
@@ -42,12 +46,12 @@ SCAN_TYPES = [
 SCANNER_DEFINITIONS = [
     ("garak", "garak", "security", "garak_cli_adapter", "cli", True, ["security"], ["prompt_injection", "jailbreak_resistance", "system_prompt_leakage"]),
     ("agentseal", "AgentSeal", "agent_safety", "agentseal_cli_adapter", "cli", False, ["agent_safety", "security"], ["unsafe_tool_use", "mcp_tool_poisoning"]),
-    ("pyrit", "PyRIT", "security", "pyrit_cli_adapter", "cli", False, ["security"], ["prompt_injection", "jailbreak_resistance", "data_exfiltration"]),
+    ("pyrit", "PyRIT", "security", "pyrit_adapter", "python", True, ["security"], ["prompt_injection", "jailbreak_resistance", "toxicity_unsafe_content", "data_exfiltration", "multi_turn_adversarial"]),
     ("modelscan", "ModelScan", "model_integrity", "modelscan_cli_adapter", "cli", False, ["supply_chain", "model_integrity"], ["unsafe_model_file", "dependency_risk", "unverified_model_origin"]),
     ("fairlearn", "Fairlearn", "bias_civil_rights", "fairlearn_import_adapter", "manual_import", False, ["bias_civil_rights"], ["protected_class_disparity"]),
     ("aequitas", "Aequitas", "bias_civil_rights", "aequitas_import_adapter", "manual_import", False, ["bias_civil_rights"], ["protected_class_disparity"]),
     ("ibm_aif360", "IBM AI Fairness 360", "bias_civil_rights", "aif360_import_adapter", "manual_import", False, ["bias_civil_rights"], ["protected_class_disparity"]),
-    ("giskard", "Giskard", "bias_civil_rights", "giskard_cli_adapter", "cli", False, ["bias_civil_rights", "explainability"], ["protected_class_disparity", "missing_decision_rationale"]),
+    ("giskard", "Giskard", "ai_quality", "giskard_adapter", "python", True, ["bias_civil_rights", "explainability", "rag_integrity", "security", "governance"], ["hallucination", "protected_class_disparity", "prompt_injection", "rag_faithfulness", "rag_poisoning", "business_rule_validation", "missing_decision_rationale"]),
     ("ragas", "Ragas", "rag_integrity", "ragas_cli_adapter", "cli", False, ["rag_integrity"], ["rag_poisoning"]),
     ("deepeval", "DeepEval", "rag_integrity", "deepeval_cli_adapter", "cli", False, ["rag_integrity", "explainability"], ["rag_poisoning", "missing_decision_rationale"]),
     ("promptfoo", "Promptfoo", "security", "promptfoo_cli_adapter", "cli", False, ["security", "rag_integrity"], ["prompt_injection", "jailbreak_resistance", "rag_poisoning"]),
@@ -102,7 +106,7 @@ def _seed_scanner_definitions(db: Session) -> None:
             "description": f"{display} registry entry for {category.replace('_', ' ')} assessment workflows.",
             "scanner_category": category,
             "adapter_name": adapter,
-            "scanner_version": "0.15.x" if name == "garak" else "future",
+            "scanner_version": _scanner_version(name),
             "execution_mode": mode,
             "supported_domains": domains,
             "supported_scan_types": scan_types,
@@ -116,6 +120,14 @@ def _seed_scanner_definitions(db: Session) -> None:
                 setattr(item, key, value)
             continue
         db.add(ScannerDefinition(scanner_name=name, **data))
+
+
+def _scanner_version(name: str) -> str:
+    return {
+        "garak": "0.15.x",
+        "giskard": "2.x",
+        "pyrit": "0.13.x",
+    }.get(name, "future")
 
 
 def _seed_profiles(db: Session) -> None:

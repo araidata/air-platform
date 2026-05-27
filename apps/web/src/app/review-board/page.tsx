@@ -227,7 +227,7 @@ export default function ReviewBoardPage() {
           value={reviews.filter((review) => review.civil_rights_review_status !== "not_started").length}
           detail="Reviews with civil-rights indicators"
           tone="good"
-          badgeLabel="Phase 6"
+          badgeLabel="Review"
         />
       </div>
 

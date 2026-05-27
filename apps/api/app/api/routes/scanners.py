@@ -30,6 +30,8 @@ from app.schemas.scanner import (
     SystemScanRecommendations,
 )
 from app.scanners.adapters.garak_adapter import GarakCliAdapter
+from app.scanners.adapters.giskard_adapter import GiskardAdapter
+from app.scanners.adapters.pyrit_adapter import PyRITAdapter
 from app.scanners.services.scanner_execution_service import ScannerExecutionService
 
 router = APIRouter()
@@ -211,18 +213,34 @@ def get_system_scanner_runs(system_id: str, db: Session = Depends(get_db)) -> li
 
 @router.get("/scanner-adapters", response_model=List[ScannerAdapterRead])
 def list_scanner_adapters() -> list[dict]:
-    garak_adapter = GarakCliAdapter()
+    adapters = [
+        (
+            "garak_cli_adapter",
+            GarakCliAdapter(),
+            ["cli"],
+            ["prompt_injection", "jailbreak_resistance", "system_prompt_leakage", "encoding_obfuscation", "toxicity_unsafe_content"],
+        ),
+        (
+            "giskard_adapter",
+            GiskardAdapter(),
+            ["python"],
+            ["hallucination", "protected_class_disparity", "prompt_injection", "rag_faithfulness", "rag_poisoning", "business_rule_validation"],
+        ),
+        (
+            "pyrit_adapter",
+            PyRITAdapter(),
+            ["python"],
+            ["jailbreak_resistance", "prompt_injection", "toxicity_unsafe_content", "data_exfiltration", "multi_turn_adversarial"],
+        ),
+    ]
     return [
         {
-            "adapter_name": "garak_cli_adapter",
-            "scanner_name": garak_adapter.get_name(),
-            "scanner_version": garak_adapter.get_version(),
-            "supported_execution_modes": ["cli"],
-            "supported_scan_types": [
-                "prompt_injection",
-                "jailbreak_resistance",
-                "system_prompt_leakage",
-            ],
+            "adapter_name": adapter_name,
+            "scanner_name": adapter.get_name(),
+            "scanner_version": adapter.get_version(),
+            "supported_execution_modes": modes,
+            "supported_scan_types": scan_types,
             "mock_supported": False,
-        },
+        }
+        for adapter_name, adapter, modes, scan_types in adapters
     ]

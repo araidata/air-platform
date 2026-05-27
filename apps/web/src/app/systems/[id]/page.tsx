@@ -286,6 +286,12 @@ export default function SystemDetailPage() {
                     <p className="mt-3 text-sm text-zinc-500">
                       {run.finding_count} findings / {run.raw_output_path ? "raw output preserved" : "pending output"}
                     </p>
+                    {run.log_path ? (
+                      <p className="mt-2 break-all font-mono text-xs text-zinc-500">{run.log_path}</p>
+                    ) : null}
+                    {run.error_message ? (
+                      <p className="mt-2 text-sm text-red-200">{run.error_message}</p>
+                    ) : null}
                   </div>
                 ))}
                 {!runs.length ? <p className="rounded-lg border border-white/10 bg-black/20 p-4 text-sm text-zinc-500">No scanner runs available.</p> : null}

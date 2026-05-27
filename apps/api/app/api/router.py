@@ -9,6 +9,7 @@ from app.api.routes import (
     evidence,
     findings,
     owners,
+    reports,
     retests,
     scores,
     scanners,
@@ -28,3 +29,4 @@ api_router.include_router(scores.router, tags=["scores"])
 api_router.include_router(scanners.router, tags=["scanners"])
 api_router.include_router(assessment_tool.router, prefix="/assessment-tool", tags=["assessment-tool"])
 api_router.include_router(civil_rights.router, prefix="/civil-rights", tags=["civil-rights"])
+api_router.include_router(reports.router, prefix="/reports", tags=["reports"])

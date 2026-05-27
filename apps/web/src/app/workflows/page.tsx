@@ -206,7 +206,7 @@ export default function GuidedWorkflowPage() {
     <AppShell>
       <PageHeader
         title="Guided Operator Workflow"
-        description="Add or select a system, choose an assessment profile, review recommended scans, execute scanner work, and route governance review."
+        description="Add or select a system, choose an assessment profile, review recommended scans, execute scanner work, and route human review."
         actions={<Route className="size-6 text-cyan-100" aria-hidden="true" />}
       />
 
@@ -340,7 +340,7 @@ export default function GuidedWorkflowPage() {
               <span className="grid size-7 place-items-center rounded-md border border-cyan-300/20 text-sm text-cyan-100">
                 3
               </span>
-              <h2 className="text-base font-semibold text-zinc-50">Select Governance Domains</h2>
+              <h2 className="text-base font-semibold text-zinc-50">Select Assessment Domains</h2>
             </div>
             <div className="mt-4 flex flex-wrap gap-2">
               {governanceDomains.map((domain) => (
@@ -477,7 +477,7 @@ export default function GuidedWorkflowPage() {
               <p className="mt-1 text-zinc-100">{selectedProfile?.profile_name ?? "Select a profile"}</p>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Governance implications</p>
+              <p className="text-xs uppercase tracking-[0.08em] text-zinc-500">Assessment domains</p>
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {selectedDomains.map((domain) => (
                   <StatusPill key={domain} value={domain} />

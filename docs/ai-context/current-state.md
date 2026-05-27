@@ -16,6 +16,10 @@ The product direction is assessment-first, testing-first, and evidence-first. Go
 - Deterministic scoring with score history, explanations, snapshots, and service-layer recalculation hooks.
 - Scanner orchestration framework with adapter contract, scanner run records, artifact preservation, evidence linkage, finding normalization, and score impact.
 - garak CLI adapter for real prompt-injection-oriented testing.
+- Giskard adapter implementation for target-configured AI quality and safety scans with an isolated Giskard runtime in Docker.
+- PyRIT adapter implementation for target-configured adversarial prompt execution with PyRIT installed in Docker.
+- Langfuse trace manifest evidence pipeline with graceful local evidence capture when Langfuse credentials or SDK are unavailable.
+- OpenControl-ready finding mappings and assessment export API.
 - Live HTTP assessment tester for endpoint-based adversarial prompts and report artifacts.
 - Assessment Tool UI for garak and live HTTP testing.
 - API-backed intake, assessment launch, findings triage, evidence review, review workflow, and system detail surfaces.
@@ -24,10 +28,6 @@ The product direction is assessment-first, testing-first, and evidence-first. Go
 
 ## Not Built Yet
 
-- Giskard adapter.
-- PyRIT adapter.
-- Langfuse trace/evidence integration.
-- OpenControl / Compliance Masonry export.
 - PDF executive reports.
 - Production RBAC.
 - Backup/restore automation.
@@ -47,15 +47,7 @@ Production records should come from:
 
 ## Highest-Value Next Step
 
-Begin Giskard integration.
-
-Recommended first implementation slice:
-
-- Add a Giskard adapter skeleton behind the existing scanner adapter contract.
-- Support hallucination and prompt-injection test configuration first.
-- Preserve raw Giskard outputs as evidence.
-- Normalize initial Giskard results into existing findings.
-- Keep execution local and Docker/CLI friendly.
+Continue with the next reporting and production-readiness roadmap items after the scanner integrations stabilize in regular operator use.
 
 ## Agent Reminder
 

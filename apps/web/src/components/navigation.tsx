@@ -22,10 +22,10 @@ const navItems = [
   { href: "/findings", label: "Findings Queue", icon: ClipboardList },
   { href: "/systems/public-benefits-chatbot", label: "System Detail", icon: FileSearch },
   { href: "/evidence", label: "Evidence & Audit", icon: Library },
-  { href: "/scanners", label: "Scanner Ecosystem", icon: Radar },
+  { href: "/scanners", label: "Scanner Runs", icon: Radar },
   { href: "/civil-rights", label: "Civil Rights Review", icon: Languages },
   { href: "/review-board", label: "AI Review Board", icon: Scale },
-  { href: "/reports", label: "Governance Reports", icon: BarChart3 },
+  { href: "/reports", label: "Reports", icon: BarChart3 },
 ];
 
 export function Navigation() {

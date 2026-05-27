@@ -18,19 +18,24 @@
 
 ## Next: Giskard
 
-- [ ] Add Giskard adapter.
-- [ ] Validate target configuration.
-- [ ] Support hallucination testing.
-- [ ] Support prompt injection testing.
-- [ ] Preserve Giskard artifacts.
-- [ ] Normalize Giskard findings.
-- [ ] Add framework/control mappings.
-- [ ] Add tests for success, no findings, invalid target, execution failure, and parser failure.
+- [x] Add Giskard adapter.
+- [x] Validate target configuration.
+- [x] Support hallucination testing.
+- [x] Support prompt injection testing.
+- [x] Preserve Giskard artifacts.
+- [x] Normalize Giskard findings.
+- [x] Add framework/control mappings.
+- [x] Add tests for execution, graceful failure, evidence, normalization, and OpenControl export.
+
+## PyRIT and Langfuse
+
+- [x] PyRIT adapter.
+- [x] Langfuse trace/evidence adapter.
+- [x] Docker runtime validation after Docker Desktop recovery.
+- [x] Operational test target execution with installed Giskard/PyRIT SDKs.
 
 ## Later
 
-- [ ] PyRIT adapter.
-- [ ] Langfuse trace/evidence adapter.
 - [ ] Additional scanner adapters only when a concrete assessment workflow requires them.
 
 ## Do Not Do

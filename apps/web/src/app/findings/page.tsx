@@ -402,6 +402,11 @@ export default function FindingsPage() {
                     >
                       <p className="font-medium text-zinc-100">{record.title}</p>
                       <p className="mt-1 text-sm text-zinc-500">{labelize(record.evidence_type)}</p>
+                      {record.metadata_json?.trace_id ? (
+                        <p className="mt-1 font-mono text-xs text-zinc-500">
+                          Trace {String(record.metadata_json.trace_id).slice(0, 8)}
+                        </p>
+                      ) : null}
                     </Link>
                   ))}
                   {!selectedEvidence.length ? (

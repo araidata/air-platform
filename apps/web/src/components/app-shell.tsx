@@ -22,9 +22,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <p className="text-xs font-medium uppercase tracking-[0.08em] text-zinc-500">
               Operating mode
             </p>
-            <p className="mt-2 text-sm text-zinc-200">Phase 7 guided workflow</p>
+            <p className="mt-2 text-sm text-zinc-200">Assessment operations</p>
             <p className="mt-1 text-xs leading-5 text-zinc-500">
-              Intake, assessment launch, scanner execution, findings, evidence, and AIRB routing.
+              Intake, assessment launch, scanner execution, findings, evidence, and human review routing.
             </p>
           </div>
         </aside>
@@ -33,10 +33,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
               <div>
                 <p className="text-xs font-medium uppercase tracking-[0.1em] text-zinc-500">
-                  Internal governance workspace
+                  Internal assessment workspace
                 </p>
                 <p className="mt-1 text-sm text-zinc-300">
-                  Findings, evidence, assessments, and AI Review Board workflow
+                  Findings, evidence, assessments, and review workflow
                 </p>
               </div>
               <div className="flex items-center gap-3">

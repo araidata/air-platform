@@ -18,7 +18,7 @@ export function MetricCard({
   value,
   detail,
   tone = "neutral",
-  badgeLabel = "Phase 3",
+  badgeLabel = "Live",
 }: MetricCardProps) {
   return (
     <section className="rounded-lg border border-white/10 bg-white/[0.055] p-4 shadow-[0_14px_40px_rgba(0,0,0,0.18)]">

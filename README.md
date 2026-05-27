@@ -23,8 +23,8 @@ Governance exists in the platform, but it is lightweight and secondary to assess
 
 - Automated risk profiling for county AI systems.
 - Deterministic risk scoring with explainable factors.
-- Giskard integration target for hallucination, bias/fairness, prompt injection, RAG faithfulness, and business-rule validation.
-- PyRIT integration target for jailbreak, prompt injection, unsafe content, data exfiltration, and multi-turn adversarial testing.
+- Giskard adapter for hallucination, bias/fairness, prompt injection, RAG faithfulness, and business-rule validation when the Giskard scanner runtime is installed.
+- PyRIT adapter for jailbreak, prompt injection, unsafe content, data exfiltration, and multi-turn adversarial testing when the PyRIT scanner runtime is installed.
 - garak-based prompt injection testing already integrated through the scanner adapter path.
 - Langfuse evidence and tracing target for prompt/output capture, trace metadata, latency, and cost signals.
 - Findings management with severity, status, ownership, remediation, retest, and score impact.
@@ -140,6 +140,9 @@ Current real execution:
 
 - garak CLI adapter.
 - Live HTTP assessment tester.
+- Giskard and PyRIT adapters through the scanner run workflow.
+- Langfuse trace manifest evidence capture with graceful degradation when Langfuse is not configured.
+- OpenControl-ready finding mappings and assessment export API.
 - Raw artifact preservation under the configured scanner storage root.
 - Normalized findings, evidence records, audit events, and score recalculation.
 
@@ -166,7 +169,7 @@ This checklist is maintained manually. Mark a task complete only after implement
 - [x] Deterministic risk scoring
 - [x] NIST AI RMF mapping
 - [x] OWASP LLM Top 10 mapping
-- [ ] OpenControl mappings
+- [x] OpenControl mappings
 - [x] Risk tier calculation
 
 ### Scanner Orchestration
@@ -180,30 +183,30 @@ This checklist is maintained manually. Mark a task complete only after implement
 
 ### Giskard Integration
 
-- [ ] Giskard adapter
-- [ ] Hallucination testing
-- [ ] Bias/fairness testing
-- [ ] Prompt injection testing
-- [ ] RAG faithfulness testing
-- [ ] Business rule validation
+- [x] Giskard adapter
+- [x] Hallucination testing
+- [x] Bias/fairness testing
+- [x] Prompt injection testing
+- [x] RAG faithfulness testing
+- [x] Business rule validation
 
 ### PyRIT Integration
 
-- [ ] PyRIT adapter
-- [ ] Jailbreak testing
-- [ ] Prompt injection attacks
-- [ ] Unsafe content testing
-- [ ] Data exfiltration testing
-- [ ] Multi-turn adversarial testing
+- [x] PyRIT adapter
+- [x] Jailbreak testing
+- [x] Prompt injection attacks
+- [x] Unsafe content testing
+- [x] Data exfiltration testing
+- [x] Multi-turn adversarial testing
 
 ### Langfuse Evidence Pipeline
 
-- [ ] Langfuse integration
-- [ ] Trace capture
-- [ ] Prompt/output logging
-- [ ] Latency/cost metrics
-- [ ] Evidence pipeline
-- [ ] Observability support
+- [x] Langfuse integration
+- [x] Trace capture
+- [x] Prompt/output logging
+- [x] Latency/cost metrics
+- [x] Evidence pipeline
+- [x] Observability support
 
 ### Human Review Workflows
 
@@ -221,7 +224,7 @@ This checklist is maintained manually. Mark a task complete only after implement
 - [x] Findings summaries
 - [ ] Residual risk trends
 - [ ] PDF report generation
-- [ ] OpenControl export
+- [x] OpenControl export
 
 ### Production Readiness
 

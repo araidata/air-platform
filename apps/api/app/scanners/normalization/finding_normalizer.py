@@ -40,6 +40,7 @@ def normalize_scanner_findings(
                 "source_metadata": {
                     "affected_component": raw.get("affected_component"),
                     "raw_evidence_path": raw_evidence_path,
+                    "framework_mappings": raw.get("framework_mappings") or [],
                 },
                 "evidence": raw.get("evidence") or [],
             }
